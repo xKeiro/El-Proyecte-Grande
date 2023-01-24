@@ -5,18 +5,7 @@ namespace ElProyecteGrande.Models
     public class UserRecipeStatus : BaseModel
     {
         [Required]
-        public User User { get; set; }
-
-        [Required]
-        public Recipe Recipe { get; set; }
-
-        [Required] 
-        public bool Liked { get; set; } = false;
-
-        [Required]
-        public bool Disliked { get; set; } = false;
-
-        [Required]
-        public bool Saved { get; set; } = false;
+        [RegularExpression("Liked|Disliked|Saved", ErrorMessage = "The status should be either Liked, Disliked or Saved!")]
+        public required string Name{ get; set; }
     }
 }

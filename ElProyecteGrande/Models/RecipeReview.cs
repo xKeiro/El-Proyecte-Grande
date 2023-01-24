@@ -8,14 +8,14 @@ namespace ElProyecteGrande.Models
 
 
         [Required]
-        public User User { get; set; }
+        public required User User { get; set; }
 
         [Required]
-        public Recipe Recipe { get; set; }
+        public required Recipe Recipe { get; set; }
 
         [Required]
         [Range(1, 5)]
-        public int Rate { get; set; }
+        public required int Rate { get; set; }
 
         public string? Review { get; set; }
 
