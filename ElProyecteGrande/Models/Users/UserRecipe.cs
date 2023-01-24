@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models
+namespace ElProyecteGrande.Models.Users
 {
     public class UserRecipe : BaseModel
     {
@@ -10,7 +10,7 @@ namespace ElProyecteGrande.Models
         [Required]
         public required Recipe Recipe { get; set; }
 
-        [Required] 
+        [Required]
         public required UserRecipeStatus Status { get; set; }
 
     }

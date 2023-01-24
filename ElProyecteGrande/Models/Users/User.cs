@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using ElProyecteGrande.Models;
 
-namespace ElProyecteGrande.Models_Miki
+namespace ElProyecteGrande.Models.Users
 {
     public class User : BaseModel
     {
@@ -19,7 +18,7 @@ namespace ElProyecteGrande.Models_Miki
         [Required]
         [DataType(DataType.Password)]
         public required string Password { get; set; }
-        
+
         [Required]
         public required bool IsAdmin { get; set; } = false;
     }

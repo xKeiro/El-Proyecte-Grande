@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using ElProyecteGrande.Models.Users;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models
+namespace ElProyecteGrande.Models.Recipes
 {
     public class RecipeReview : BaseModel
     {
