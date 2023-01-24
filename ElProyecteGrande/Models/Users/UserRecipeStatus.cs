@@ -1,11 +1,13 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using ElProyecteGrande.Models.Enums;
 
 namespace ElProyecteGrande.Models.Users
 {
     public class UserRecipeStatus : BaseModel
     {
         [Required]
-        [RegularExpression("Liked|Disliked|Saved", ErrorMessage = "The status should be either Liked, Disliked or Saved!")]
-        public required string Name { get; set; }
+        public required RecipeStatus Name { get; set; }
     }
 }
