@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ElProyecteGrande.Models.Recipes;
+using ElProyecteGrande.Models.Users;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Models;
 
@@ -9,7 +11,7 @@ public class ElProyecteGrandeContext : DbContext
     }
 
     public DbSet<Recipe> Recipes { get; set; } = default!;
-    public DbSet<Ingredient> Ingredients { get; set;} = default!;
+    public DbSet<Ingredient> Ingredients { get; set; } = default!;
     public DbSet<RecipeReview> RecipeReviews { get; set; } = default!;
     public DbSet<UserRecipe> UserRecipes { get; set; } = default!;
     public DbSet<UserRecipeStatus> UserRecipeStatuses { get; set; } = default!;

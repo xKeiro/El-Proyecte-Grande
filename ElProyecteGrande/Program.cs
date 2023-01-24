@@ -1,5 +1,5 @@
-using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
