@@ -5,9 +5,7 @@ namespace ElProyecteGrande.Models
 {
     public class RecipeReview : BaseModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public override int Id { get; set; }
+
 
         [Required]
         public User User { get; set; }
