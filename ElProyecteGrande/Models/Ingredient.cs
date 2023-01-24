@@ -2,9 +2,12 @@
 
 namespace ElProyecteGrande.Models;
 
-public class Ingredient: BaseModel
+public class Ingredient : BaseModel
 {
     [Required(ErrorMessage = "Name is required")]
     [StringLength(60, MinimumLength = 2)]
     public required string Name { get; set; }
+
+    [Required]
+    public required string UnitOfMeasure { get; set; }
 }
