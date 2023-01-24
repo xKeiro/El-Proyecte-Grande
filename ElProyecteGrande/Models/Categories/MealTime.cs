@@ -1,5 +1,5 @@
 ﻿namespace ElProyecteGrande.Models.Categories;
 
-public class Meal : BaseCategory
+public class MealTime : BaseCategory
 {
 }
