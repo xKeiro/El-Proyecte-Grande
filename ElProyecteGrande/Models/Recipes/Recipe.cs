@@ -13,7 +13,7 @@ public class Recipe : BaseModel
     public required string Description { get; set; }
 
     [Required]
-    public required Category Category { get; set; }
+    public required Categorization Categorization { get; set; }
 
     [Required]
     public required List<RecipeIngredient> RecipeIngredients { get; set; }
