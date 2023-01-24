@@ -1,6 +1,9 @@
 ﻿using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Users;
+using System.IO;
+using System.Reflection;
+using System;
 
 namespace ElProyecteGrande.Services
 {
@@ -68,6 +71,7 @@ namespace ElProyecteGrande.Services
                         new() { Name = "Salad" },
                         new() { Name = "Soup" },
                         new() { Name = "Stew" },
+                        new() { Name = "Stew" },
                         new() { Name = "Dessert" },
                         new() { Name = "Roast" },
                         new() { Name = "Meat" },
@@ -76,23 +80,42 @@ namespace ElProyecteGrande.Services
                     context.SaveChanges();
                 }
 
+                //Diet
+                if (!context.Diets.Any())
+                {
+                    context.Diets.AddRange(new List<Diet>()
+                    {
+                        new() { Name = "Vegetarian" },
+                        new() { Name = "Gluten Free" },
+                        new() { Name = "Paleo" },
+                        new() { Name = "Diary Free" },
+                        new() { Name = "Vegan" },
+                        new() { Name = "Low-Carb" },
+                    });
+                    context.SaveChanges();
+                }
+
+                //Categorization
+
+
+
                 if (context.Ingredients.Any())
                 {
                     return;
                 }
 
                 //Ingredients
-                Ingredient penne = new Ingredient { Name = "Penne Pasta", UnitOfMeasure = "oz" };
-                Ingredient tomato = new Ingredient { Name = "Tomatoes", UnitOfMeasure = "lb" };
+                Ingredient penne = new Ingredient { Name = "Penne Pasta", UnitOfMeasure = "g" };
+                Ingredient tomato = new Ingredient { Name = "Tomatoes", UnitOfMeasure = "g" };
                 Ingredient basil = new Ingredient { Name = "Basil", UnitOfMeasure = "g" };
-                Ingredient parmesan = new Ingredient { Name = "Parmesan", UnitOfMeasure = "oz" };
-                Ingredient chicken = new Ingredient { Name = "Chicken Breast", UnitOfMeasure = "lb" };
+                Ingredient parmesan = new Ingredient { Name = "Parmesan", UnitOfMeasure = "g" };
+                Ingredient chicken = new Ingredient { Name = "Chicken Breast", UnitOfMeasure = "g" };
                 Ingredient romanianLettuce = new Ingredient
                 { Name = "Romaine Lettuce", UnitOfMeasure = "bunch" };
-                Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "cup" };
-                Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "cup" };
+                Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "g" };
+                Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "" };
                 Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "unit" };
-                Ingredient chocolateChip = new Ingredient { Name = "Chocolate Chip", UnitOfMeasure = "cup" };
+                Ingredient chocolateChip = new Ingredient { Name = "Chocolate Chip", UnitOfMeasure = "g" };
                 context.Ingredients.AddRange(
                     penne,
                     tomato,
@@ -126,8 +149,6 @@ namespace ElProyecteGrande.Services
                     Password = "87654321",
                     IsAdmin = false
                 };
-                context.Users.AddRange(user1, user2);
-                context.SaveChanges();
 
                 var user3 = new User
                 {
@@ -136,7 +157,7 @@ namespace ElProyecteGrande.Services
                     Password = "pw1234567",
                     IsAdmin = false
                 };
-                context.Users.AddRange(user1, user2);
+                context.Users.AddRange(user1, user2, user3);
                 context.SaveChanges();
 
             }
