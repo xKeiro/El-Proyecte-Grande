@@ -1,8 +1,12 @@
-﻿namespace ElProyecteGrande.Models.Categories;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ElProyecteGrande.Models.Categories;
 
 /// <summary>
 /// Different type of cuisines, like - Hungarian, Italian, French, etc.
 /// </summary>
+
+[Index(nameof(Name), IsUnique = true)]
 public class Cuisine : BaseCategory
 {
 }
