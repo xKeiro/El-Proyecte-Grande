@@ -1,6 +1,8 @@
 ﻿using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
+using NuGet.Packaging;
 
 namespace ElProyecteGrande.Services
 {
@@ -111,7 +113,7 @@ namespace ElProyecteGrande.Services
                 {
                     return;
                 }
-                
+
                 Diet vegetarian = new() { Name = "Vegetarian" };
                 Diet vegan = new() { Name = "Vegan" };
                 Diet glutenFree = new() { Name = "Gluten Free" };
@@ -179,7 +181,32 @@ namespace ElProyecteGrande.Services
                         lunch
                     }
                 };
-                context.Categorizations.AddRange(italianPasta);
+                Categorization frenchOnionSoup = new Categorization
+                {
+                    Cuisine = french,
+                    MealTimes = new List<MealTime> { dinner },
+                    Diets = new List<Diet> { glutenFree },
+                    DishType = soup,
+                };
+                Categorization chocolateChipCookieCategorization = new Categorization
+                {
+                    Cuisine = american,
+                    MealTimes = new List<MealTime> { snack },
+                    Diets = new List<Diet> { dairyFree },
+                    DishType = dessert,
+
+                };
+                Categorization chickenSaladCategorization = new Categorization
+                {
+                    Cuisine = american,
+                    MealTimes = new List<MealTime> { dinner, lunch },
+                    Diets = new List<Diet> { dairyFree, paleo, glutenFree },
+                    DishType = salad,
+
+                };
+                context.Categorizations.AddRange(italianPasta, frenchOnionSoup, chocolateChipCookieCategorization);
+
+
 
 
                 if (context.Ingredients.Any())
@@ -188,17 +215,18 @@ namespace ElProyecteGrande.Services
                 }
 
                 //Ingredients
-                Ingredient penne = new Ingredient { Name = "Penne Pasta", UnitOfMeasure = "oz" };
-                Ingredient tomato = new Ingredient { Name = "Tomatoes", UnitOfMeasure = "lb" };
+                Ingredient penne = new Ingredient { Name = "Penne Pasta", UnitOfMeasure = "g" };
+                Ingredient tomato = new Ingredient { Name = "Tomatoes", UnitOfMeasure = "g" };
                 Ingredient basil = new Ingredient { Name = "Basil", UnitOfMeasure = "g" };
-                Ingredient parmesan = new Ingredient { Name = "Parmesan", UnitOfMeasure = "oz" };
-                Ingredient chicken = new Ingredient { Name = "Chicken Breast", UnitOfMeasure = "lb" };
+                Ingredient parmesan = new Ingredient { Name = "Parmesan", UnitOfMeasure = "g" };
+                Ingredient chicken = new Ingredient { Name = "Chicken Breast", UnitOfMeasure = "g" };
                 Ingredient romanianLettuce = new Ingredient
                 { Name = "Romaine Lettuce", UnitOfMeasure = "bunch" };
-                Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "cup" };
-                Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "cup" };
-                Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "unit" };
-                Ingredient chocolateChip = new Ingredient { Name = "Chocolate Chip", UnitOfMeasure = "cup" };
+                Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "g" };
+                Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "g" };
+                Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "piece" };
+                Ingredient chocolateChip = new Ingredient { Name = "Chocolate Chip", UnitOfMeasure = "g" };
+                Ingredient onion = new Ingredient { Name = "Onion", UnitOfMeasure = "piece" };
                 context.Ingredients.AddRange(
                     penne,
                     tomato,
@@ -209,9 +237,80 @@ namespace ElProyecteGrande.Services
                     flour,
                     sugar,
                     eggs,
-                    chocolateChip
+                    chocolateChip,
+                    onion
                 );
                 context.SaveChanges();
+
+                //Recipe ingredients
+                if (context.RecipeIngredients.Any())
+                {
+                    return;
+                }
+                var tomatoIngredient = new RecipeIngredient { Amount = 10, Ingredient = tomato };
+                var basilIngredient = new RecipeIngredient { Amount = 25, Ingredient = basil };
+                var penneIngredient = new RecipeIngredient { Amount = 100, Ingredient = penne };
+                var onionIngredient = new RecipeIngredient { Amount = 2, Ingredient = onion };
+                var parmesanChesse = new RecipeIngredient { Amount = 10, Ingredient = parmesan };
+                var flourIngredient = new RecipeIngredient { Amount = 300, Ingredient = flour };
+                var sugarIngredient = new RecipeIngredient { Amount = 300, Ingredient = sugar };
+                var chocolateChipIngredient = new RecipeIngredient { Amount = 300, Ingredient = chocolateChip };
+                var chickenIngredient = new RecipeIngredient { Amount = 300, Ingredient = chicken };
+                var romanianLettuceIngredient = new RecipeIngredient { Amount = 300, Ingredient = romanianLettuce };
+                context.RecipeIngredients.AddRange(tomatoIngredient, basilIngredient, penneIngredient, onionIngredient, parmesanChesse,
+                    flourIngredient,sugarIngredient, chocolateChipIngredient, chickenIngredient, romanianLettuceIngredient);
+                context.SaveChanges();
+
+                //Recipes
+                if (context.Recipes.Any())
+                {
+                    return;
+                }
+                var tomatoPasta = new Recipe
+                {
+                    Name = "Tomato Basil Pasta",
+                    Description = "Penne pasta tossed with fresh tomatoes, basil, and Parmesan",
+                    Categorization = italianPasta,
+                    RecipeIngredients = new List<RecipeIngredient>()
+                };
+                tomatoPasta.RecipeIngredients.Add(tomatoIngredient);
+                tomatoPasta.RecipeIngredients.Add(basilIngredient);
+                tomatoPasta.RecipeIngredients.Add(basilIngredient);
+
+                var frenchOnionSoupRecipe = new Recipe
+                {
+                    Name = "French Onion Soup",
+                    Description = "Rich beef broth with caramelized onions and croutons",
+                    Categorization = frenchOnionSoup,
+                    RecipeIngredients = new List<RecipeIngredient>()
+                };
+                frenchOnionSoupRecipe.RecipeIngredients.Add(onionIngredient);
+                frenchOnionSoupRecipe.RecipeIngredients.Add(parmesanChesse);
+
+                var chocolateChipCookie = new Recipe
+                {
+                    Name = "Chocolate Chip Cookies",
+                    Description = "Soft and chewy cookies with chocolate chips",
+                    Categorization = chocolateChipCookieCategorization,
+                    RecipeIngredients = new List<RecipeIngredient>()
+                };
+                chocolateChipCookie.RecipeIngredients.Add(flourIngredient);
+                chocolateChipCookie.RecipeIngredients.Add(sugarIngredient);
+                chocolateChipCookie.RecipeIngredients.Add(chocolateChipIngredient);
+
+                var chickenSaladRecipe = new Recipe
+                {
+                    Name = "Roast Chicken with Salad",
+                    Description = "Juicy roast chicken served with a mixed green salad",
+                    Categorization = chickenSaladCategorization,
+                    RecipeIngredients = new List<RecipeIngredient>()
+                };
+                chickenSaladRecipe.RecipeIngredients.Add(chickenIngredient);
+                chickenSaladRecipe.RecipeIngredients.Add(romanianLettuceIngredient);
+                chickenSaladRecipe.RecipeIngredients.Add(tomatoIngredient);
+                context.Recipes.AddRange(tomatoPasta, frenchOnionSoupRecipe, chocolateChipCookie, chickenSaladRecipe);
+                context.SaveChanges();
+
 
                 //Users
                 if (context.Users.Any())
