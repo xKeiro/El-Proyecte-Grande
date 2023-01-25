@@ -1,4 +1,5 @@
 ﻿using ElProyecteGrande.Models.Categories;
+using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Models.Recipes;
@@ -16,6 +17,7 @@ public class Recipe : BaseModel
     public required Categorization Categorization { get; set; }
 
     [Required]
-    public required List<RecipeIngredient> RecipeIngredients { get; set; }
+    [MinLength(1)]
+    public required ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
 }
