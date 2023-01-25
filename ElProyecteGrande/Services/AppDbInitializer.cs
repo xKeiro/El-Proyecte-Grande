@@ -115,14 +115,21 @@ namespace ElProyecteGrande.Services
                     context.SaveChanges();
                 }*/
 
-                //Dish Type II
+                //Dish Type refactor
                 if (context.DishTypes.Any())
                 {
                     return;
                 }
-                var pasta = new DishType { Name = "Pasta" };
-                var soup = new DishType { Name = "Soup" };
-                context.DishTypes.AddRange(pasta, soup);
+                var pastaDishType = new DishType { Name = "Pasta" };
+                var soupDisdType = new DishType { Name = "Soup" };
+                var pizzaDishType = new DishType { Name = "Pizza" };
+                var saladDishType = new DishType { Name = "Salad" };
+                var stewDishType = new DishType { Name = "Stew" };
+                var dessertDishType = new DishType { Name = "Dessert" };
+                var meatDishType = new DishType { Name = "Meat" };
+                var sandwichDishType = new DishType { Name = "Sandwich" };
+                context.DishTypes.AddRange(pastaDishType, soupDisdType, sandwichDishType, saladDishType, pizzaDishType,
+                    dessertDishType, meatDishType, stewDishType);
                 context.SaveChanges();
 
                 //Diet
