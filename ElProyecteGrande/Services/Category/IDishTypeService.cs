@@ -6,5 +6,6 @@ namespace ElProyecteGrande.Services.Category
     {
         Task<IEnumerable<DishType>> GetAllDishType();
         Task AddDishType(DishType dishType);
+        Task<DishType> GetDishTypeByName(string name);
     }
 }
