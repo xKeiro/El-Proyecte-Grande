@@ -17,5 +17,11 @@ namespace ElProyecteGrande.Services.Category
             var result = await _context.DishTypes.ToListAsync();
             return result;
         }
+
+        public async Task AddDishType(DishType dishType)
+        {
+            await _context.DishTypes.AddAsync(dishType);
+            await _context.SaveChangesAsync();
+        }
     }
 }

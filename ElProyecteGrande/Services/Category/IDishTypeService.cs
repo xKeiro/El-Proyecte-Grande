@@ -5,5 +5,6 @@ namespace ElProyecteGrande.Services.Category
     public interface IDishTypeService
     {
         Task<IEnumerable<DishType>> GetAllDishType();
+        Task AddDishType(DishType dishType);
     }
 }
