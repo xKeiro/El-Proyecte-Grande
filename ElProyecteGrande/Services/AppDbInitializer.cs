@@ -204,7 +204,7 @@ namespace ElProyecteGrande.Services
                     DishType = salad,
 
                 };
-                context.Categorizations.AddRange(italianPasta, frenchOnionSoup, chocolateChipCookieCategorization);
+                context.Categorizations.AddRange(italianPasta, frenchOnionSoup, chocolateChipCookieCategorization, chickenSaladCategorization);
 
 
 
@@ -271,43 +271,34 @@ namespace ElProyecteGrande.Services
                     Name = "Tomato Basil Pasta",
                     Description = "Penne pasta tossed with fresh tomatoes, basil, and Parmesan",
                     Categorization = italianPasta,
-                    RecipeIngredients = new List<RecipeIngredient>()
+                    RecipeIngredients = new List<RecipeIngredient>(){tomatoIngredient, basilIngredient, penneIngredient}
                 };
-                tomatoPasta.RecipeIngredients.Add(tomatoIngredient);
-                tomatoPasta.RecipeIngredients.Add(basilIngredient);
-                tomatoPasta.RecipeIngredients.Add(basilIngredient);
 
                 var frenchOnionSoupRecipe = new Recipe
                 {
                     Name = "French Onion Soup",
                     Description = "Rich beef broth with caramelized onions and croutons",
                     Categorization = frenchOnionSoup,
-                    RecipeIngredients = new List<RecipeIngredient>()
+                    RecipeIngredients = new List<RecipeIngredient>(){onionIngredient, parmesanChesse}
                 };
-                frenchOnionSoupRecipe.RecipeIngredients.Add(onionIngredient);
-                frenchOnionSoupRecipe.RecipeIngredients.Add(parmesanChesse);
+
 
                 var chocolateChipCookie = new Recipe
                 {
                     Name = "Chocolate Chip Cookies",
                     Description = "Soft and chewy cookies with chocolate chips",
                     Categorization = chocolateChipCookieCategorization,
-                    RecipeIngredients = new List<RecipeIngredient>()
+                    RecipeIngredients = new List<RecipeIngredient>(){flourIngredient, sugarIngredient, chocolateChipIngredient}
                 };
-                chocolateChipCookie.RecipeIngredients.Add(flourIngredient);
-                chocolateChipCookie.RecipeIngredients.Add(sugarIngredient);
-                chocolateChipCookie.RecipeIngredients.Add(chocolateChipIngredient);
+
 
                 var chickenSaladRecipe = new Recipe
                 {
                     Name = "Roast Chicken with Salad",
                     Description = "Juicy roast chicken served with a mixed green salad",
                     Categorization = chickenSaladCategorization,
-                    RecipeIngredients = new List<RecipeIngredient>()
+                    RecipeIngredients = new List<RecipeIngredient>(){chickenIngredient,romanianLettuceIngredient, tomatoIngredient}
                 };
-                chickenSaladRecipe.RecipeIngredients.Add(chickenIngredient);
-                chickenSaladRecipe.RecipeIngredients.Add(romanianLettuceIngredient);
-                chickenSaladRecipe.RecipeIngredients.Add(tomatoIngredient);
                 context.Recipes.AddRange(tomatoPasta, frenchOnionSoupRecipe, chocolateChipCookie, chickenSaladRecipe);
                 context.SaveChanges();
 
