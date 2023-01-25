@@ -38,5 +38,17 @@ namespace ElProyecteGrande.Controllers
                 return Results.Conflict($"We already have this Dish Type: {dishTypeName}!");
             }
         }
+
+        [Route("[action]")]
+        [HttpPatch]
+        public async Task<IResult> UpdateDishType(string dishTypeName, [FromBody] string newDishTypeName)
+        {
+            DishType mealTimeToChange = await _dishTypeService.GetDishTypeByName(dishTypeName);
+            if (mealTimeToChange is null) return Results.NotFound($"We don't have this Dish Type: {dishTypeName}!");
+
+            mealTimeToChange.Name = newDishTypeName;
+            _dishTypeService.UpdateDishType(mealTimeToChange);
+            return Results.Ok($"{dishTypeName} has been successfully updated to {newDishTypeName}.");
+        }
     }
 }

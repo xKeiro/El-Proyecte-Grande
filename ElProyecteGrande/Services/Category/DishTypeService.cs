@@ -29,5 +29,11 @@ namespace ElProyecteGrande.Services.Category
             DishType? dishType = await _context.DishTypes.FirstOrDefaultAsync(d => d.Name == name);
             return dishType;
         }
+
+        public void UpdateDishType(DishType newDishType)
+        {
+            _context.DishTypes.Update(newDishType);
+            _context.SaveChangesAsync();
+        }
     }
 }
