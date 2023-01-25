@@ -2,7 +2,6 @@
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
-using NuGet.Packaging;
 
 namespace ElProyecteGrande.Services
 {
@@ -159,7 +158,7 @@ namespace ElProyecteGrande.Services
                 Diet highMagnesium = new() { Name = "High Magnesium" };
                 Diet highPhosphorus = new() { Name = "High Phosphorus" };
                 context.Diets.AddRange(vegetarian, vegan, glutenFree, dairyFree, nutFree, eggFree, paleo, primal, whole30, keto, pescatarian, ketogenic, lowCarb, lowFat, lowSodium, lowSugar, highFiber, highProtein, highIron, highCalcium, highPotassium, highVitaminA, highVitaminC, highVitaminD, highVitaminE, highVitaminK, highVitaminB1, highVitaminB2, highVitaminB3, highVitaminB5, highVitaminB6, highVitaminB12, highFolate, highBiotin, highCholine, highZinc, highCopper, highManganese, highSelenium, highChromium, highMolybdenum, highIodine, highMagnesium, highPhosphorus);
-
+                context.SaveChanges();
 
 
 
@@ -205,6 +204,7 @@ namespace ElProyecteGrande.Services
 
                 };
                 context.Categorizations.AddRange(italianPasta, frenchOnionSoup, chocolateChipCookieCategorization, chickenSaladCategorization);
+                context.SaveChanges();
 
 
 
@@ -220,8 +220,7 @@ namespace ElProyecteGrande.Services
                 Ingredient basil = new Ingredient { Name = "Basil", UnitOfMeasure = "g" };
                 Ingredient parmesan = new Ingredient { Name = "Parmesan", UnitOfMeasure = "g" };
                 Ingredient chicken = new Ingredient { Name = "Chicken Breast", UnitOfMeasure = "g" };
-                Ingredient romanianLettuce = new Ingredient
-                { Name = "Romaine Lettuce", UnitOfMeasure = "bunch" };
+                Ingredient romanianLettuce = new Ingredient { Name = "Romaine Lettuce", UnitOfMeasure = "bunch" };
                 Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "g" };
                 Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "g" };
                 Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "piece" };
@@ -258,7 +257,7 @@ namespace ElProyecteGrande.Services
                 var chickenIngredient = new RecipeIngredient { Amount = 300, Ingredient = chicken };
                 var romanianLettuceIngredient = new RecipeIngredient { Amount = 300, Ingredient = romanianLettuce };
                 context.RecipeIngredients.AddRange(tomatoIngredient, basilIngredient, penneIngredient, onionIngredient, parmesanChesse,
-                    flourIngredient,sugarIngredient, chocolateChipIngredient, chickenIngredient, romanianLettuceIngredient);
+                    flourIngredient, sugarIngredient, chocolateChipIngredient, chickenIngredient, romanianLettuceIngredient);
                 context.SaveChanges();
 
                 //Recipes
@@ -271,7 +270,7 @@ namespace ElProyecteGrande.Services
                     Name = "Tomato Basil Pasta",
                     Description = "Penne pasta tossed with fresh tomatoes, basil, and Parmesan",
                     Categorization = italianPasta,
-                    RecipeIngredients = new List<RecipeIngredient>(){tomatoIngredient, basilIngredient, penneIngredient}
+                    RecipeIngredients = new List<RecipeIngredient>() { tomatoIngredient, basilIngredient, penneIngredient }
                 };
 
                 var frenchOnionSoupRecipe = new Recipe
@@ -279,7 +278,7 @@ namespace ElProyecteGrande.Services
                     Name = "French Onion Soup",
                     Description = "Rich beef broth with caramelized onions and croutons",
                     Categorization = frenchOnionSoup,
-                    RecipeIngredients = new List<RecipeIngredient>(){onionIngredient, parmesanChesse}
+                    RecipeIngredients = new List<RecipeIngredient>() { onionIngredient, parmesanChesse }
                 };
 
 
@@ -288,7 +287,7 @@ namespace ElProyecteGrande.Services
                     Name = "Chocolate Chip Cookies",
                     Description = "Soft and chewy cookies with chocolate chips",
                     Categorization = chocolateChipCookieCategorization,
-                    RecipeIngredients = new List<RecipeIngredient>(){flourIngredient, sugarIngredient, chocolateChipIngredient}
+                    RecipeIngredients = new List<RecipeIngredient>() { flourIngredient, sugarIngredient, chocolateChipIngredient }
                 };
 
 
@@ -297,7 +296,7 @@ namespace ElProyecteGrande.Services
                     Name = "Roast Chicken with Salad",
                     Description = "Juicy roast chicken served with a mixed green salad",
                     Categorization = chickenSaladCategorization,
-                    RecipeIngredients = new List<RecipeIngredient>(){chickenIngredient,romanianLettuceIngredient, tomatoIngredient}
+                    RecipeIngredients = new List<RecipeIngredient>() { chickenIngredient, romanianLettuceIngredient, tomatoIngredient }
                 };
                 context.Recipes.AddRange(tomatoPasta, frenchOnionSoupRecipe, chocolateChipCookie, chickenSaladRecipe);
                 context.SaveChanges();
