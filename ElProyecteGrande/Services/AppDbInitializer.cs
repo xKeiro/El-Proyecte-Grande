@@ -174,7 +174,15 @@ namespace ElProyecteGrande.Services
                     DishType = dessertDishType,
 
                 };
-                context.Categorizations.AddRange(categorization1, categorization2, categorization3);
+                var categorization4 = new Categorization
+                {
+                    Cuisine = greekCuisine,
+                    Meals = new List<MealTime> { dinnerMealTime, lunchMealTime },
+                    Diets = new List<Diet> { lowcarbDiet, paleoDiet },
+                    DishType = saladDishType,
+
+                };
+                context.Categorizations.AddRange(categorization1, categorization2, categorization3, categorization4);
                 context.SaveChanges();
 
 
@@ -266,11 +274,27 @@ namespace ElProyecteGrande.Services
                     { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 8), Amount = 150 });
                 chocolateChipCookie.RecipeIngredients.Add(new RecipeIngredient
                     { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 10), Amount = 50 });
+                
+                //Recipe 4
+                var chickenSalad= new Recipe
+                {
+                    Name = "Roast Chicken with Salad",
+                    Description = "Juicy roast chicken served with a mixed green salad",
+                    Categorization = categorization4,
+                    RecipeIngredients = new List<RecipeIngredient>()
+                };
+                chickenSalad.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 5), Amount = 100 });
+                chickenSalad.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 6), Amount = 2 });
+                chickenSalad.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 2), Amount = 50 });
 
                 // Add recipe to the database
                 context.Recipes.Add(tomatoPasta);
                 context.Recipes.Add(frenchOnionSoup);
                 context.Recipes.Add(chocolateChipCookie);
+                context.Recipes.Add(chickenSalad);
                 context.SaveChanges();
 
                 //Users
