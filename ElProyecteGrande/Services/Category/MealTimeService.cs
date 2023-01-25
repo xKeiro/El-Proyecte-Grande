@@ -23,5 +23,11 @@ namespace ElProyecteGrande.Services.Category
             await _context.MealTimes.AddAsync(mealTime);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<MealTime> GetMealTimeByName(string name)
+        {
+            MealTime? mealTime = await _context.MealTimes.FirstOrDefaultAsync(m => m.Name == name);
+            return mealTime;
+        }
     }
 }
