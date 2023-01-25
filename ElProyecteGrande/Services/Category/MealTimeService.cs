@@ -17,5 +17,11 @@ namespace ElProyecteGrande.Services.Category
             var result = await _context.MealTimes.ToListAsync();
             return result;
         }
+
+        public async Task AddMealTime(MealTime mealTime)
+        {
+            await _context.MealTimes.AddAsync(mealTime);
+            await _context.SaveChangesAsync();
+        }
     }
 }

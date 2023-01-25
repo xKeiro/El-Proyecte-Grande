@@ -1,6 +1,7 @@
 ﻿using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Services.Category;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Controllers
 {
@@ -21,6 +22,21 @@ namespace ElProyecteGrande.Controllers
         {
             IEnumerable<MealTime> mealTimes = await _mealTimeService.GetAllMealTime();
             return mealTimes;
+        }
+
+        [Route("[action]")]
+        [HttpPost]
+        public async Task<IResult> AddNewMealTime([FromBody] string mealTimeName)
+        {
+            try
+            {
+                await _mealTimeService.AddMealTime(new MealTime { Name = mealTimeName });
+                return Results.Ok($"{mealTimeName} has been added to the Meal Times.");
+            }
+            catch (DbUpdateException)
+            {
+                return Results.Conflict($"We already have this Meal Time: {mealTimeName}!");
+            }
         }
     }
 }
