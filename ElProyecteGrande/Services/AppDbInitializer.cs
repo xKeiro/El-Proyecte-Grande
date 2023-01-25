@@ -16,65 +16,171 @@ namespace ElProyecteGrande.Services
             {
                 var context = serviceScope.ServiceProvider.GetService<ElProyecteGrandeContext>();
 
+                if (context == null)
+                {
+                    return;
+                }
                 context.Database.EnsureCreated();
 
                 //Cuisine
-                if (!context.Cuisines.Any())
+                if (context.Cuisines.Any())
                 {
-                    context.Cuisines.AddRange(new List<Cuisine>()
-                    {
-                        new() { Name = "Hungarian" },
-                        new() { Name = "Japanese" },
-                        new() { Name = "Italian" },
-                        new() { Name = "Indian" },
-                        new() { Name = "Korean" },
-                        new() { Name = "Thai" },
-                        new() { Name = "Mexican" },
-                        new() { Name = "American" },
-                        new() { Name = "Greek" },
-                        new() { Name = "French" },
-                        new() { Name = "Turkish" },
-                        new() { Name = "German" },
-                        new() { Name = "Chinese" },
-                        new() { Name = "Spanish" },
-                        new() { Name = "English" }
-                    });
-                    context.SaveChanges();
+                    return;
                 }
+                Cuisine hungarian = new() { Name = "Hungarian" };
+                Cuisine japanese = new() { Name = "Japanese" };
+                Cuisine italian = new() { Name = "Italian" };
+                Cuisine indian = new() { Name = "Indian" };
+                Cuisine korean = new() { Name = "Korean" };
+                Cuisine thai = new() { Name = "Thai" };
+                Cuisine mexican = new() { Name = "Mexican" };
+                Cuisine american = new() { Name = "American" };
+                Cuisine greek = new() { Name = "Greek" };
+                Cuisine french = new() { Name = "French" };
+                Cuisine turkis = new() { Name = "Turkish" };
+                Cuisine german = new() { Name = "German" };
+                Cuisine chinese = new() { Name = "Chinese" };
+                Cuisine spanish = new() { Name = "Spanish" };
+                Cuisine english = new() { Name = "English" };
+                Cuisine irish = new() { Name = "Irish" };
+                Cuisine scottish = new() { Name = "Scottish" };
+                Cuisine russian = new() { Name = "Russian" };
+                Cuisine polish = new() { Name = "Polish" };
+                Cuisine czech = new() { Name = "Czech" };
+                Cuisine swedish = new() { Name = "Swedish" };
+                Cuisine danish = new() { Name = "Danish" };
+                Cuisine norwegian = new() { Name = "Norwegian" };
+                Cuisine finnish = new() { Name = "Finnish" };
+                Cuisine belgian = new() { Name = "Belgian" };
+                Cuisine dutch = new() { Name = "Dutch" };
+                Cuisine portuguese = new() { Name = "Portuguese" };
+                Cuisine brazilian = new() { Name = "Brazilian" };
+                Cuisine argentinian = new() { Name = "Argentinian" };
+                Cuisine australian = new() { Name = "Australian" };
+                context.Cuisines.AddRange(hungarian, japanese, italian, indian, korean, thai, mexican, american, greek, french, turkis, german, chinese, spanish, english, irish, scottish, russian, polish, czech, swedish, danish, norwegian, finnish, belgian, dutch, portuguese, brazilian, argentinian, australian);
+                context.SaveChanges();
 
                 // Meal Time
-                if (!context.MealTimes.Any())
+                if (context.MealTimes.Any())
                 {
-                    context.MealTimes.AddRange(new List<MealTime>()
-                    {
-                        new() { Name = "Breakfast" },
-                        new() { Name = "Elevenses" },
-                        new() { Name = "Lunch" },
-                        new() { Name = "Snack" },
-                        new() { Name = "Tea" },
-                        new() { Name = "Supper" },
-                        new() { Name = "Dinner" }
-                    });
-                    context.SaveChanges();
+                    return;
                 }
+                MealTime breakfast = new() { Name = "Breakfast" };
+                MealTime elevenses = new() { Name = "Elevenses" };
+                MealTime lunch = new() { Name = "Lunch" };
+                MealTime snack = new() { Name = "Snack" };
+                MealTime tea = new() { Name = "Tea" };
+                MealTime supper = new() { Name = "Supper" };
+                MealTime dinner = new() { Name = "Dinner" };
+                MealTime brunch = new() { Name = "Brunch" };
+                context.MealTimes.AddRange(breakfast, elevenses, lunch, snack, tea, supper, dinner, brunch);
+                context.SaveChanges();
 
                 // Dish Type
-                if (!context.DishTypes.Any())
+                if (context.DishTypes.Any())
                 {
-                    context.DishTypes.AddRange(new List<DishType>()
-                    {
-                        new() { Name = "Pasta" },
-                        new() { Name = "Pizza" },
-                        new() { Name = "Salad" },
-                        new() { Name = "Soup" },
-                        new() { Name = "Stew" },
-                        new() { Name = "Dessert" },
-                        new() { Name = "Roast" },
-                        new() { Name = "Meat" },
-                        new() { Name = "Sandwich" },
-                    });
-                    context.SaveChanges();
+                    return;
                 }
+                DishType pasta = new() { Name = "Pasta" };
+                DishType pizza = new() { Name = "Pizza" };
+                DishType salad = new() { Name = "Salad" };
+                DishType soup = new() { Name = "Soup" };
+                DishType stew = new() { Name = "Stew" };
+                DishType dessert = new() { Name = "Dessert" };
+                DishType roast = new() { Name = "Roast" };
+                DishType meat = new() { Name = "Meat" };
+                DishType sandwich = new() { Name = "Sandwich" };
+                DishType curry = new() { Name = "Curry" };
+                DishType pie = new() { Name = "Pie" };
+                DishType cake = new() { Name = "Cake" };
+                DishType bread = new() { Name = "Bread" };
+                DishType pastry = new() { Name = "Pastry" };
+                DishType sauce = new() { Name = "Sauce" };
+                DishType drink = new() { Name = "Drink" };
+                DishType appetizer = new() { Name = "Appetizer" };
+                DishType side = new() { Name = "Side" };
+                DishType iceCream = new() { Name = "Ice Cream" };
+                DishType smoothie = new() { Name = "Smoothie" };
+                DishType dip = new() { Name = "Dip" };
+                DishType dressing = new() { Name = "Dressing" };
+                context.DishTypes.AddRange(pasta, pizza, salad, soup, stew, dessert, roast, meat, sandwich, curry, pie, cake, bread, pastry, sauce, drink, appetizer, side, iceCream, smoothie, dip, dressing);
+                context.SaveChanges();
+
+                // Diets
+                if (context.Diets.Any())
+                {
+                    return;
+                }
+                
+                Diet vegetarian = new() { Name = "Vegetarian" };
+                Diet vegan = new() { Name = "Vegan" };
+                Diet glutenFree = new() { Name = "Gluten Free" };
+                Diet dairyFree = new() { Name = "Dairy Free" };
+                Diet nutFree = new() { Name = "Nut Free" };
+                Diet eggFree = new() { Name = "Egg Free" };
+                Diet paleo = new() { Name = "Paleo" };
+                Diet primal = new() { Name = "Primal" };
+                Diet whole30 = new() { Name = "Whole30" };
+                Diet keto = new() { Name = "Keto" };
+                Diet pescatarian = new() { Name = "Pescatarian" };
+                Diet ketogenic = new() { Name = "Ketogenic" };
+                Diet lowCarb = new() { Name = "Low Carb" };
+                Diet lowFat = new() { Name = "Low Fat" };
+                Diet lowSodium = new() { Name = "Low Sodium" };
+                Diet lowSugar = new() { Name = "Low Sugar" };
+                Diet highFiber = new() { Name = "High Fiber" };
+                Diet highProtein = new() { Name = "High Protein" };
+                Diet highIron = new() { Name = "High Iron" };
+                Diet highCalcium = new() { Name = "High Calcium" };
+                Diet highPotassium = new() { Name = "High Potassium" };
+                Diet highVitaminA = new() { Name = "High Vitamin A" };
+                Diet highVitaminC = new() { Name = "High Vitamin C" };
+                Diet highVitaminD = new() { Name = "High Vitamin D" };
+                Diet highVitaminE = new() { Name = "High Vitamin E" };
+                Diet highVitaminK = new() { Name = "High Vitamin K" };
+                Diet highVitaminB1 = new() { Name = "High Vitamin B1" };
+                Diet highVitaminB2 = new() { Name = "High Vitamin B2" };
+                Diet highVitaminB3 = new() { Name = "High Vitamin B3" };
+                Diet highVitaminB5 = new() { Name = "High Vitamin B5" };
+                Diet highVitaminB6 = new() { Name = "High Vitamin B6" };
+                Diet highVitaminB12 = new() { Name = "High Vitamin B12" };
+                Diet highFolate = new() { Name = "High Folate" };
+                Diet highBiotin = new() { Name = "High Biotin" };
+                Diet highCholine = new() { Name = "High Choline" };
+                Diet highZinc = new() { Name = "High Zinc" };
+                Diet highCopper = new() { Name = "High Copper" };
+                Diet highManganese = new() { Name = "High Manganese" };
+                Diet highSelenium = new() { Name = "High Selenium" };
+                Diet highChromium = new() { Name = "High Chromium" };
+                Diet highMolybdenum = new() { Name = "High Molybdenum" };
+                Diet highIodine = new() { Name = "High Iodine" };
+                Diet highMagnesium = new() { Name = "High Magnesium" };
+                Diet highPhosphorus = new() { Name = "High Phosphorus" };
+                context.Diets.AddRange(vegetarian, vegan, glutenFree, dairyFree, nutFree, eggFree, paleo, primal, whole30, keto, pescatarian, ketogenic, lowCarb, lowFat, lowSodium, lowSugar, highFiber, highProtein, highIron, highCalcium, highPotassium, highVitaminA, highVitaminC, highVitaminD, highVitaminE, highVitaminK, highVitaminB1, highVitaminB2, highVitaminB3, highVitaminB5, highVitaminB6, highVitaminB12, highFolate, highBiotin, highCholine, highZinc, highCopper, highManganese, highSelenium, highChromium, highMolybdenum, highIodine, highMagnesium, highPhosphorus);
+
+
+
+
+                //Categorization
+                if (context.Categorizations.Any())
+                {
+                    return;
+                }
+                Categorization italianPasta = new()
+                {
+                    Cuisine = italian,
+                    DishType = pasta,
+                    Diets = new List<Diet>()
+                    {
+                        vegetarian
+                    },
+                    MealTimes = new List<MealTime>()
+                    {
+                        lunch
+                    }
+                };
+                context.Categorizations.AddRange(italianPasta);
+
 
                 if (context.Ingredients.Any())
                 {
@@ -126,9 +232,6 @@ namespace ElProyecteGrande.Services
                     Password = "87654321",
                     IsAdmin = false
                 };
-                context.Users.AddRange(user1, user2);
-                context.SaveChanges();
-
                 var user3 = new User
                 {
                     Username = "MichaelSmit",
@@ -136,7 +239,7 @@ namespace ElProyecteGrande.Services
                     Password = "pw1234567",
                     IsAdmin = false
                 };
-                context.Users.AddRange(user1, user2);
+                context.Users.AddRange(user1, user2, user3);
                 context.SaveChanges();
 
             }
