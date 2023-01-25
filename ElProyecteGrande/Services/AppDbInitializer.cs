@@ -132,33 +132,23 @@ namespace ElProyecteGrande.Services
                     dessertDishType, meatDishType, stewDishType);
                 context.SaveChanges();
 
-                //Diet
-                /*if (!context.Diets.Any())
-                {
-                    context.Diets.AddRange(new List<Diet>()
-                    {
-                        new() { Name = "Vegetarian" },
-                        new() { Name = "Gluten Free" },
-                        new() { Name = "Paleo" },
-                        new() { Name = "Diary Free" },
-                        new() { Name = "Vegan" },
-                        new() { Name = "Low-Carb" },
-                    });
-                    context.SaveChanges();
-                }*/
 
-                //Diet II
-                /*if (context.Diets.Any())
+                //Diet
+                if (context.Diets.Any())
                 {
                     return;
                 }
-                var vegetarian = new Diet { Name = "Vegetarian" };
-                var glutenFree = new Diet { Name = "Gluten Free" };
-                context.Diets.AddRange(vegetarian, glutenFree);
+                var vegetarianDiet = new Diet { Name = "Vegetarian" };
+                var glutenFreeDiet = new Diet { Name = "Gluten Free" };
+                var veganDiet = new Diet { Name = "Vegan" };
+                var paleoDiet = new Diet { Name = "Paleo" };
+                var diaryFreeDiet = new Diet { Name = "Diary Free" };
+                var lowcarbDiet = new Diet { Name = "Low Carb" };
+                context.Diets.AddRange(vegetarianDiet, glutenFreeDiet, veganDiet, glutenFreeDiet, diaryFreeDiet, paleoDiet);
                 context.SaveChanges();
 
                 //Categorization
-                if (context.Categorizations.Any())
+                /*if (context.Categorizations.Any())
                 {
                     return;
                 }
