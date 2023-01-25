@@ -12,6 +12,10 @@ builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Add Services
+builder.Services.AddScoped<IMealTimeService, MealTimeService>();
+builder.Services.AddScoped<IDishTypeService, DishTypeService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
