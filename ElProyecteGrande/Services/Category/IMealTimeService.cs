@@ -7,5 +7,6 @@ namespace ElProyecteGrande.Services.Category
         Task<IEnumerable<MealTime>> GetAllMealTime();
         Task AddMealTime(MealTime mealTime);
         Task<MealTime> GetMealTimeByName(string name);
+        void UpdateMealTime(MealTime newMealTime);
     }
 }

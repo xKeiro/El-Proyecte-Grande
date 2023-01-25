@@ -38,5 +38,17 @@ namespace ElProyecteGrande.Controllers
                 return Results.Conflict($"We already have this Meal Time: {mealTimeName}!");
             }
         }
+
+        [Route("[action]")]
+        [HttpPatch]
+        public async Task<IResult> UpdateMealTime(string mealTimeName,[FromBody] string newMealTimeName)
+        {
+            MealTime mealTimeToChange = await _mealTimeService.GetMealTimeByName(mealTimeName);
+            if (mealTimeToChange is null) return Results.NotFound($"We don't have this Meal Time: {mealTimeName}");
+
+            mealTimeToChange.Name = newMealTimeName;
+            _mealTimeService.UpdateMealTime(mealTimeToChange);
+            return Results.Ok($"{mealTimeName} has been successfully updated to {newMealTimeName}!");
+        }
     }
 }

@@ -29,5 +29,11 @@ namespace ElProyecteGrande.Services.Category
             MealTime? mealTime = await _context.MealTimes.FirstOrDefaultAsync(m => m.Name == name);
             return mealTime;
         }
+
+        public void UpdateMealTime(MealTime newMealTime)
+        {
+            _context.MealTimes.Update(newMealTime);
+            _context.SaveChangesAsync();
+        }
     }
 }
