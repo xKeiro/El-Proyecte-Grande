@@ -269,6 +269,7 @@ namespace ElProyecteGrande.Services
 
                 // Add recipe to the database
                 context.Recipes.Add(tomatoPasta);
+                context.Recipes.Add(frenchOnionSoup);
                 context.Recipes.Add(chocolateChipCookie);
                 context.SaveChanges();
 
