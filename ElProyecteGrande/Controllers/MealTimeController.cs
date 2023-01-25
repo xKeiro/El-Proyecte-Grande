@@ -14,5 +14,13 @@ namespace ElProyecteGrande.Controllers
         {
             _mealTimeService = mealTimeService;
         }
+
+        [Route("[action]")]
+        [HttpGet]
+        public async Task<IEnumerable<MealTime>> GetMealTimes()
+        {
+            IEnumerable<MealTime> mealTimes = await _mealTimeService.GetAllMealTime();
+            return mealTimes;
+        }
     }
 }

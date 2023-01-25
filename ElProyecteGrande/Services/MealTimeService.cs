@@ -11,5 +11,11 @@ namespace ElProyecteGrande.Services
         {
             _context = context;
         }
+
+        public async Task<IEnumerable<MealTime>> GetAllMealTime()
+        {
+            var result = await _context.MealTimes.ToListAsync();
+            return result;
+        }
     }
 }
