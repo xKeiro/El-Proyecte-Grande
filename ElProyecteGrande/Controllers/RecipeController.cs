@@ -24,13 +24,31 @@ namespace ElProyecteGrande.Controllers
         public async Task<ActionResult<IEnumerable<Recipe>>> GetAllRecipe()
         {
             var allRecipes = await _context.Recipes
-                .Include("Categorization")
-                .Include("RecipeIngredients")
-                //.Include("Ingredients")
-                //.Include("Cuisine")
-                //.Include("MealTime")
-                //.Include("Diet")
-                //.Include("DishType")
+                .Include(recipe =>recipe.Categorization)
+                .Include(recipe => recipe.Categorization.Diets)
+                .Include(recipe => recipe.Categorization.MealTimes)
+                .Include(recipe => recipe.Categorization.Cuisine)
+                .Include(recipe => recipe.Categorization.DishType)
+                .Include(recipe=> recipe.RecipeIngredients).ThenInclude(recipeIngredient => recipeIngredient.Ingredient)
+                .Select(recipe => new {
+                    recipe.Id,
+                    recipe.Name,
+                    recipe.Description,
+                    Categorization = new
+                    {
+                        recipe.Categorization.Cuisine,
+                        recipe.Categorization.MealTimes,
+                        recipe.Categorization.Diets,
+                        recipe.Categorization.DishType
+                    },
+                    RecipeIngredients = recipe.RecipeIngredients.Select(recipeIngredient => new {
+                        recipeIngredient.Amount,
+                        Ingredient = new
+                        {
+                            recipeIngredient.Ingredient.Name
+                        }
+                    })
+                })
                 .ToListAsync();
             return Ok(allRecipes);
         }
@@ -38,7 +56,15 @@ namespace ElProyecteGrande.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Recipe>>> GetRecipeById(int id)
         {
-            var recipeById = await _context.Recipes.FindAsync(id);
+            var recipeById = _context.Recipes
+                .Include(recipe => recipe.Categorization)
+                .Include(recipe=> recipe.Categorization.Diets)
+                .Include(recipe => recipe.Categorization.MealTimes)
+                .Include(recipe => recipe.Categorization.Cuisine)
+                .Include(recipe => recipe.Categorization.DishType)
+                .Include(recipe=>recipe.RecipeIngredients)
+                .ThenInclude(recipeIngredient => recipeIngredient.Ingredient)
+                .Where(recipe=>recipe.Id ==id);
             return Ok(recipeById);
         }
 
