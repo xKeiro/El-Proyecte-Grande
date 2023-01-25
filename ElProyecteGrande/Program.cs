@@ -1,4 +1,5 @@
 using ElProyecteGrande.Services;
+using ElProyecteGrande.Services.Category;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,5 @@
 ﻿using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Services;
+using ElProyecteGrande.Services.Category;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers

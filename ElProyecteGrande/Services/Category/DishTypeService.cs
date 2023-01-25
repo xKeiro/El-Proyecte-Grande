@@ -1,7 +1,7 @@
 ﻿using ElProyecteGrande.Models.Categories;
 using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Services
+namespace ElProyecteGrande.Services.Category
 {
     public class DishTypeService : IDishTypeService
     {
