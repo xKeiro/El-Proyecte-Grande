@@ -48,7 +48,7 @@ namespace ElProyecteGrande.Controllers
 
             mealTimeToChange.Name = newMealTimeName;
             _mealTimeService.UpdateMealTime(mealTimeToChange);
-            return Results.Ok($"{mealTimeName} has been successfully updated to {newMealTimeName}!");
+            return Results.Ok($"{mealTimeName} has been successfully updated to {newMealTimeName}.");
         }
     }
 }
