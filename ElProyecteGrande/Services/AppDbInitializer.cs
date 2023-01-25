@@ -90,9 +90,9 @@ namespace ElProyecteGrande.Services
                 var dinnerMealTime = new MealTime { Name = "Dinner" };
                 var breakfastMealTime = new MealTime { Name = "Breakfast" };
                 var elevensesMealTime = new MealTime { Name = "Elevenses" };
-                var snackMealTimeMealTime = new MealTime { Name = "Snack" };
+                var snackMealTime = new MealTime { Name = "Snack" };
                 var teaMealTime = new MealTime { Name = "Tea" };
-                context.MealTimes.AddRange(lunchMealTime, dinnerMealTime, breakfastMealTime, elevensesMealTime, snackMealTimeMealTime,
+                context.MealTimes.AddRange(lunchMealTime, dinnerMealTime, breakfastMealTime, elevensesMealTime, snackMealTime,
                     teaMealTime);
                 context.SaveChanges();
 
@@ -148,32 +148,40 @@ namespace ElProyecteGrande.Services
                 context.SaveChanges();
 
                 //Categorization
-                /*if (context.Categorizations.Any())
+                if (context.Categorizations.Any())
                 {
                     return;
                 }
                 var categorization1 = new Categorization
                 {
-                    Cuisine = italian,
-                    Meals = new List<MealTime> { lunch, dinner },
-                    Diets = new List<Diet> { vegetarian},
-                    DishType = pasta,
+                    Cuisine = italianCuisine,
+                    Meals = new List<MealTime> { lunchMealTime, dinnerMealTime },
+                    Diets = new List<Diet> { vegetarianDiet},
+                    DishType = pastaDishType,
                 };
                 var categorization2= new Categorization
                 {
-                    Cuisine = hungarian,
-                    Meals = new List<MealTime> {dinner },
-                    Diets = new List<Diet> { glutenFree },
-                    DishType = soup,
+                    Cuisine = frenchCuisine,
+                    Meals = new List<MealTime> {dinnerMealTime },
+                    Diets = new List<Diet> { glutenFreeDiet },
+                    DishType = soupDisdType,
                 };
-                context.Categorizations.AddRange(categorization1, categorization2);
+                var categorization3 = new Categorization
+                {
+                    Cuisine = americanCuisine,
+                    Meals = new List<MealTime> { snackMealTime },
+                    Diets = new List<Diet> { diaryFreeDiet },
+                    DishType = dessertDishType,
+
+                };
+                context.Categorizations.AddRange(categorization1, categorization2, categorization3);
                 context.SaveChanges();
 
 
                 if (context.Ingredients.Any())
                 {
                     return;
-                }*/
+                }
 
                 //Ingredients
                 Ingredient penne = new Ingredient { Name = "Penne Pasta", UnitOfMeasure = "g" };
