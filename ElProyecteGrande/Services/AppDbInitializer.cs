@@ -192,7 +192,7 @@ namespace ElProyecteGrande.Services
                 Ingredient romanianLettuce = new Ingredient
                 { Name = "Romaine Lettuce", UnitOfMeasure = "bunch" };
                 Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "g" };
-                Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "" };
+                Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "g" };
                 Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "unit" };
                 Ingredient chocolateChip = new Ingredient { Name = "Chocolate Chip", UnitOfMeasure = "g" };
                 context.Ingredients.AddRange(
@@ -221,8 +221,9 @@ namespace ElProyecteGrande.Services
                 context.RecipeIngredients.AddRange(ingredient1, ingredient2);
                 context.SaveChanges();*/
 
-                //Recipe
-                /*var recipe = new Recipe
+                //Recipes
+                //Recipe 1
+                var tomatoPasta = new Recipe
                 {
                     Name = "Tomato Basil Pasta",
                     Description = "Penne pasta tossed with fresh tomatoes, basil, and Parmesan",
@@ -231,12 +232,13 @@ namespace ElProyecteGrande.Services
                 };
 
                 // Add ingredients to recipe
-                recipe.RecipeIngredients.Add(new RecipeIngredient { Recipe = recipe, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 1), Amount = 8 });
-                recipe.RecipeIngredients.Add(new RecipeIngredient { Recipe = recipe, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 2), Amount = 2 });
-                recipe.RecipeIngredients.Add(new RecipeIngredient { Recipe = recipe, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 3), Amount = 1 });
-                recipe.RecipeIngredients.Add(new RecipeIngredient { Recipe = recipe, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 4), Amount = 4 });
-
-                var recipe2 = new Recipe
+                tomatoPasta.RecipeIngredients.Add(new RecipeIngredient { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 1), Amount = 8 });
+                tomatoPasta.RecipeIngredients.Add(new RecipeIngredient { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 2), Amount = 2 });
+                tomatoPasta.RecipeIngredients.Add(new RecipeIngredient { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 3), Amount = 1 });
+                tomatoPasta.RecipeIngredients.Add(new RecipeIngredient { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 4), Amount = 4 });
+                
+                //Recipe 2
+                var frenchOnionSoup = new Recipe
                 {
                     Name = "French Onion Soup",
                     Description = "Rich beef broth with caramelized onions and croutons",
@@ -245,12 +247,30 @@ namespace ElProyecteGrande.Services
                 };
 
                 // Add ingredients to recipe
-                recipe2.RecipeIngredients.Add(new RecipeIngredient
-                    { Recipe = recipe, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 5), Amount = 8 });
-                    // Add recipe to the database
-                context.Recipes.Add(recipe);
-                context.Recipes.Add(recipe2);
-                context.SaveChanges();*/
+                frenchOnionSoup.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 5), Amount = 8 });
+                frenchOnionSoup.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 6), Amount = 10  });
+
+                //Recipe 3
+                var chocolateChipCookie = new Recipe
+                {
+                    Name = "Chocolate Chip Cookies",
+                    Description = "Soft and chewy cookies with chocolate chips",
+                    Categorization = categorization3,
+                    RecipeIngredients = new List<RecipeIngredient>()
+                };
+                chocolateChipCookie.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 7), Amount = 300 });
+                chocolateChipCookie.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 8), Amount = 150 });
+                chocolateChipCookie.RecipeIngredients.Add(new RecipeIngredient
+                    { Recipe = tomatoPasta, Ingredient = context.Ingredients.FirstOrDefault(i => i.Id == 10), Amount = 50 });
+
+                // Add recipe to the database
+                context.Recipes.Add(tomatoPasta);
+                context.Recipes.Add(chocolateChipCookie);
+                context.SaveChanges();
 
                 //Users
                 if (context.Users.Any())
@@ -274,7 +294,7 @@ namespace ElProyecteGrande.Services
 
                 var user3 = new User
                 {
-                    Username = "MichaelSmit",
+                    Username = "MichaelSmith",
                     EmailAddress = "smith@example.com",
                     Password = "pw1234567",
                     IsAdmin = false
