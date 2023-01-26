@@ -6,5 +6,5 @@ public abstract class BaseCategory : BaseModel
 {
     [Required]
     [StringLength(20, MinimumLength = 2)]
-    public required string Name { get; set; }
+    public string Name { get; set; }
 }
