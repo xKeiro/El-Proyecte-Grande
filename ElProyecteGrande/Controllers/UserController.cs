@@ -34,6 +34,19 @@ namespace ElProyecteGrande.Controllers
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NoneFound());
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<UserPublic>> GetUserById(int id)
+        {
+            UserPublic? user = await _userService.FindPublic(id);
+            if (user is not null)
+            {
+                return StatusCode(StatusCodes.Status200OK, user);
+            }
+            return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+        }
+
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
