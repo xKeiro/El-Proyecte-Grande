@@ -39,7 +39,8 @@ namespace ElProyecteGrande.Services
                         Amount = recipeIngredient.Amount,
                         Ingredient = new Ingredient()
                         {
-                            Name = recipeIngredient.Ingredient.Name
+                            Name = recipeIngredient.Ingredient.Name,
+                            UnitOfMeasure = recipeIngredient.Ingredient.UnitOfMeasure,
                         }
                     }).ToList()
                 })
