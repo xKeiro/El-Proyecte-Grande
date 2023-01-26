@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Models;
 
+/// <summary>
+/// Different type of ingredients, like - onion, penne, tomato etc.
+/// </summary>
 [Index(nameof(Name), IsUnique = true)]
 public class Ingredient : BaseModel
 {

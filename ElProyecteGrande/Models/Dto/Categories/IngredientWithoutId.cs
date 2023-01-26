@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ElProyecteGrande.Models.DTOs.Categories;
 
 /// <summary>
-/// Different type of ingredients, like - Hungarian, Italian, French, etc.
+/// Different type of ingredients, like - onion, penne, tomato etc.
 /// </summary>
 
 [Index(nameof(Name), IsUnique = true)]
