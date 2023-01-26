@@ -60,6 +60,35 @@ namespace ElProyecteGrande.Controllers
             return StatusCode(StatusCodes.Status201Created, user);
         }
 
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<User>> UpdateUserById(int id, UserWithoutId newUser)
+        {
+            User? user = await _userService.Find(id);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+            }
+
+            newUser.MapTo(user);
+            if (!await _userService.IsUnique(user))
+            {
+                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+            }
+            try
+            {
+                await _userService.Update(user);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK, user);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
