@@ -1,11 +1,9 @@
 using ElProyecteGrande.Services;
-using ElProyecteGrande.Services.Category;
 using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Controllers;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models;
-using ElProyecteGrande.Interfaces.Services.Categories;
 using ElProyecteGrande.Services.Categories;
 using ElProyecteGrande.Data;
 
@@ -25,8 +23,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Services
-builder.Services.AddScoped<IMealTimeService, MealTimeService>();
-builder.Services.AddScoped<IDishTypeService, DishTypeService>();
+builder.Services.AddScoped<IBasicCrudService<MealTime>, MealTimeService>();
+builder.Services.AddScoped<IStatusMessageService<MealTime>, StatusMessageService<MealTime>>();
+builder.Services.AddScoped<IBasicCrudService<DishType>, DishTypeService>();
+builder.Services.AddScoped<IStatusMessageService<DishType>, StatusMessageService<DishType>>();
 
 var app = builder.Build();
 
