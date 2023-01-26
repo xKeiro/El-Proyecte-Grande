@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Models.Dto.Users
 {
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(EmailAddress), IsUnique = true)]
     public class UserWithoutId
     {
         [Required]

@@ -1,5 +1,9 @@
-﻿namespace ElProyecteGrande.Models.Dto.Users
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace ElProyecteGrande.Models.Dto.Users
 {
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(EmailAddress), IsUnique = true)]
     public class UserPublic
     {
         public required int Id { get; set; }

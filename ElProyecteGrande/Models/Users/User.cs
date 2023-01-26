@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Models.Users
 {
+    [Index(nameof(Username), IsUnique = true)]
+    [Index(nameof(EmailAddress), IsUnique = true)]
     public class User : BaseModel
     {
         [Required]
