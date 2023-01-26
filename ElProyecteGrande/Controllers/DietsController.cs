@@ -22,13 +22,12 @@ namespace ElProyecteGrande.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<DietWithoutCategorizations>>> GetAllDiets()
+        public async Task<ActionResult<IEnumerable<Diet>>> GetAllDiets()
         {
             var diets = await _service.GetAll();
             if (diets != null)
             {
-                return StatusCode(StatusCodes.Status200OK, diets
-                    .Select(d => new DietWithoutCategorizations(d)));
+                return StatusCode(StatusCodes.Status200OK, diets);
             }
             
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
@@ -37,13 +36,13 @@ namespace ElProyecteGrande.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<DietWithoutCategorizations>>> GetDietById(int id)
+        public async Task<ActionResult<IEnumerable<Diet>>> GetDietById(int id)
         {
             var diet = await _service.Find(id);
 
             if (diet != null)
             {
-                return StatusCode(StatusCodes.Status200OK, new DietWithoutCategorizations(diet));
+                return StatusCode(StatusCodes.Status200OK, diet);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }
@@ -52,7 +51,7 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<DietWithoutCategorizations>> AddDiet(DietWithoutIdAndCategorizations dietWithoutIdAndCategorization)
+        public async Task<ActionResult<Diet>> AddDiet(DietWithoutIdAndRecipes dietWithoutIdAndCategorization)
         {
             var diet = new Diet();
             dietWithoutIdAndCategorization.MapTo(diet);
@@ -69,7 +68,7 @@ namespace ElProyecteGrande.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
             }
 
-            return StatusCode(StatusCodes.Status201Created, new DietWithoutCategorizations(diet));
+            return StatusCode(StatusCodes.Status201Created, diet);
         }
 
         [HttpPut("{id}")]
@@ -77,7 +76,7 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<DietWithoutCategorizations>> UpdateDietById(int id, DietWithoutIdAndCategorizations dietWithoutIdAndCategorization)
+        public async Task<ActionResult<Diet>> UpdateDietById(int id, DietWithoutIdAndRecipes dietWithoutIdAndCategorization)
         {
             var diet = await _service.Find(id);
             if (diet == null)
@@ -97,7 +96,7 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
             }
-            return StatusCode(StatusCodes.Status200OK, new DietWithoutCategorizations(diet));
+            return StatusCode(StatusCodes.Status200OK, diet);
         }
 
 

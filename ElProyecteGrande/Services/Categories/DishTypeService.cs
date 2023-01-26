@@ -15,35 +15,35 @@ namespace ElProyecteGrande.Services.Categories
 
         public async Task<List<DishType>> GetAll()
         {
-            return await _context.DishTypes.AsNoTracking().ToListAsync();
+            return await _context.DietType.AsNoTracking().ToListAsync();
         }
 
         public async Task Add(DishType dishType)
         {
-            await _context.DishTypes.AddAsync(dishType);
+            await _context.DietType.AddAsync(dishType);
             await _context.SaveChangesAsync();
         }
 
         public async Task<DishType?> Find(int id)
         {
-            return await _context.DishTypes.FindAsync(id);
+            return await _context.DietType.FindAsync(id);
         }
 
         public async Task Update(DishType newDishType)
         {
-            _context.DishTypes.Update(newDishType);
+            _context.DietType.Update(newDishType);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(DishType dishType)
         {
-            _context.DishTypes.Remove(dishType);
+            _context.DietType.Remove(dishType);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(DishType dishType)
         {
-            return !await _context.DishTypes.AnyAsync(d => d.Name == dishType.Name);
+            return !await _context.DietType.AnyAsync(d => d.Name == dishType.Name);
         }
     }
 }

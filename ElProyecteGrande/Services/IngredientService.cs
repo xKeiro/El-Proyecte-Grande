@@ -15,27 +15,27 @@ namespace ElProyecteGrande.Services
 
         public async Task Add(Ingredient ingredient)
         {
-            await _context.Ingredients.AddAsync(ingredient);
+            await _context.Ingredient.AddAsync(ingredient);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(Ingredient ingredient)
         {
-            _context.Ingredients.Remove(ingredient);
+            _context.Ingredient.Remove(ingredient);
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<Ingredient>> GetAll()
         {
             return await _context
-                .Ingredients
+                .Ingredient
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<Ingredient?> Find(int id)
         {
-            return await _context.Ingredients.FindAsync(id);
+            return await _context.Ingredient.FindAsync(id);
         }
         
         public async Task Update(Ingredient ingredient)
@@ -46,7 +46,7 @@ namespace ElProyecteGrande.Services
 
         public async Task<bool> IsUnique(Ingredient ingredient)
         {
-            return !await _context.Ingredients.AnyAsync(i => i.Name == ingredient.Name);
+            return !await _context.Ingredient.AnyAsync(i => i.Name == ingredient.Name);
         }
     }
 }

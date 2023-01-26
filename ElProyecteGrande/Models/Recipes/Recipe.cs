@@ -14,10 +14,18 @@ public class Recipe : BaseModel
     public required string Description { get; set; }
 
     [Required]
-    public required Categorization Categorization { get; set; }
-
-    [Required]
     [MinLength(1)]
     public required ICollection<RecipeIngredient> RecipeIngredients { get; set; }
+
+    [Required]
+    public Cuisine Cuisine { get; set; }
+    [Required]
+    [MinLength(1)]
+    public ICollection<MealTime> MealTimes { get; set; }
+    [Required]
+    [MinLength(1)]
+    public ICollection<Diet> Diets { get; set; }
+    [Required]
+    public DishType DishType { get; set; }
 
 }

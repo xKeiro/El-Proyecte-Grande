@@ -9,7 +9,7 @@ namespace ElProyecteGrande.Models.DTOs.Categories;
 /// </summary>
 
 [Index(nameof(Name), IsUnique = true)]
-public class DietWithoutIdAndCategorizations
+public class DietWithoutIdAndRecipes
 {
     [Required]
     [StringLength(20, MinimumLength = 2)]

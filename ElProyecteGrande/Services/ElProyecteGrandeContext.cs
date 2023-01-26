@@ -14,18 +14,17 @@ public class ElProyecteGrandeContext : DbContext
     {
     }
 
-    public DbSet<Recipe> Recipes { get; set; } = default!;
-    public DbSet<RecipeReview> RecipeReviews { get; set; } = default!;
-    public DbSet<RecipeIngredient> RecipeIngredients { get; set; } = default!;
-    public DbSet<Ingredient> Ingredients { get; set; } = default!;
-    public DbSet<User> Users { get; set; } = default!;
-    public DbSet<UserRecipe> UserRecipes { get; set; } = default!;
-    public DbSet<UserRecipeStatus> UserRecipeStatuses { get; set; } = default!;
-    public DbSet<Categorization> Categorizations { get; set; } = default!;
-    public DbSet<Cuisine> Cuisines { get; set; } = default!;
-    public DbSet<Diet> Diets { get; set; } = default!;
-    public DbSet<MealTime> MealTimes { get; set; } = default!;
-    public DbSet<DishType> DishTypes { get; set; } = default!;
+    public DbSet<Recipe> Recipe { get; set; } = default!;
+    public DbSet<RecipeReview> RecipeReview { get; set; } = default!;
+    public DbSet<RecipeIngredient> RecipeIngredient { get; set; } = default!;
+    public DbSet<Ingredient> Ingredient { get; set; } = default!;
+    public DbSet<User> User { get; set; } = default!;
+    public DbSet<UserRecipe> UserRecipe { get; set; } = default!;
+    public DbSet<UserRecipeStatus> UserRecipeStatuse { get; set; } = default!;
+    public DbSet<Cuisine> Cuisine { get; set; } = default!;
+    public DbSet<Diet> Diet { get; set; } = default!;
+    public DbSet<MealTime> MealTime { get; set; } = default!;
+    public DbSet<DishType> DietType { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

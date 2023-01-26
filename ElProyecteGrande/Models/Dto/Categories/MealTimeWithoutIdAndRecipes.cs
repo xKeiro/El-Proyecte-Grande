@@ -8,7 +8,7 @@ namespace ElProyecteGrande.Models.Dto.Categories
     /// Time of a meal, like - breakfast, lunch, dinner
     /// </summary>
     [Index(nameof(Name), IsUnique = true)]
-    public class MealTimeWithoutIdAndCategorizations
+    public class MealTimeWithoutIdAndRecipes
     {
         [Required]
         [StringLength(20, MinimumLength = 2)]

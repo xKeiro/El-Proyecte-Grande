@@ -15,25 +15,21 @@ namespace ElProyecteGrande.Services
         }
         public async Task<List<Recipe>> GetAll()
         {
-            var allRecipes = await _context.Recipes
-                .Include(recipe => recipe.Categorization)
-                .Include(recipe => recipe.Categorization.Diets)
-                .Include(recipe => recipe.Categorization.MealTimes)
-                .Include(recipe => recipe.Categorization.Cuisine)
-                .Include(recipe => recipe.Categorization.DishType)
+            var allRecipes = await _context.Recipe
+                .Include(recipe => recipe.Diets)
+                .Include(recipe => recipe.MealTimes)
+                .Include(recipe => recipe.Cuisine)
+                .Include(recipe => recipe.DishType)
                 .Include(recipe => recipe.RecipeIngredients).ThenInclude(recipeIngredient => recipeIngredient.Ingredient)
                 .Select(recipe => new Recipe()
                 {
                     Id = recipe.Id,
                     Name = recipe.Name,
                     Description = recipe.Description,
-                    Categorization = new Categorization()
-                    {
-                        Cuisine = recipe.Categorization.Cuisine,
-                        MealTimes = recipe.Categorization.MealTimes,
-                        Diets = recipe.Categorization.Diets,
-                        DishType = recipe.Categorization.DishType
-                    },
+                    Cuisine = recipe.Cuisine,
+                    MealTimes = recipe.MealTimes,
+                    Diets = recipe.Diets,
+                    DishType = recipe.DishType,
                     RecipeIngredients = recipe.RecipeIngredients.Select(recipeIngredient => new RecipeIngredient()
                     {
                         Amount = recipeIngredient.Amount,
@@ -55,12 +51,11 @@ namespace ElProyecteGrande.Services
 
         public async Task<Recipe?> Find(int id)
         {
-            var recipeById =  _context.Recipes
-                .Include(recipe => recipe.Categorization)
-                .Include(recipe => recipe.Categorization.Diets)
-                .Include(recipe => recipe.Categorization.MealTimes)
-                .Include(recipe => recipe.Categorization.Cuisine)
-                .Include(recipe => recipe.Categorization.DishType)
+            var recipeById =  _context.Recipe
+                .Include(recipe => recipe.Diets)
+                .Include(recipe => recipe.MealTimes)
+                .Include(recipe => recipe.Cuisine)
+                .Include(recipe => recipe.DishType)
                 .Include(recipe => recipe.RecipeIngredients)
                 .ThenInclude(recipeIngredient => recipeIngredient.Ingredient)
                 .Where(recipe => recipe.Id == id);
@@ -74,13 +69,13 @@ namespace ElProyecteGrande.Services
 
         public async Task Delete(Recipe recipe)
         {
-            _context.Recipes.Remove(recipe);
+            _context.Recipe.Remove(recipe);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(Recipe recipe)
         {
-            return !await _context.Recipes.AnyAsync(r => r.Name == recipe.Name);
+            return !await _context.Recipe.AnyAsync(r => r.Name == recipe.Name);
         }
     }
 }
