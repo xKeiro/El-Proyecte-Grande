@@ -1,10 +1,10 @@
 ﻿using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models.Users;
+using ElProyecteGrande.Models.Dto.Users;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Services.Users
 {
-    public class UserService : IBasicCrudService<User>
+    public class UserService : IUserService
     {
         private readonly ElProyecteGrandeContext _context;
 
@@ -13,34 +13,16 @@ namespace ElProyecteGrande.Services.Users
             _context = context;
         }
 
-        public async Task<List<User>> GetAll()
+        public async Task<List<UserPublic>> GetAll()
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task Add(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<User?> Find(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task Update(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task Delete(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> IsUnique(User user)
-        {
-            throw new NotImplementedException();
+            return await _context.Users.AsNoTracking().Select(u => new UserPublic()
+            {
+                Username = u.Username,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                EmailAddress = u.EmailAddress,
+                IsAdmin = u.IsAdmin
+            }).ToListAsync();
         }
     }
 }
