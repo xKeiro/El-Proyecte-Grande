@@ -28,7 +28,7 @@ namespace ElProyecteGrande.Controllers
             var diets = await _service.GetAll();
             if (diets != null)
             {
-                return StatusCode(StatusCodes.Status200OK, diets);
+                return StatusCode(StatusCodes.Status200OK, diets.Select(d => new { d.Id, d.Name }));
             }
 
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
@@ -40,9 +40,15 @@ namespace ElProyecteGrande.Controllers
         public async Task<ActionResult<IEnumerable<Diet>>> GetDietById(int id)
         {
             var dietById = await _service.Find(id);
+
             if (dietById != null)
             {
-                return StatusCode(StatusCodes.Status200OK, dietById);
+                var dietWithoutIdAndCategorization = new DietWithoutIdAndCategorization()
+                {
+                    Name = dietById.Name
+
+                };
+                return StatusCode(StatusCodes.Status200OK, dietWithoutIdAndCategorization);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }
