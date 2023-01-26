@@ -1,6 +1,7 @@
 ﻿using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Categories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace ElProyecteGrande.Services.Categories
 {
@@ -20,29 +21,33 @@ namespace ElProyecteGrande.Services.Categories
                 .ToListAsync();
         }
 
-        public Task Add(Diet model)
+        public async Task Add(Diet diet)
         {
-            throw new NotImplementedException();
+            await _context.Diets.AddAsync(diet);
+            await _context.SaveChangesAsync();
         }
-
+    
         public async Task<Diet?> Find(int id)
         {
             return await _context.Diets.FindAsync(id);
         }
 
-        public Task Update(Diet model)
+        public async Task Update(Diet diet)
         {
-            throw new NotImplementedException();
+            EntityEntry entityEntry = _context.Entry(diet);
+            entityEntry.State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
-        public Task Delete(Diet model)
+        public async Task Delete(Diet diet)
         {
-            throw new NotImplementedException();
+            _context.Diets.Remove(diet);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(Diet diet)
         {
-            bool isUnique = !await _context.Diets.AnyAsync(c => c.Name == diet.Name);
+            bool isUnique = !await _context.Diets.AnyAsync(d => d.Name == diet.Name);
             return isUnique;
         }
     }
