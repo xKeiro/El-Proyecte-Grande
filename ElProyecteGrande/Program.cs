@@ -1,6 +1,13 @@
 using ElProyecteGrande.Services;
 using ElProyecteGrande.Services.Category;
 using Microsoft.EntityFrameworkCore;
+using ElProyecteGrande.Controllers;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models;
+using ElProyecteGrande.Interfaces.Services.Categories;
+using ElProyecteGrande.Services.Categories;
+using ElProyecteGrande.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +17,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ElProyecteGrandeContext")));
+builder.Services.AddScoped<IBasicCrudService<Cuisine>, CuisineService>();
+builder.Services.AddScoped<IBasicCrudService<Ingredient>, IngredientService>();
+builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
+builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageService<Ingredient>>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

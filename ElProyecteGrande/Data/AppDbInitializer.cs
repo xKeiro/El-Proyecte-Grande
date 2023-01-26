@@ -3,8 +3,9 @@ using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Enums;
 using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
+using ElProyecteGrande.Services;
 
-namespace ElProyecteGrande.Services
+namespace ElProyecteGrande.Data
 {
     public static class AppDbInitializer
     {

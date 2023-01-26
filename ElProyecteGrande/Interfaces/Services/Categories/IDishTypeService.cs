@@ -1,6 +1,6 @@
 ﻿using ElProyecteGrande.Models.Categories;
 
-namespace ElProyecteGrande.Services.Category
+namespace ElProyecteGrande.Interfaces.Services.Categories
 {
     public interface IDishTypeService
     {
