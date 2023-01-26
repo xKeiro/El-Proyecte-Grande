@@ -1,4 +1,5 @@
 using ElProyecteGrande.Services;
+using ElProyecteGrande.Services.Category;
 using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Controllers;
 using ElProyecteGrande.Interfaces.Services;
@@ -18,6 +19,10 @@ builder.Services.AddScoped<IBasicCrudService<Ingredient>, IngredientService>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Services
+builder.Services.AddScoped<IMealTimeService, MealTimeService>();
+builder.Services.AddScoped<IDishTypeService, DishTypeService>();
 
 var app = builder.Build();
 

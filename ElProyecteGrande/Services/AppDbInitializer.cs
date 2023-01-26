@@ -1,5 +1,6 @@
 ﻿using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Enums;
 using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
 
@@ -220,7 +221,7 @@ namespace ElProyecteGrande.Services
                 Ingredient basil = new Ingredient { Name = "Basil", UnitOfMeasure = "g" };
                 Ingredient parmesan = new Ingredient { Name = "Parmesan", UnitOfMeasure = "g" };
                 Ingredient chicken = new Ingredient { Name = "Chicken Breast", UnitOfMeasure = "g" };
-                Ingredient romanianLettuce = new Ingredient { Name = "Romaine Lettuce", UnitOfMeasure = "bunch" };
+                Ingredient romanianLettuce = new Ingredient { Name = "Romanian Lettuce", UnitOfMeasure = "bunch" };
                 Ingredient flour = new Ingredient { Name = "Flour", UnitOfMeasure = "g" };
                 Ingredient sugar = new Ingredient { Name = "Sugar", UnitOfMeasure = "g" };
                 Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "piece" };
@@ -250,13 +251,13 @@ namespace ElProyecteGrande.Services
                 var basilIngredient = new RecipeIngredient { Amount = 25, Ingredient = basil };
                 var penneIngredient = new RecipeIngredient { Amount = 100, Ingredient = penne };
                 var onionIngredient = new RecipeIngredient { Amount = 2, Ingredient = onion };
-                var parmesanChesse = new RecipeIngredient { Amount = 10, Ingredient = parmesan };
+                var parmesanCheese = new RecipeIngredient { Amount = 10, Ingredient = parmesan };
                 var flourIngredient = new RecipeIngredient { Amount = 300, Ingredient = flour };
                 var sugarIngredient = new RecipeIngredient { Amount = 300, Ingredient = sugar };
                 var chocolateChipIngredient = new RecipeIngredient { Amount = 300, Ingredient = chocolateChip };
                 var chickenIngredient = new RecipeIngredient { Amount = 300, Ingredient = chicken };
                 var romanianLettuceIngredient = new RecipeIngredient { Amount = 300, Ingredient = romanianLettuce };
-                context.RecipeIngredients.AddRange(tomatoIngredient, basilIngredient, penneIngredient, onionIngredient, parmesanChesse,
+                context.RecipeIngredients.AddRange(tomatoIngredient, basilIngredient, penneIngredient, onionIngredient, parmesanCheese,
                     flourIngredient, sugarIngredient, chocolateChipIngredient, chickenIngredient, romanianLettuceIngredient);
                 context.SaveChanges();
 
@@ -265,7 +266,7 @@ namespace ElProyecteGrande.Services
                 {
                     return;
                 }
-                var tomatoPasta = new Recipe
+                var tomatoPastaRecipe = new Recipe
                 {
                     Name = "Tomato Basil Pasta",
                     Description = "Penne pasta tossed with fresh tomatoes, basil, and Parmesan",
@@ -278,11 +279,11 @@ namespace ElProyecteGrande.Services
                     Name = "French Onion Soup",
                     Description = "Rich beef broth with caramelized onions and croutons",
                     Categorization = frenchOnionSoup,
-                    RecipeIngredients = new List<RecipeIngredient>() { onionIngredient, parmesanChesse }
+                    RecipeIngredients = new List<RecipeIngredient>() { onionIngredient, parmesanCheese }
                 };
 
 
-                var chocolateChipCookie = new Recipe
+                var chocolateChipCookieRecipe = new Recipe
                 {
                     Name = "Chocolate Chip Cookies",
                     Description = "Soft and chewy cookies with chocolate chips",
@@ -298,7 +299,7 @@ namespace ElProyecteGrande.Services
                     Categorization = chickenSaladCategorization,
                     RecipeIngredients = new List<RecipeIngredient>() { chickenIngredient, romanianLettuceIngredient, tomatoIngredient }
                 };
-                context.Recipes.AddRange(tomatoPasta, frenchOnionSoupRecipe, chocolateChipCookie, chickenSaladRecipe);
+                context.Recipes.AddRange(tomatoPastaRecipe, frenchOnionSoupRecipe, chocolateChipCookieRecipe, chickenSaladRecipe);
                 context.SaveChanges();
 
 
@@ -323,7 +324,7 @@ namespace ElProyecteGrande.Services
                 };
                 var user3 = new User
                 {
-                    Username = "MichaelSmit",
+                    Username = "MichaelSmith",
                     EmailAddress = "smith@example.com",
                     Password = "pw1234567",
                     IsAdmin = false
@@ -331,6 +332,147 @@ namespace ElProyecteGrande.Services
                 context.Users.AddRange(user1, user2, user3);
                 context.SaveChanges();
 
+                //Recipe reviews
+                if (context.RecipeReviews.Any())
+                {
+                    return;
+                }
+
+                var review1 = new RecipeReview
+                {
+                    User = user1,
+                    Recipe = tomatoPastaRecipe,
+                    Rate = 4,
+                };
+                var review2 = new RecipeReview
+                {
+                    User = user1,
+                    Recipe = frenchOnionSoupRecipe,
+                    Rate = 3,
+                    Review = "This recipe should be more detailed."
+
+                };
+                var review3 = new RecipeReview
+                {
+                    User = user2,
+                    Recipe = frenchOnionSoupRecipe,
+                    Rate = 2,
+                    Review = "I would add more onions to this recipe."
+
+                };
+                var review4 = new RecipeReview
+                {
+                    User = user2,
+                    Recipe = chocolateChipCookieRecipe,
+                    Rate = 5,
+                    Review = "Best cookie recipe!"
+
+                };
+                var review5 = new RecipeReview
+                {
+                    User = user3,
+                    Recipe = chocolateChipCookieRecipe,
+                    Rate = 4,
+
+                };
+                var review6 = new RecipeReview
+                {
+                    User = user3,
+                    Recipe = chickenSaladRecipe,
+                    Rate = 4,
+
+                };
+                var review7 = new RecipeReview
+                {
+                    User = user1,
+                    Recipe = chickenSaladRecipe,
+                    Rate = 5,
+                    Review = "Very easy, best dinner!"
+
+                };
+                var review8 = new RecipeReview
+                {
+                    User = user3,
+                    Recipe = tomatoPastaRecipe,
+                    Rate = 5,
+
+                };
+
+                context.RecipeReviews.AddRange(review1, review2, review3, review4, review5, review6, review7, review8);
+                context.SaveChanges();
+
+                //User recipe status
+                if (context.UserRecipeStatuses.Any())
+                {
+                    return;
+                }
+
+                var liked = new UserRecipeStatus
+                {
+                    Name = RecipeStatus.Liked
+                };
+                var disliked = new UserRecipeStatus
+                {
+                    Name = RecipeStatus.Disliked,
+                };
+                var saved = new UserRecipeStatus
+                {
+                    Name = RecipeStatus.Saved,
+                };
+                context.UserRecipeStatuses.AddRange(liked, disliked, saved);
+                context.SaveChanges();
+
+                //User recipe
+                if (context.UserRecipes.Any())
+                {
+                    return;
+                }
+
+                var userRecipe1 = new UserRecipe
+                {
+                    Recipe = tomatoPastaRecipe,
+                    User = user1,
+                    Status = saved
+                };
+                var userRecipe2 = new UserRecipe
+                {
+                    Recipe = tomatoPastaRecipe,
+                    User = user1,
+                    Status = liked
+                };
+                var userRecipe3 = new UserRecipe
+                {
+                    Recipe = frenchOnionSoupRecipe,
+                    User = user2,
+                    Status = disliked
+                };
+                var userRecipe4 = new UserRecipe
+                {
+                    Recipe = chocolateChipCookieRecipe,
+                    User = user2,
+                    Status = liked
+                };
+                var userRecipe5 = new UserRecipe
+                {
+                    Recipe = chickenSaladRecipe,
+                    User = user1,
+                    Status = saved
+                };
+                var userRecipe6 = new UserRecipe
+                {
+                    Recipe = chickenSaladRecipe,
+                    User = user3,
+                    Status = saved
+                };
+                var userRecipe7 = new UserRecipe
+                {
+                    Recipe = tomatoPastaRecipe,
+                    User = user3,
+                    Status = saved
+                };
+                context.UserRecipes.AddRange(userRecipe1, userRecipe2, userRecipe3, userRecipe4, userRecipe5,
+                    userRecipe6, userRecipe7);
+                context.SaveChanges();
             }
         }
     }
