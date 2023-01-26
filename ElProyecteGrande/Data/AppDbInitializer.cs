@@ -314,11 +314,13 @@ namespace ElProyecteGrande.Data
                     Username = "FoodLover123",
                     EmailAddress = "ilovefood@example.com",
                     Password = "12345678",
-                    IsAdmin = false
+                    IsAdmin = true
                 };
                 var user2 = new User
                 {
                     Username = "JaneDoe",
+                    FirstName = "Jane",
+                    LastName = "Doe",
                     EmailAddress = "jane@example.com",
                     Password = "87654321",
                     IsAdmin = false
