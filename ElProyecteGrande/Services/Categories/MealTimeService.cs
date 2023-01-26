@@ -1,4 +1,5 @@
-﻿using ElProyecteGrande.Models.Categories;
+﻿using ElProyecteGrande.Interfaces.Services.Categories;
+using ElProyecteGrande.Models.Categories;
 using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Services.Category

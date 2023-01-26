@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Interfaces.Services;
 
-namespace ElProyecteGrande.Services
+namespace ElProyecteGrande.Services.Categories
 {
-    public class CuisineService: IBasicCrudService<Cuisine>
+    public class CuisineService : IBasicCrudService<Cuisine>
     {
         private readonly ElProyecteGrandeContext _context;
         public CuisineService(ElProyecteGrandeContext context)
@@ -37,7 +37,7 @@ namespace ElProyecteGrande.Services
         {
             return await _context.Cuisines.FindAsync(id);
         }
-        
+
         public async Task Update(Cuisine cuisine)
         {
             EntityEntry entityEntry = _context.Entry(cuisine);

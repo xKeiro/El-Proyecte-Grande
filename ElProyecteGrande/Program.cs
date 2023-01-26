@@ -5,6 +5,9 @@ using ElProyecteGrande.Controllers;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models;
+using ElProyecteGrande.Interfaces.Services.Categories;
+using ElProyecteGrande.Services.Categories;
+using ElProyecteGrande.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
