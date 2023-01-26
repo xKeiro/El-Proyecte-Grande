@@ -10,6 +10,7 @@ namespace ElProyecteGrande.Interfaces.Services
         Task<User?> Find(int id);
         Task<UserPublic?> FindPublic(int id);
         Task Delete(User user);
+        Task Update(User user);
         Task<bool> IsUnique(User user);
     }
 }
