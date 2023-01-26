@@ -1,12 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Users;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
-        public IActionResult Index()
+        private readonly IBasicCrudService<User> _userService;
+        private readonly IStatusMessageService<User> _statusMessageService;
+
+        public UserController(IBasicCrudService<User> userService, IStatusMessageService<User> statusMessageService)
         {
-            return View();
+            _userService = userService;
+            _statusMessageService = statusMessageService;
         }
     }
 }
