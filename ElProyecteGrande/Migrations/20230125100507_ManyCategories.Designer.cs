@@ -13,7 +13,7 @@ namespace ElProyecteGrande.Migrations
 {
     [DbContext(typeof(ElProyecteGrandeContext))]
     [Migration("20230125100507_test")]
-    partial class test
+    partial class ManyCategories
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

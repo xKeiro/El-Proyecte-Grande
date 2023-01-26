@@ -5,7 +5,7 @@
 namespace ElProyecteGrande.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class ManyCategories : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
