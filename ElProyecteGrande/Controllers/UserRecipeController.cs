@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class UserRecipeController : Controller
     {
         private readonly IBasicCrudService<UserRecipe> _userRecipeService;
