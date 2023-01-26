@@ -57,7 +57,20 @@ namespace ElProyecteGrande.Controllers
 
             return StatusCode(StatusCodes.Status201Created, dishType);
         }
-        
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<DishType>> GetDishTypeById(int id)
+        {
+            DishType? dishType = await _dishTypeService.Find(id);
+            if (dishType is not null)
+            {
+                return StatusCode(StatusCodes.Status200OK, dishType);
+            }
+            return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+        }
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
