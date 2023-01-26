@@ -2,7 +2,6 @@
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Dto.Categories;
-using ElProyecteGrande.Models.DTOs.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
