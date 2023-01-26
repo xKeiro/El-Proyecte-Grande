@@ -2,6 +2,7 @@
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Dto.Categories;
+using ElProyecteGrande.Models.DTOs.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
@@ -22,12 +23,12 @@ namespace ElProyecteGrande.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<MealTime>>> GetMealTimes()
+        public async Task<ActionResult<IEnumerable<MealTimeWithoutCategorizations>>> GetMealTimes()
         {
             var mealTimes = await _mealTimeService.GetAll();
             if (mealTimes is not null)
             {
-                return StatusCode(StatusCodes.Status200OK, mealTimes);
+                return StatusCode(StatusCodes.Status200OK, mealTimes.Select(m => new MealTimeWithoutCategorizations(m)));
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NoneFound());
         }
@@ -36,7 +37,7 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<MealTime>> AddNewMealTime(MealTimeWithoutIdAndCategorizations newMealTime)
+        public async Task<ActionResult<MealTimeWithoutCategorizations>> AddNewMealTime(MealTimeWithoutIdAndCategorizations newMealTime)
         {
             MealTime mealTime = new MealTime();
             newMealTime.MapTo(mealTime);
@@ -54,18 +55,18 @@ namespace ElProyecteGrande.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
 
-            return StatusCode(StatusCodes.Status201Created, mealTime);
+            return StatusCode(StatusCodes.Status201Created, new MealTimeWithoutCategorizations(mealTime));
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<MealTime>> GetMealTimeById(int id)
+        public async Task<ActionResult<MealTimeWithoutCategorizations>> GetMealTimeById(int id)
         {
             MealTime? mealTime = await _mealTimeService.Find(id);
             if (mealTime is not null)
             {
-                return StatusCode(StatusCodes.Status200OK, mealTime);
+                return StatusCode(StatusCodes.Status200OK, new MealTimeWithoutCategorizations(mealTime));
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
         }
@@ -75,7 +76,7 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<Cuisine>> UpdateMealTimeById(int id, MealTimeWithoutIdAndCategorizations newMealTime)
+        public async Task<ActionResult<MealTimeWithoutCategorizations>> UpdateMealTimeById(int id, MealTimeWithoutIdAndCategorizations newMealTime)
         {
             MealTime? mealTime = await _mealTimeService.Find(id);
             if (mealTime == null)
@@ -96,7 +97,7 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
-            return StatusCode(StatusCodes.Status200OK, mealTime);
+            return StatusCode(StatusCodes.Status200OK, new MealTimeWithoutCategorizations(mealTime));
         }
 
         [HttpDelete("{id}")]
