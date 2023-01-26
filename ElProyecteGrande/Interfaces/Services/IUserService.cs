@@ -6,5 +6,7 @@ namespace ElProyecteGrande.Interfaces.Services
     public interface IUserService
     {
         Task<List<UserPublic>> GetAll();
+        Task<User?> Find(int id);
+        Task Delete(User user);
     }
 }
