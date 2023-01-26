@@ -16,7 +16,8 @@ builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ElProyecteGrandeContext")));
 builder.Services.AddScoped<IBasicCrudService<Cuisine>, CuisineService>();
 builder.Services.AddScoped<IBasicCrudService<Ingredient>, IngredientService>();
-
+builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
+builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageService<Ingredient>>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
