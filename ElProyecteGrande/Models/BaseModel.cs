@@ -7,5 +7,5 @@ public abstract class BaseModel
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public virtual int Id { get; set; }
+    public int Id { get; set; }
 }
