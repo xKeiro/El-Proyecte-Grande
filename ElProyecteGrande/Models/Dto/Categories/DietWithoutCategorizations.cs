@@ -9,14 +9,14 @@ namespace ElProyecteGrande.Models.DTOs.Categories;
 /// </summary>
 
 [Index(nameof(Name), IsUnique = true)]
-public class DietWithoutCategorization: BaseCategory
+public class DietWithoutCategorizations: BaseCategory
 {
-    public DietWithoutCategorization()
+    public DietWithoutCategorizations()
     {
         
     }
 
-    public DietWithoutCategorization( Diet diet)
+    public DietWithoutCategorizations( Diet diet)
     {
         Name = diet.Name;
         Id = diet.Id;
