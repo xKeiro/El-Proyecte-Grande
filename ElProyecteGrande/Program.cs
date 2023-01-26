@@ -7,6 +7,8 @@ using ElProyecteGrande.Models;
 using ElProyecteGrande.Services.Categories;
 using ElProyecteGrande.Data;
 using System.Text.Json.Serialization;
+using ElProyecteGrande.Models.Users;
+using ElProyecteGrande.Services.Users;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +38,12 @@ builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageServi
 
 builder.Services.AddScoped<IBasicCrudService<Diet>, DietService>();
 builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Diet>>();
+
+builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
+builder.Services.AddScoped<IStatusMessageService<UserRecipe>, StatusMessageService<UserRecipe>>();
+
+builder.Services.AddScoped<IBasicCrudService<User>, UserService>();
+builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<User>>();
 
 var app = builder.Build();
 
