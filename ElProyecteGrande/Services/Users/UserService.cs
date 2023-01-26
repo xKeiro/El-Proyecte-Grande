@@ -1,4 +1,5 @@
 ﻿using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Dto.Users;
 using ElProyecteGrande.Models.Users;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,12 @@ namespace ElProyecteGrande.Services.Users
             }).ToListAsync();
         }
 
+        public async Task Add(User user)
+        {
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User?> Find(int id)
         {
             return await _context.Users.FindAsync(id);
@@ -53,6 +60,11 @@ namespace ElProyecteGrande.Services.Users
         {
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsUnique(User user)
+        {
+            return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress == user.EmailAddress);
         }
     }
 }
