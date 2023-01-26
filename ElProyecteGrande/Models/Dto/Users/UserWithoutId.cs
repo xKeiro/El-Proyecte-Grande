@@ -16,7 +16,7 @@ namespace ElProyecteGrande.Models.Dto.Users
         public string? LastName { get; set; }
 
         [Required]
-        [RegularExpression("^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$", ErrorMessage = "Invalid pattern")]
+        [EmailAddress]
         public required string EmailAddress { get; set; }
 
         [Required]
