@@ -42,7 +42,7 @@ builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Die
 builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
 builder.Services.AddScoped<IStatusMessageService<UserRecipe>, StatusMessageService<UserRecipe>>();
 
-builder.Services.AddScoped<IBasicCrudService<User>, UserService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<User>>();
 
 var app = builder.Build();
