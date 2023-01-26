@@ -57,7 +57,7 @@ namespace ElProyecteGrande.Controllers
 
             return StatusCode(StatusCodes.Status201Created, dishType);
         }
-
+        
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -85,6 +85,28 @@ namespace ElProyecteGrande.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
             return StatusCode(StatusCodes.Status200OK, dishType);
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<StatusMessage>> DeleteDishTypeById(int id)
+        {
+            DishType? dishType = await _dishTypeService.Find(id);
+            if (dishType == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+            }
+            try
+            {
+                await _dishTypeService.Delete(dishType);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK, _statusMessageService.Deleted(id));
         }
     }
 }
