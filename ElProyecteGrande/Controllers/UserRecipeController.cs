@@ -1,12 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Users;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
 {
     public class UserRecipeController : Controller
     {
-        public IActionResult Index()
+        private readonly IBasicCrudService<UserRecipe> _userRecipeService;
+        private readonly IStatusMessageService<UserRecipe> _statusMessageService;
+        
+        public UserRecipeController(IBasicCrudService<UserRecipe> userRecipeService, IStatusMessageService<UserRecipe> statusMessage)
         {
-            return View();
+            _userRecipeService = userRecipeService;
+            _statusMessageService = statusMessage;
         }
     }
 }
