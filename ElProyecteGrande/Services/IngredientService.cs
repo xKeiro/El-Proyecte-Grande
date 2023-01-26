@@ -40,15 +40,13 @@ namespace ElProyecteGrande.Services
         
         public async Task Update(Ingredient ingredient)
         {
-            EntityEntry entityEntry = _context.Entry(ingredient);
-            entityEntry.State = EntityState.Modified;
+            _context.Update(ingredient);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(Ingredient ingredient)
         {
-            bool isUnique = !await _context.Ingredients.AnyAsync(c => c.Name == ingredient.Name);
-            return isUnique;
+            return !await _context.Ingredients.AnyAsync(i => i.Name == ingredient.Name);
         }
     }
 }
