@@ -58,6 +58,19 @@ namespace ElProyecteGrande.Controllers
             return StatusCode(StatusCodes.Status201Created, mealTime);
         }
 
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<MealTime>> GetMealTimeById(int id)
+        {
+            MealTime? mealTime = await _mealTimeService.Find(id);
+            if (mealTime is not null)
+            {
+                return StatusCode(StatusCodes.Status200OK, mealTime);
+            }
+            return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+        }
+
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
