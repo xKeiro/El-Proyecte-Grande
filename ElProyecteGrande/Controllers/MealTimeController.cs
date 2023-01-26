@@ -1,54 +1,90 @@
-﻿using ElProyecteGrande.Interfaces.Services.Categories;
+﻿using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Dto.Categories;
+using ElProyecteGrande.Services.Categories;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Controllers
 {
     [ApiController]
-    [Route("[controller]/api/")]
+    [Route("api/[controller]")]
     public class MealTimeController : ControllerBase
     {
-        private readonly IMealTimeService _mealTimeService;
+        private readonly IBasicCrudService<MealTime> _mealTimeService;
+        private readonly IStatusMessageService<MealTime> _statusMessageService;
 
-        public MealTimeController(IMealTimeService mealTimeService)
+        public MealTimeController(IBasicCrudService<MealTime> mealTimeService, IStatusMessageService<MealTime> statusMessageService)
         {
             _mealTimeService = mealTimeService;
+            _statusMessageService = statusMessageService;
         }
 
-        [Route("[action]")]
         [HttpGet]
-        public async Task<IEnumerable<MealTime>> GetMealTimes()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<IEnumerable<MealTime>>> GetMealTimes()
         {
-            IEnumerable<MealTime> mealTimes = await _mealTimeService.GetAllMealTime();
-            return mealTimes;
+            var mealTimes = await _mealTimeService.GetAll();
+            if (mealTimes is not null)
+            {
+                return StatusCode(StatusCodes.Status200OK, mealTimes);
+            }
+            return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NoneFound());
         }
 
-        [Route("[action]")]
         [HttpPost]
-        public async Task<IResult> AddNewMealTime([FromBody] string mealTimeName)
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<MealTime>> AddNewMealTime(MealTimeWithoutIdAndCategorizations newMealTime)
         {
+            MealTime mealTime = new MealTime();
+            newMealTime.MapTo(mealTime);
+
+            if (!await _mealTimeService.IsUnique(mealTime))
+            {
+                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+            }
             try
             {
-                await _mealTimeService.AddMealTime(new MealTime { Name = mealTimeName });
-                return Results.Ok($"{mealTimeName} has been added to the Meal Times.");
+                await _mealTimeService.Add(mealTime);
             }
-            catch (DbUpdateException)
+            catch
             {
-                return Results.Conflict($"We already have this Meal Time: {mealTimeName}!");
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
+
+            return StatusCode(StatusCodes.Status201Created, mealTime);
         }
 
-        [Route("[action]")]
-        [HttpPatch]
-        public async Task<IResult> UpdateMealTime(string mealTimeName,[FromBody] string newMealTimeName)
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<Cuisine>> UpdateMealTimeById(int id, MealTimeWithoutIdAndCategorizations newMealTime)
         {
-            MealTime mealTimeToChange = await _mealTimeService.GetMealTimeByName(mealTimeName);
-            if (mealTimeToChange is null) return Results.NotFound($"We don't have this Meal Time: {mealTimeName}");
+            MealTime? mealTime = await _mealTimeService.Find(id);
+            if (mealTime == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+            }
 
-            mealTimeToChange.Name = newMealTimeName;
-            _mealTimeService.UpdateMealTime(mealTimeToChange);
-            return Results.Ok($"{mealTimeName} has been successfully updated to {newMealTimeName}.");
+            newMealTime.MapTo(mealTime);
+            if (!await _mealTimeService.IsUnique(mealTime))
+            {
+                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+            }
+            try
+            {
+                await _mealTimeService.Update(mealTime);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK, mealTime);
         }
     }
 }
