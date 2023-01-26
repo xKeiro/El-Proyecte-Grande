@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElProyecteGrande.Migrations
 {
     [DbContext(typeof(ElProyecteGrandeContext))]
-    [Migration("20230125100507_test")]
-    partial class ManyCategories
+    [Migration("20230126224633_RemoveCategorization")]
+    partial class RemoveCategorization
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,57 +25,19 @@ namespace ElProyecteGrande.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("CategorizationDiet", b =>
+            modelBuilder.Entity("DietRecipe", b =>
                 {
-                    b.Property<int>("CategorizationsId")
-                        .HasColumnType("int");
-
                     b.Property<int>("DietsId")
                         .HasColumnType("int");
 
-                    b.HasKey("CategorizationsId", "DietsId");
-
-                    b.HasIndex("DietsId");
-
-                    b.ToTable("CategorizationDiet");
-                });
-
-            modelBuilder.Entity("CategorizationMealTime", b =>
-                {
-                    b.Property<int>("CategorizationsId")
+                    b.Property<int>("RecipesId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MealTimesId")
-                        .HasColumnType("int");
+                    b.HasKey("DietsId", "RecipesId");
 
-                    b.HasKey("CategorizationsId", "MealTimesId");
+                    b.HasIndex("RecipesId");
 
-                    b.HasIndex("MealTimesId");
-
-                    b.ToTable("CategorizationMealTime");
-                });
-
-            modelBuilder.Entity("ElProyecteGrande.Models.Categories.Categorization", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CuisineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DishTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CuisineId");
-
-                    b.HasIndex("DishTypeId");
-
-                    b.ToTable("Categorizations");
+                    b.ToTable("DietRecipe");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.Cuisine", b =>
@@ -96,7 +58,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Cuisines");
+                    b.ToTable("Cuisine");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.Diet", b =>
@@ -117,7 +79,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Diets");
+                    b.ToTable("Diet");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.DishType", b =>
@@ -138,7 +100,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("DishTypes");
+                    b.ToTable("DietType");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.MealTime", b =>
@@ -159,7 +121,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("MealTimes");
+                    b.ToTable("MealTime");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Ingredient", b =>
@@ -181,7 +143,10 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Ingredients");
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Ingredient");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.Recipe", b =>
@@ -192,12 +157,15 @@ namespace ElProyecteGrande.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategorizationId")
+                    b.Property<int>("CuisineId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("DishTypeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -206,9 +174,11 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategorizationId");
+                    b.HasIndex("CuisineId");
 
-                    b.ToTable("Recipes");
+                    b.HasIndex("DishTypeId");
+
+                    b.ToTable("Recipe");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.RecipeIngredient", b =>
@@ -235,7 +205,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("RecipeIngredients");
+                    b.ToTable("RecipeIngredient");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.RecipeReview", b =>
@@ -264,7 +234,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RecipeReviews");
+                    b.ToTable("RecipeReview");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Users.User", b =>
@@ -277,7 +247,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.Property<string>("EmailAddress")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
@@ -294,11 +264,17 @@ namespace ElProyecteGrande.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.HasIndex("EmailAddress")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Users.UserRecipe", b =>
@@ -326,7 +302,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRecipes");
+                    b.ToTable("UserRecipe");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Users.UserRecipeStatus", b =>
@@ -343,49 +319,49 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRecipeStatuses");
+                    b.ToTable("UserRecipeStatuse");
                 });
 
-            modelBuilder.Entity("CategorizationDiet", b =>
+            modelBuilder.Entity("MealTimeRecipe", b =>
                 {
-                    b.HasOne("ElProyecteGrande.Models.Categories.Categorization", null)
-                        .WithMany()
-                        .HasForeignKey("CategorizationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("MealTimesId")
+                        .HasColumnType("int");
 
+                    b.Property<int>("RecipesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("MealTimesId", "RecipesId");
+
+                    b.HasIndex("RecipesId");
+
+                    b.ToTable("MealTimeRecipe");
+                });
+
+            modelBuilder.Entity("DietRecipe", b =>
+                {
                     b.HasOne("ElProyecteGrande.Models.Categories.Diet", null)
                         .WithMany()
                         .HasForeignKey("DietsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
 
-            modelBuilder.Entity("CategorizationMealTime", b =>
-                {
-                    b.HasOne("ElProyecteGrande.Models.Categories.Categorization", null)
+                    b.HasOne("ElProyecteGrande.Models.Recipes.Recipe", null)
                         .WithMany()
-                        .HasForeignKey("CategorizationsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ElProyecteGrande.Models.Categories.MealTime", null)
-                        .WithMany()
-                        .HasForeignKey("MealTimesId")
+                        .HasForeignKey("RecipesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ElProyecteGrande.Models.Categories.Categorization", b =>
+            modelBuilder.Entity("ElProyecteGrande.Models.Recipes.Recipe", b =>
                 {
                     b.HasOne("ElProyecteGrande.Models.Categories.Cuisine", "Cuisine")
-                        .WithMany()
+                        .WithMany("Recipes")
                         .HasForeignKey("CuisineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ElProyecteGrande.Models.Categories.DishType", "DishType")
-                        .WithMany()
+                        .WithMany("Recipes")
                         .HasForeignKey("DishTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -393,17 +369,6 @@ namespace ElProyecteGrande.Migrations
                     b.Navigation("Cuisine");
 
                     b.Navigation("DishType");
-                });
-
-            modelBuilder.Entity("ElProyecteGrande.Models.Recipes.Recipe", b =>
-                {
-                    b.HasOne("ElProyecteGrande.Models.Categories.Categorization", "Categorization")
-                        .WithMany()
-                        .HasForeignKey("CategorizationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Categorization");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.RecipeIngredient", b =>
@@ -465,6 +430,31 @@ namespace ElProyecteGrande.Migrations
                     b.Navigation("Status");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MealTimeRecipe", b =>
+                {
+                    b.HasOne("ElProyecteGrande.Models.Categories.MealTime", null)
+                        .WithMany()
+                        .HasForeignKey("MealTimesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ElProyecteGrande.Models.Recipes.Recipe", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ElProyecteGrande.Models.Categories.Cuisine", b =>
+                {
+                    b.Navigation("Recipes");
+                });
+
+            modelBuilder.Entity("ElProyecteGrande.Models.Categories.DishType", b =>
+                {
+                    b.Navigation("Recipes");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.Recipe", b =>
