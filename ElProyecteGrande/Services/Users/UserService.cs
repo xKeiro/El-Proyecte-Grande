@@ -18,6 +18,7 @@ namespace ElProyecteGrande.Services.Users
         {
             return await _context.Users.AsNoTracking().Select(u => new UserPublic()
             {
+                Id = u.Id,
                 Username = u.Username,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
@@ -29,6 +30,23 @@ namespace ElProyecteGrande.Services.Users
         public async Task<User?> Find(int id)
         {
             return await _context.Users.FindAsync(id);
+        }
+
+        public async Task<UserPublic?> FindPublic(int id)
+        {
+            User? user = await _context.Users.FindAsync(id);
+
+            if (user is null) return null;
+
+            return new UserPublic()
+            {
+                Id = user.Id,
+                Username = user.Username,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                EmailAddress = user.EmailAddress,
+                IsAdmin = user.IsAdmin
+            };
         }
 
         public async Task Delete(User user)

@@ -7,6 +7,7 @@ namespace ElProyecteGrande.Interfaces.Services
     {
         Task<List<UserPublic>> GetAll();
         Task<User?> Find(int id);
+        Task<UserPublic?> FindPublic(int id);
         Task Delete(User user);
     }
 }
