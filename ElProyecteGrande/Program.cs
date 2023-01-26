@@ -15,18 +15,21 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ElProyecteGrandeContext")));
-builder.Services.AddScoped<IBasicCrudService<Cuisine>, CuisineService>();
-builder.Services.AddScoped<IBasicCrudService<Ingredient>, IngredientService>();
-builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
-builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageService<Ingredient>>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Services
 builder.Services.AddScoped<IBasicCrudService<MealTime>, MealTimeService>();
 builder.Services.AddScoped<IStatusMessageService<MealTime>, StatusMessageService<MealTime>>();
+
 builder.Services.AddScoped<IBasicCrudService<DishType>, DishTypeService>();
 builder.Services.AddScoped<IStatusMessageService<DishType>, StatusMessageService<DishType>>();
+
+builder.Services.AddScoped<IBasicCrudService<Cuisine>, CuisineService>();
+builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
+
+builder.Services.AddScoped<IBasicCrudService<Ingredient>, IngredientService>();
+builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageService<Ingredient>>();
 
 var app = builder.Build();
 
@@ -43,6 +46,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+// Seed the DB with initial data
 AppDbInitializer.Seed(app);
 
 app.Run();
