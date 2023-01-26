@@ -13,9 +13,9 @@ public class IngredientsController : ControllerBase
     private readonly IBasicCrudService<Ingredient> _service;
     private readonly IStatusMessageService<Ingredient> _statusMessage;
 
-    public IngredientsController(IBasicCrudService<Ingredient> context, IStatusMessageService<Ingredient> statusMessage)
+    public IngredientsController(IBasicCrudService<Ingredient> service, IStatusMessageService<Ingredient> statusMessage)
     {
-        _service = context;
+        _service = service;
         _statusMessage = statusMessage;
     }
     [HttpGet]
