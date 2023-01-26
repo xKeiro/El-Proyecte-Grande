@@ -40,15 +40,13 @@ namespace ElProyecteGrande.Services.Categories
 
         public async Task Update(Cuisine cuisine)
         {
-            EntityEntry entityEntry = _context.Entry(cuisine);
-            entityEntry.State = EntityState.Modified;
+            _context.Update(cuisine);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(Cuisine cuisine)
         {
-            bool isUnique = !await _context.Cuisines.AnyAsync(c => c.Name == cuisine.Name);
-            return isUnique;
+            return !await _context.Cuisines.AnyAsync(c => c.Name == cuisine.Name);
         }
     }
 }
