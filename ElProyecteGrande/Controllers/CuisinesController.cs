@@ -13,9 +13,9 @@ public class CuisinesController : ControllerBase
     private readonly IBasicCrudService<Cuisine> _service;
     private readonly IStatusMessageService<Cuisine> _statusMessage;
 
-    public CuisinesController(IBasicCrudService<Cuisine> context, IStatusMessageService<Cuisine> statusMessage)
+    public CuisinesController(IBasicCrudService<Cuisine> service, IStatusMessageService<Cuisine> statusMessage)
     {
-        _service = context;
+        _service = service;
         _statusMessage = statusMessage;
     }
     [HttpGet]
