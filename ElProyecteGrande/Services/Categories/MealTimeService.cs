@@ -1,10 +1,10 @@
-﻿using ElProyecteGrande.Interfaces.Services.Categories;
+﻿using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Categories;
 using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Services.Category
+namespace ElProyecteGrande.Services.Categories
 {
-    public class MealTimeService : IMealTimeService
+    public class MealTimeService : IBasicCrudService<MealTime>
     {
         private readonly ElProyecteGrandeContext _context;
 
@@ -13,28 +13,37 @@ namespace ElProyecteGrande.Services.Category
             _context = context;
         }
 
-        public async Task<IEnumerable<MealTime>> GetAllMealTime()
+        public async Task<List<MealTime>> GetAll()
         {
-            var result = await _context.MealTimes.ToListAsync();
-            return result;
+            return await _context.MealTimes.AsNoTracking().ToListAsync();
         }
 
-        public async Task AddMealTime(MealTime mealTime)
+        public async Task Add(MealTime mealTime)
         {
             await _context.MealTimes.AddAsync(mealTime);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<MealTime> GetMealTimeByName(string name)
+        public async Task<MealTime?> Find(int id)
         {
-            MealTime? mealTime = await _context.MealTimes.FirstOrDefaultAsync(m => m.Name == name);
-            return mealTime;
+            return await _context.MealTimes.FindAsync(id);
         }
 
-        public void UpdateMealTime(MealTime newMealTime)
+        public async Task Update(MealTime newMealTime)
         {
             _context.MealTimes.Update(newMealTime);
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(MealTime mealTime)
+        {
+            _context.MealTimes.Remove(mealTime);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsUnique(MealTime mealTime)
+        {
+            return !await _context.MealTimes.AnyAsync(m =>  m.Name == mealTime.Name);
         }
     }
 }
