@@ -1,7 +1,9 @@
 ﻿using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
+using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Dto.Users;
 using ElProyecteGrande.Models.Users;
+using ElProyecteGrande.Services.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
@@ -30,6 +32,28 @@ namespace ElProyecteGrande.Controllers
                 return StatusCode(StatusCodes.Status200OK, users);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NoneFound());
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<StatusMessage>> DeleteUserById(int id)
+        {
+            User? user = await _userService.Find(id);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
+            }
+            try
+            {
+                await _userService.Delete(user);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK, _statusMessageService.Deleted(id));
         }
     }
 }
