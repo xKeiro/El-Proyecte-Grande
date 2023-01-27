@@ -24,7 +24,7 @@ namespace ElProyecteGrande.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DishTypes",
+                name: "Diets",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -33,7 +33,20 @@ namespace ElProyecteGrande.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DishTypes", x => x.Id);
+                    table.PrimaryKey("PK_Diets", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DishType",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DishType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -48,6 +61,19 @@ namespace ElProyecteGrande.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Ingredients", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MealTimes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealTimes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,80 +95,16 @@ namespace ElProyecteGrande.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EmailAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmailAddress = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categorizations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CuisineId = table.Column<int>(type: "int", nullable: false),
-                    DishTypeId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Categorizations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Categorizations_Cuisines_CuisineId",
-                        column: x => x.CuisineId,
-                        principalTable: "Cuisines",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Categorizations_DishTypes_DishTypeId",
-                        column: x => x.DishTypeId,
-                        principalTable: "DishTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Diets",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategorizationId = table.Column<int>(type: "int", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Diets", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Diets_Categorizations_CategorizationId",
-                        column: x => x.CategorizationId,
-                        principalTable: "Categorizations",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "MealTimes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CategorizationId = table.Column<int>(type: "int", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MealTimes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_MealTimes_Categorizations_CategorizationId",
-                        column: x => x.CategorizationId,
-                        principalTable: "Categorizations",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -153,15 +115,70 @@ namespace ElProyecteGrande.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategorizationId = table.Column<int>(type: "int", nullable: false)
+                    CuisineId = table.Column<int>(type: "int", nullable: false),
+                    DishTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Recipes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Recipes_Categorizations_CategorizationId",
-                        column: x => x.CategorizationId,
-                        principalTable: "Categorizations",
+                        name: "FK_Recipes_Cuisines_CuisineId",
+                        column: x => x.CuisineId,
+                        principalTable: "Cuisines",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Recipes_DishType_DishTypeId",
+                        column: x => x.DishTypeId,
+                        principalTable: "DishType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DietRecipe",
+                columns: table => new
+                {
+                    DietsId = table.Column<int>(type: "int", nullable: false),
+                    RecipesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DietRecipe", x => new { x.DietsId, x.RecipesId });
+                    table.ForeignKey(
+                        name: "FK_DietRecipe_Diets_DietsId",
+                        column: x => x.DietsId,
+                        principalTable: "Diets",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DietRecipe_Recipes_RecipesId",
+                        column: x => x.RecipesId,
+                        principalTable: "Recipes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MealTimeRecipe",
+                columns: table => new
+                {
+                    MealTimesId = table.Column<int>(type: "int", nullable: false),
+                    RecipesId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MealTimeRecipe", x => new { x.MealTimesId, x.RecipesId });
+                    table.ForeignKey(
+                        name: "FK_MealTimeRecipe_MealTimes_MealTimesId",
+                        column: x => x.MealTimesId,
+                        principalTable: "MealTimes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MealTimeRecipe_Recipes_RecipesId",
+                        column: x => x.RecipesId,
+                        principalTable: "Recipes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -172,9 +189,9 @@ namespace ElProyecteGrande.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RecipeId = table.Column<int>(type: "int", nullable: true),
-                    IngredientId = table.Column<int>(type: "int", nullable: true),
-                    Amount = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false)
+                    IngredientId = table.Column<int>(type: "int", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(6,2)", precision: 6, scale: 2, nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,8 +206,7 @@ namespace ElProyecteGrande.Migrations
                         name: "FK_RecipeIngredients_Recipes_RecipeId",
                         column: x => x.RecipeId,
                         principalTable: "Recipes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -255,24 +271,44 @@ namespace ElProyecteGrande.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categorizations_CuisineId",
-                table: "Categorizations",
-                column: "CuisineId");
+                name: "IX_Cuisines_Name",
+                table: "Cuisines",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categorizations_DishTypeId",
-                table: "Categorizations",
-                column: "DishTypeId");
+                name: "IX_DietRecipe_RecipesId",
+                table: "DietRecipe",
+                column: "RecipesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Diets_CategorizationId",
+                name: "IX_Diets_Name",
                 table: "Diets",
-                column: "CategorizationId");
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_MealTimes_CategorizationId",
+                name: "IX_DishType_Name",
+                table: "DishType",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ingredients_Name",
+                table: "Ingredients",
+                column: "Name",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealTimeRecipe_RecipesId",
+                table: "MealTimeRecipe",
+                column: "RecipesId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MealTimes_Name",
                 table: "MealTimes",
-                column: "CategorizationId");
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_RecipeIngredients_IngredientId",
@@ -295,9 +331,14 @@ namespace ElProyecteGrande.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Recipes_CategorizationId",
+                name: "IX_Recipes_CuisineId",
                 table: "Recipes",
-                column: "CategorizationId");
+                column: "CuisineId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Recipes_DishTypeId",
+                table: "Recipes",
+                column: "DishTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRecipes_RecipeId",
@@ -313,16 +354,28 @@ namespace ElProyecteGrande.Migrations
                 name: "IX_UserRecipes_UserId",
                 table: "UserRecipes",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_EmailAddress",
+                table: "Users",
+                column: "EmailAddress",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Diets");
+                name: "DietRecipe");
 
             migrationBuilder.DropTable(
-                name: "MealTimes");
+                name: "MealTimeRecipe");
 
             migrationBuilder.DropTable(
                 name: "RecipeIngredients");
@@ -332,6 +385,12 @@ namespace ElProyecteGrande.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRecipes");
+
+            migrationBuilder.DropTable(
+                name: "Diets");
+
+            migrationBuilder.DropTable(
+                name: "MealTimes");
 
             migrationBuilder.DropTable(
                 name: "Ingredients");
@@ -346,13 +405,10 @@ namespace ElProyecteGrande.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Categorizations");
-
-            migrationBuilder.DropTable(
                 name: "Cuisines");
 
             migrationBuilder.DropTable(
-                name: "DishTypes");
+                name: "DishType");
         }
     }
 }

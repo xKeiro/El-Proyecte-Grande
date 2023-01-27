@@ -55,7 +55,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Cuisine");
+                    b.ToTable("Cuisines");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.Diet", b =>
@@ -76,7 +76,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Diet");
+                    b.ToTable("Diets");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.DishType", b =>
@@ -97,7 +97,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("DietType");
+                    b.ToTable("DishType");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Categories.MealTime", b =>
@@ -118,7 +118,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("MealTime");
+                    b.ToTable("MealTimes");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Ingredient", b =>
@@ -143,7 +143,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Ingredient");
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.Recipe", b =>
@@ -175,7 +175,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("DishTypeId");
 
-                    b.ToTable("Recipe");
+                    b.ToTable("Recipes");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.RecipeIngredient", b =>
@@ -202,7 +202,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("RecipeIngredient");
+                    b.ToTable("RecipeIngredients");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Recipes.RecipeReview", b =>
@@ -231,7 +231,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RecipeReview");
+                    b.ToTable("RecipeReviews");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Users.User", b =>
@@ -271,7 +271,7 @@ namespace ElProyecteGrande.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Users.UserRecipe", b =>
@@ -299,7 +299,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserRecipe");
+                    b.ToTable("UserRecipes");
                 });
 
             modelBuilder.Entity("ElProyecteGrande.Models.Users.UserRecipeStatus", b =>
@@ -316,7 +316,7 @@ namespace ElProyecteGrande.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserRecipeStatuse");
+                    b.ToTable("UserRecipeStatuses");
                 });
 
             modelBuilder.Entity("MealTimeRecipe", b =>
