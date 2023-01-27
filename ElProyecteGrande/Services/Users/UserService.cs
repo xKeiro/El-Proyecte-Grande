@@ -17,7 +17,7 @@ namespace ElProyecteGrande.Services.Users
 
         public async Task<List<UserPublic>> GetAll()
         {
-            return await _context.User.AsNoTracking().Select(u => new UserPublic()
+            return await _context.Users.AsNoTracking().Select(u => new UserPublic()
             {
                 Id = u.Id,
                 Username = u.Username,
@@ -30,18 +30,18 @@ namespace ElProyecteGrande.Services.Users
 
         public async Task Add(User user)
         {
-            await _context.User.AddAsync(user);
+            await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task<User?> Find(int id)
         {
-            return await _context.User.FindAsync(id);
+            return await _context.Users.FindAsync(id);
         }
 
         public async Task<UserPublic?> FindPublic(int id)
         {
-            User? user = await _context.User.FindAsync(id);
+            User? user = await _context.Users.FindAsync(id);
 
             if (user is null) return null;
 
@@ -58,19 +58,19 @@ namespace ElProyecteGrande.Services.Users
 
         public async Task Update(User user)
         {
-            _context.User.Update(user);
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(User user)
         {
-            _context.User.Remove(user);
+            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(User user)
         {
-            return !await _context.User.AnyAsync(u => u.Username == user.Username || u.EmailAddress == user.EmailAddress);
+            return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress == user.EmailAddress);
         }
     }
 }

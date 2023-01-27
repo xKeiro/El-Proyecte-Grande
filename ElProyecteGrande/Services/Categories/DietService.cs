@@ -16,20 +16,20 @@ namespace ElProyecteGrande.Services.Categories
         public async Task<List<Diet>> GetAll()
         {
             return await _context
-                .Diet
+                .Diets
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task Add(Diet diet)
         {
-            await _context.Diet.AddAsync(diet);
+            await _context.Diets.AddAsync(diet);
             await _context.SaveChangesAsync();
         }
     
         public async Task<Diet?> Find(int id)
         {
-            return await _context.Diet.FindAsync(id);
+            return await _context.Diets.FindAsync(id);
         }
 
         public async Task Update(Diet diet)
@@ -41,13 +41,13 @@ namespace ElProyecteGrande.Services.Categories
 
         public async Task Delete(Diet diet)
         {
-            _context.Diet.Remove(diet);
+            _context.Diets.Remove(diet);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(Diet diet)
         {
-            bool isUnique = !await _context.Diet.AnyAsync(d => d.Name == diet.Name);
+            bool isUnique = !await _context.Diets.AnyAsync(d => d.Name == diet.Name);
             return isUnique;
         }
     }

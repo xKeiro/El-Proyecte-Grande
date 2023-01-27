@@ -15,7 +15,7 @@ namespace ElProyecteGrande.Services
         }
         public async Task<List<Recipe>> GetAll()
         {
-            var allRecipes = await _context.Recipe
+            var allRecipes = await _context.Recipes
                 .Include(recipe => recipe.Diets)
                 .Include(recipe => recipe.MealTimes)
                 .Include(recipe => recipe.Cuisine)
@@ -51,7 +51,7 @@ namespace ElProyecteGrande.Services
 
         public async Task<Recipe?> Find(int id)
         {
-            var recipeById =  _context.Recipe
+            var recipeById =  _context.Recipes
                 .Include(recipe => recipe.Diets)
                 .Include(recipe => recipe.MealTimes)
                 .Include(recipe => recipe.Cuisine)
@@ -69,13 +69,13 @@ namespace ElProyecteGrande.Services
 
         public async Task Delete(Recipe recipe)
         {
-            _context.Recipe.Remove(recipe);
+            _context.Recipes.Remove(recipe);
             await _context.SaveChangesAsync();
         }
 
         public async Task<bool> IsUnique(Recipe recipe)
         {
-            return !await _context.Recipe.AnyAsync(r => r.Name == recipe.Name);
+            return !await _context.Recipes.AnyAsync(r => r.Name == recipe.Name);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace ElProyecteGrande.Data
                 context.Database.EnsureCreated();
 
                 //Cuisine
-                if (context.Cuisine.Any())
+                if (context.Cuisines.Any())
                 {
                     return;
                 }
@@ -60,11 +60,11 @@ namespace ElProyecteGrande.Data
                 Cuisine brazilian = new() { Name = "Brazilian" };
                 Cuisine argentinian = new() { Name = "Argentinian" };
                 Cuisine australian = new() { Name = "Australian" };
-                context.Cuisine.AddRange(hungarian, japanese, italian, indian, korean, thai, mexican, american, greek, french, turkis, german, chinese, spanish, english, irish, scottish, russian, polish, czech, swedish, danish, norwegian, finnish, belgian, dutch, portuguese, brazilian, argentinian, australian);
+                context.Cuisines.AddRange(hungarian, japanese, italian, indian, korean, thai, mexican, american, greek, french, turkis, german, chinese, spanish, english, irish, scottish, russian, polish, czech, swedish, danish, norwegian, finnish, belgian, dutch, portuguese, brazilian, argentinian, australian);
                 context.SaveChanges();
 
                 // Meal Time
-                if (context.MealTime.Any())
+                if (context.MealTimes.Any())
                 {
                     return;
                 }
@@ -76,11 +76,11 @@ namespace ElProyecteGrande.Data
                 MealTime supper = new() { Name = "Supper" };
                 MealTime dinner = new() { Name = "Dinner" };
                 MealTime brunch = new() { Name = "Brunch" };
-                context.MealTime.AddRange(breakfast, elevenses, lunch, snack, tea, supper, dinner, brunch);
+                context.MealTimes.AddRange(breakfast, elevenses, lunch, snack, tea, supper, dinner, brunch);
                 context.SaveChanges();
 
                 // Dish Type
-                if (context.DietType.Any())
+                if (context.DishType.Any())
                 {
                     return;
                 }
@@ -106,11 +106,11 @@ namespace ElProyecteGrande.Data
                 DishType smoothie = new() { Name = "Smoothie" };
                 DishType dip = new() { Name = "Dip" };
                 DishType dressing = new() { Name = "Dressing" };
-                context.DietType.AddRange(pasta, pizza, salad, soup, stew, dessert, roast, meat, sandwich, curry, pie, cake, bread, pastry, sauce, drink, appetizer, side, iceCream, smoothie, dip, dressing);
+                context.DishType.AddRange(pasta, pizza, salad, soup, stew, dessert, roast, meat, sandwich, curry, pie, cake, bread, pastry, sauce, drink, appetizer, side, iceCream, smoothie, dip, dressing);
                 context.SaveChanges();
 
                 // Diets
-                if (context.Diet.Any())
+                if (context.Diets.Any())
                 {
                     return;
                 }
@@ -159,10 +159,10 @@ namespace ElProyecteGrande.Data
                 Diet highIodine = new() { Name = "High Iodine" };
                 Diet highMagnesium = new() { Name = "High Magnesium" };
                 Diet highPhosphorus = new() { Name = "High Phosphorus" };
-                context.Diet.AddRange(vegetarian, vegan, glutenFree, dairyFree, nutFree, eggFree, paleo, primal, whole30, keto, pescatarian, ketogenic, lowCarb, lowFat, lowSodium, lowSugar, highFiber, highProtein, highIron, highCalcium, highPotassium, highVitaminA, highVitaminC, highVitaminD, highVitaminE, highVitaminK, highVitaminB1, highVitaminB2, highVitaminB3, highVitaminB5, highVitaminB6, highVitaminB12, highFolate, highBiotin, highCholine, highZinc, highCopper, highManganese, highSelenium, highChromium, highMolybdenum, highIodine, highMagnesium, highPhosphorus);
+                context.Diets.AddRange(vegetarian, vegan, glutenFree, dairyFree, nutFree, eggFree, paleo, primal, whole30, keto, pescatarian, ketogenic, lowCarb, lowFat, lowSodium, lowSugar, highFiber, highProtein, highIron, highCalcium, highPotassium, highVitaminA, highVitaminC, highVitaminD, highVitaminE, highVitaminK, highVitaminB1, highVitaminB2, highVitaminB3, highVitaminB5, highVitaminB6, highVitaminB12, highFolate, highBiotin, highCholine, highZinc, highCopper, highManganese, highSelenium, highChromium, highMolybdenum, highIodine, highMagnesium, highPhosphorus);
                 context.SaveChanges();
 
-                if (context.Ingredient.Any())
+                if (context.Ingredients.Any())
                 {
                     return;
                 }
@@ -179,7 +179,7 @@ namespace ElProyecteGrande.Data
                 Ingredient eggs = new Ingredient { Name = "Eggs", UnitOfMeasure = "piece" };
                 Ingredient chocolateChip = new Ingredient { Name = "Chocolate Chip", UnitOfMeasure = "g" };
                 Ingredient onion = new Ingredient { Name = "Onion", UnitOfMeasure = "piece" };
-                context.Ingredient.AddRange(
+                context.Ingredients.AddRange(
                     penne,
                     tomato,
                     basil,
@@ -195,7 +195,7 @@ namespace ElProyecteGrande.Data
                 context.SaveChanges();
 
                 //Recipe ingredients
-                if (context.RecipeIngredient.Any())
+                if (context.RecipeIngredients.Any())
                 {
                     return;
                 }
@@ -209,12 +209,12 @@ namespace ElProyecteGrande.Data
                 var chocolateChipIngredient = new RecipeIngredient { Amount = 300, Ingredient = chocolateChip };
                 var chickenIngredient = new RecipeIngredient { Amount = 300, Ingredient = chicken };
                 var romanianLettuceIngredient = new RecipeIngredient { Amount = 300, Ingredient = romanianLettuce };
-                context.RecipeIngredient.AddRange(tomatoIngredient, basilIngredient, penneIngredient, onionIngredient, parmesanCheese,
+                context.RecipeIngredients.AddRange(tomatoIngredient, basilIngredient, penneIngredient, onionIngredient, parmesanCheese,
                     flourIngredient, sugarIngredient, chocolateChipIngredient, chickenIngredient, romanianLettuceIngredient);
                 context.SaveChanges();
 
                 //Recipes
-                if (context.Recipe.Any())
+                if (context.Recipes.Any())
                 {
                     return;
                 }
@@ -270,12 +270,12 @@ namespace ElProyecteGrande.Data
                     Diets = new List<Diet> { dairyFree, paleo, glutenFree },
                     DishType = salad,
                 };
-                context.Recipe.AddRange(tomatoPastaRecipe, frenchOnionSoupRecipe, chocolateChipCookieRecipe, chickenSaladRecipe);
+                context.Recipes.AddRange(tomatoPastaRecipe, frenchOnionSoupRecipe, chocolateChipCookieRecipe, chickenSaladRecipe);
                 context.SaveChanges();
 
 
                 //Users
-                if (context.User.Any())
+                if (context.Users.Any())
                 {
                     return;
                 }
@@ -302,11 +302,11 @@ namespace ElProyecteGrande.Data
                     Password = "pw1234567",
                     IsAdmin = false
                 };
-                context.User.AddRange(user1, user2, user3);
+                context.Users.AddRange(user1, user2, user3);
                 context.SaveChanges();
 
                 //Recipe reviews
-                if (context.RecipeReview.Any())
+                if (context.RecipeReviews.Any())
                 {
                     return;
                 }
@@ -371,11 +371,11 @@ namespace ElProyecteGrande.Data
 
                 };
 
-                context.RecipeReview.AddRange(review1, review2, review3, review4, review5, review6, review7, review8);
+                context.RecipeReviews.AddRange(review1, review2, review3, review4, review5, review6, review7, review8);
                 context.SaveChanges();
 
                 //User recipe status
-                if (context.UserRecipeStatuse.Any())
+                if (context.UserRecipeStatuses.Any())
                 {
                     return;
                 }
@@ -392,11 +392,11 @@ namespace ElProyecteGrande.Data
                 {
                     Name = RecipeStatus.Saved,
                 };
-                context.UserRecipeStatuse.AddRange(liked, disliked, saved);
+                context.UserRecipeStatuses.AddRange(liked, disliked, saved);
                 context.SaveChanges();
 
                 //User recipe
-                if (context.UserRecipe.Any())
+                if (context.UserRecipes.Any())
                 {
                     return;
                 }
@@ -443,7 +443,7 @@ namespace ElProyecteGrande.Data
                     User = user3,
                     Status = saved
                 };
-                context.UserRecipe.AddRange(userRecipe1, userRecipe2, userRecipe3, userRecipe4, userRecipe5,
+                context.UserRecipes.AddRange(userRecipe1, userRecipe2, userRecipe3, userRecipe4, userRecipe5,
                     userRecipe6, userRecipe7);
                 context.SaveChanges();
             }

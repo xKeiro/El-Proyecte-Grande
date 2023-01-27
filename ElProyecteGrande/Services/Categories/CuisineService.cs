@@ -15,27 +15,27 @@ namespace ElProyecteGrande.Services.Categories
 
         public async Task Add(Cuisine cuisine)
         {
-            await _context.Cuisine.AddAsync(cuisine);
+            await _context.Cuisines.AddAsync(cuisine);
             await _context.SaveChangesAsync();
         }
 
         public async Task Delete(Cuisine cuisine)
         {
-            _context.Cuisine.Remove(cuisine);
+            _context.Cuisines.Remove(cuisine);
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<Cuisine>> GetAll()
         {
             return await _context
-                .Cuisine
+                .Cuisines
                 .AsNoTracking()
                 .ToListAsync();
         }
 
         public async Task<Cuisine?> Find(int id)
         {
-            return await _context.Cuisine.FindAsync(id);
+            return await _context.Cuisines.FindAsync(id);
         }
 
         public async Task Update(Cuisine cuisine)
@@ -46,7 +46,7 @@ namespace ElProyecteGrande.Services.Categories
 
         public async Task<bool> IsUnique(Cuisine cuisine)
         {
-            return !await _context.Cuisine.AnyAsync(c => c.Name == cuisine.Name);
+            return !await _context.Cuisines.AnyAsync(c => c.Name == cuisine.Name);
         }
     }
 }
