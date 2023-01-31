@@ -1,7 +1,9 @@
-﻿using ElProyecteGrande.Interfaces.Services;
+﻿using AutoMapper;
+using ElProyecteGrande.Dtos.Categories.Cuisine;
+using ElProyecteGrande.Dtos.Categories.Diet;
+using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.DTOs.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
@@ -12,37 +14,43 @@ namespace ElProyecteGrande.Controllers
     {
         private readonly IBasicCrudService<Diet> _service;
         private readonly IStatusMessageService<Diet> _statusMessage;
+        private readonly IMapper _mapper;
 
-        public DietsController(IBasicCrudService<Diet> service, IStatusMessageService<Diet> statusMessage)
+        public DietsController(IBasicCrudService<Diet> service,
+            IStatusMessageService<Diet> statusMessage,
+            IMapper mapper)
         {
             _service = service;
             _statusMessage = statusMessage;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<Diet>>> GetAllDiets()
+        public async Task<ActionResult<IEnumerable<DietFull>>> GetAllDiets()
         {
             var diets = await _service.GetAll();
             if (diets != null)
             {
-                return StatusCode(StatusCodes.Status200OK, diets);
+                var dietsFull = _mapper.Map<IEnumerable<Diet>, IEnumerable<DietFull>>(diets);
+                return StatusCode(StatusCodes.Status200OK, dietsFull);
             }
-            
+
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<Diet>>> GetDietById(int id)
+        public async Task<ActionResult<IEnumerable<DietFull>>> GetDietById(int id)
         {
             var diet = await _service.Find(id);
 
             if (diet != null)
             {
-                return StatusCode(StatusCodes.Status200OK, diet);
+                var dietFull = _mapper.Map<Diet, DietFull>(diet);
+                return StatusCode(StatusCodes.Status200OK, dietFull);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }
@@ -50,14 +58,13 @@ namespace ElProyecteGrande.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<Diet>> AddDiet(DietWithoutIdAndRecipes dietWithoutIdAndCategorization)
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<DietFull>> AddDiet(DietWithoutId dietWithoutId)
         {
-            var diet = new Diet();
-            dietWithoutIdAndCategorization.MapTo(diet);
+            var diet = _mapper.Map<DietWithoutId, Diet>(dietWithoutId);
             if (!await _service.IsUnique(diet))
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessage.NotUnique());
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
             }
             try
             {
@@ -67,26 +74,26 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
             }
-
-            return StatusCode(StatusCodes.Status201Created, diet);
+            var dietFull = _mapper.Map<Diet, DietFull>(diet);
+            return StatusCode(StatusCodes.Status201Created, dietFull);
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<Diet>> UpdateDietById(int id, DietWithoutIdAndRecipes dietWithoutIdAndCategorization)
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<DietFull>> UpdateDietById(int id, DietWithoutId dietWithoutId)
         {
             var diet = await _service.Find(id);
             if (diet == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            dietWithoutIdAndCategorization.MapTo(diet);
+            diet = _mapper.Map(dietWithoutId, diet);
             if (!await _service.IsUnique(diet))
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessage.NotUnique());
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
             }
             try
             {
@@ -96,7 +103,8 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
             }
-            return StatusCode(StatusCodes.Status200OK, diet);
+            var dietFull = _mapper.Map<Diet, DietFull>(diet);
+            return StatusCode(StatusCodes.Status200OK, dietFull);
         }
 
 
@@ -106,14 +114,14 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
         public async Task<ActionResult<StatusMessage>> DeleteDietById(int id)
         {
-            var dietById = await _service.Find(id);
-            if (dietById == null)
+            var diet = await _service.Find(id);
+            if (diet == null)
             {
                 return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
             try
             {
-                await _service.Delete(dietById);
+                await _service.Delete(diet);
             }
             catch
             {
