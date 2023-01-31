@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using ElProyecteGrande.Models.Enums;
+using ElProyecteGrande.Enums;
 
 namespace ElProyecteGrande.Models.Users
 {

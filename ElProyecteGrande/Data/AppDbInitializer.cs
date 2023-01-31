@@ -1,6 +1,6 @@
-﻿using ElProyecteGrande.Models;
+﻿using ElProyecteGrande.Enums;
+using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Enums;
 using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
 using ElProyecteGrande.Services;

@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Models.Enums;
+﻿namespace ElProyecteGrande.Enums;
 
 public enum RecipeStatus
 {
