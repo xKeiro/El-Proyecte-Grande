@@ -1,6 +1,5 @@
-﻿using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Dto.Users;
+﻿using ElProyecteGrande.Dtos.Users.User;
+using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Users;
 using Microsoft.EntityFrameworkCore;
 

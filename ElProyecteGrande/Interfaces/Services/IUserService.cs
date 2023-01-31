@@ -1,4 +1,4 @@
-﻿using ElProyecteGrande.Models.Dto.Users;
+﻿using ElProyecteGrande.Dtos.Users.User;
 using ElProyecteGrande.Models.Users;
 
 namespace ElProyecteGrande.Interfaces.Services
