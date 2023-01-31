@@ -10,6 +10,7 @@ using System.Text.Json.Serialization;
 using ElProyecteGrande.Models.Users;
 using ElProyecteGrande.Services.Users;
 using ElProyecteGrande.Models.Recipes;
+using ElProyecteGrande.Maps;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ElProyecteGrandeContext")));
 builder.Services.AddEndpointsApiExplorer();
