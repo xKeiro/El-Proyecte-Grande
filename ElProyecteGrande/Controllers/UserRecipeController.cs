@@ -1,6 +1,5 @@
-﻿using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
+﻿using AutoMapper;
+using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +11,15 @@ namespace ElProyecteGrande.Controllers
     {
         private readonly IBasicCrudService<UserRecipe> _userRecipeService;
         private readonly IStatusMessageService<UserRecipe> _statusMessageService;
-        
-        public UserRecipeController(IBasicCrudService<UserRecipe> userRecipeService, IStatusMessageService<UserRecipe> statusMessage)
+        private readonly IMapper _mapper;
+
+        public UserRecipeController(IBasicCrudService<UserRecipe> userRecipeService,
+            IStatusMessageService<UserRecipe> statusMessage,
+            IMapper mapper)
         {
             _userRecipeService = userRecipeService;
             _statusMessageService = statusMessage;
+            _mapper = mapper;
         }
     }
 }
