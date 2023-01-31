@@ -1,7 +1,9 @@
-﻿using ElProyecteGrande.Interfaces.Services;
+﻿using AutoMapper;
+using ElProyecteGrande.Dtos.Categories.Cuisine;
+using ElProyecteGrande.Dtos.Categories.DishType;
+using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Dto.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
@@ -12,22 +14,27 @@ namespace ElProyecteGrande.Controllers
     {
         private readonly IBasicCrudService<DishType> _dishTypeService;
         private readonly IStatusMessageService<DishType> _statusMessageService;
+        private readonly IMapper _mapper;
 
-        public DishTypeController(IBasicCrudService<DishType> dishTypeService, IStatusMessageService<DishType> statusMessageService)
+        public DishTypeController(IBasicCrudService<DishType> dishTypeService,
+            IStatusMessageService<DishType> statusMessageService,
+            IMapper mapper)
         {
             _dishTypeService = dishTypeService;
             _statusMessageService = statusMessageService;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<DishType>>> GetDishTypes()
+        public async Task<ActionResult<IEnumerable<DishTypeFull>>> GetDishTypes()
         {
             List<DishType>? dishTypes = await _dishTypeService.GetAll();
             if (dishTypes is not null)
             {
-                return StatusCode(StatusCodes.Status200OK, dishTypes);
+                var dishTypesFull = _mapper.Map<IEnumerable<DishType>, IEnumerable<DishTypeFull>>(dishTypes);
+                return StatusCode(StatusCodes.Status200OK, dishTypesFull);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NoneFound());
         }
@@ -35,15 +42,14 @@ namespace ElProyecteGrande.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<Cuisine>> AddNewDishType(DishTypeWithoutId newDishType)
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<DishTypeFull>> AddNewDishType(DishTypeWithoutId dishTypeWithoutId)
         {
-            DishType dishType = new DishType();
-            newDishType.MapTo(dishType);
+            var dishType = _mapper.Map<DishTypeWithoutId, DishType>(dishTypeWithoutId);
 
             if (!await _dishTypeService.IsUnique(dishType))
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessageService.NotUnique());
             }
             try
             {
@@ -53,19 +59,20 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
-
-            return StatusCode(StatusCodes.Status201Created, dishType);
+            var dishTypeFull = _mapper.Map<DishType, DishTypeFull>(dishType);
+            return StatusCode(StatusCodes.Status201Created, dishTypeFull);
         }
 
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<DishType>> GetDishTypeById(int id)
+        public async Task<ActionResult<DishTypeFull>> GetDishTypeById(int id)
         {
             DishType? dishType = await _dishTypeService.Find(id);
             if (dishType is not null)
             {
-                return StatusCode(StatusCodes.Status200OK, dishType);
+                var dishTypeFull = _mapper.Map<DishType, DishTypeFull>(dishType);
+                return StatusCode(StatusCodes.Status200OK, dishTypeFull);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
         }
@@ -74,8 +81,8 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<Cuisine>> UpdateDishTypeById(int id, DishTypeWithoutId newDishType)
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<DishTypeFull>> UpdateDishTypeById(int id, DishTypeWithoutId dishTypeWithoutId)
         {
             DishType? dishType = await _dishTypeService.Find(id);
             if (dishType == null)
@@ -83,10 +90,10 @@ namespace ElProyecteGrande.Controllers
                 return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
             }
 
-            newDishType.MapTo(dishType);
+            dishType = _mapper.Map(dishTypeWithoutId, dishType);
             if (!await _dishTypeService.IsUnique(dishType))
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessageService.NotUnique());
             }
             try
             {
@@ -96,7 +103,8 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
-            return StatusCode(StatusCodes.Status200OK, dishType);
+            var dishTypeFull = _mapper.Map<DishType, DishTypeFull>(dishType);
+            return StatusCode(StatusCodes.Status200OK, dishTypeFull);
         }
 
         [HttpDelete("{id}")]
