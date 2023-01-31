@@ -1,10 +1,8 @@
-﻿using ElProyecteGrande.Interfaces.Services;
+﻿using AutoMapper;
+using ElProyecteGrande.Dtos.Users.User;
+using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Dto.Categories;
-using ElProyecteGrande.Models.Dto.Users;
 using ElProyecteGrande.Models.Users;
-using ElProyecteGrande.Services.Categories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ElProyecteGrande.Controllers
@@ -15,11 +13,15 @@ namespace ElProyecteGrande.Controllers
     {
         private readonly IUserService _userService;
         private readonly IStatusMessageService<User> _statusMessageService;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService, IStatusMessageService<User> userStatusMessageService)
+        public UserController(IUserService userService,
+            IStatusMessageService<User> userStatusMessageService,
+            IMapper mapper)
         {
             _userService = userService;
             _statusMessageService = userStatusMessageService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,10 +29,10 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
         public async Task<ActionResult<IEnumerable<UserPublic>>> GetUsers()
         {
-            List<UserPublic> users = await _userService.GetAll();
-            if (users is not null)
+            var usersPublic = await _userService.GetAll();
+            if (usersPublic is not null)
             {
-                return StatusCode(StatusCodes.Status200OK, users);
+                return StatusCode(StatusCodes.Status200OK, usersPublic);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NoneFound());
         }
@@ -38,15 +40,14 @@ namespace ElProyecteGrande.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<User>> AddNewUser(UserWithoutId newUser)
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<UserPublic>> AddNewUser(UserWithoutId userWithoutId)
         {
-            User user = new User();
-            newUser.MapTo(user);
+            var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
 
             if (!await _userService.IsUnique(user))
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessageService.NotUnique());
             }
             try
             {
@@ -56,16 +57,16 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
-
-            return StatusCode(StatusCodes.Status201Created, user);
+            var userPublic = _mapper.Map<User, UserPublic>(user);
+            return StatusCode(StatusCodes.Status201Created, userPublic);
         }
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        [ProducesResponseType(StatusCodes.Status406NotAcceptable, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<User>> UpdateUserById(int id, UserWithoutId newUser)
+        [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+        public async Task<ActionResult<UserPublic>> UpdateUserById(int id, UserWithoutId userWithoutId)
         {
             User? user = await _userService.Find(id);
             if (user == null)
@@ -73,10 +74,10 @@ namespace ElProyecteGrande.Controllers
                 return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
             }
 
-            newUser.MapTo(user);
+            user = _mapper.Map<UserWithoutId, User>(userWithoutId);
             if (!await _userService.IsUnique(user))
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, _statusMessageService.NotUnique());
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessageService.NotUnique());
             }
             try
             {
@@ -86,7 +87,8 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessageService.GenericError());
             }
-            return StatusCode(StatusCodes.Status200OK, user);
+            var userPublic = _mapper.Map<User, UserPublic>(user);
+            return StatusCode(StatusCodes.Status200OK, userPublic);
         }
 
         [HttpGet("{id}")]
@@ -94,10 +96,10 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
         public async Task<ActionResult<UserPublic>> GetUserById(int id)
         {
-            UserPublic? user = await _userService.FindPublic(id);
-            if (user is not null)
+            var userPublic = await _userService.FindPublic(id);
+            if (userPublic is not null)
             {
-                return StatusCode(StatusCodes.Status200OK, user);
+                return StatusCode(StatusCodes.Status200OK, userPublic);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessageService.NotFound(id));
         }
