@@ -24,7 +24,7 @@ public class ElProyecteGrandeContext : DbContext
     public DbSet<Cuisine> Cuisines { get; set; } = default!;
     public DbSet<Diet> Diets { get; set; } = default!;
     public DbSet<MealTime> MealTimes { get; set; } = default!;
-    public DbSet<DishType> DishType { get; set; } = default!;
+    public DbSet<DishType> DishTypes { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

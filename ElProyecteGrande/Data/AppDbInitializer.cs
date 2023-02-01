@@ -80,7 +80,7 @@ namespace ElProyecteGrande.Data
                 context.SaveChanges();
 
                 // Dish Type
-                if (context.DishType.Any())
+                if (context.DishTypes.Any())
                 {
                     return;
                 }
@@ -106,7 +106,7 @@ namespace ElProyecteGrande.Data
                 DishType smoothie = new() { Name = "Smoothie" };
                 DishType dip = new() { Name = "Dip" };
                 DishType dressing = new() { Name = "Dressing" };
-                context.DishType.AddRange(pasta, pizza, salad, soup, stew, dessert, roast, meat, sandwich, curry, pie, cake, bread, pastry, sauce, drink, appetizer, side, iceCream, smoothie, dip, dressing);
+                context.DishTypes.AddRange(pasta, pizza, salad, soup, stew, dessert, roast, meat, sandwich, curry, pie, cake, bread, pastry, sauce, drink, appetizer, side, iceCream, smoothie, dip, dressing);
                 context.SaveChanges();
 
                 // Diets
