@@ -22,7 +22,7 @@ namespace ElProyecteGrande.Services
         };
         public StatusMessage Deleted(int id) => new()
         {
-            Message = $"{typeof(T).Name} with id:'{id}' was deleted!"
+            Message = $"{typeof(T).Name} with id:'{id}' was deleted and everything related to it!"
         };
         public StatusMessage NotUnique() => new()
         {
