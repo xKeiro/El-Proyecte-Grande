@@ -1,54 +1,64 @@
-﻿using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models.Categories;
+﻿using ElProyecteGrande.Models.Categories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Dtos.Categories.Diet;
+using AutoMapper;
 
 namespace ElProyecteGrande.Services.Categories
 {
-    public class DietService : IBasicCrudService<Diet>
+    public class DietService : IBasicCrudService<DietPublic, DietWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
-
-        public DietService(ElProyecteGrandeContext context)
+        private readonly IMapper _mapper;
+        public DietService(ElProyecteGrandeContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-        public async Task<List<Diet>> GetAll()
+
+        public async Task<DietPublic> Add(DietWithoutId dietWithoutId)
         {
-            return await _context
+            var diet = _mapper.Map<DietWithoutId, Diet>(dietWithoutId);
+            await _context.Diets.AddAsync(diet);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Diet, DietPublic>(diet);
+        }
+
+        public async Task<List<DietPublic>> GetAll()
+        {
+            var diets = await _context
                 .Diets
                 .AsNoTracking()
                 .ToListAsync();
+            return _mapper.Map<List<Diet>, List<DietPublic>>(diets);
         }
 
-        public async Task Add(Diet diet)
+        public async Task<DietPublic?> Find(int id)
         {
-            await _context.Diets.AddAsync(diet);
+            var diet = await _context.Diets
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (diet is null)
+            {
+                return null;
+            }
+            return _mapper.Map<Diet, DietPublic>(diet);
+        }
+
+        public async Task<DietPublic> Update(int id, DietWithoutId dietWithoutId)
+        {
+            var diet = _mapper.Map<DietWithoutId, Diet>(dietWithoutId);
+            diet.Id = id;
+            _context.Update(diet);
             await _context.SaveChangesAsync();
-        }
-    
-        public async Task<Diet?> Find(int id)
-        {
-            return await _context.Diets.FindAsync(id);
+            return _mapper.Map<Diet, DietPublic>(diet);
         }
 
-        public async Task Update(Diet diet)
+        public async Task<bool> IsUnique(DietWithoutId dietWithoutId)
         {
-            EntityEntry entityEntry = _context.Entry(diet);
-            entityEntry.State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            var diet = _mapper.Map<DietWithoutId, Diet>(dietWithoutId);
+            return !await _context.Diets.AnyAsync(c => c.Name == diet.Name);
         }
 
-        public async Task Delete(Diet diet)
-        {
-            _context.Diets.Remove(diet);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<bool> IsUnique(Diet diet)
-        {
-            bool isUnique = !await _context.Diets.AnyAsync(d => d.Name == diet.Name);
-            return isUnique;
-        }
     }
 }
