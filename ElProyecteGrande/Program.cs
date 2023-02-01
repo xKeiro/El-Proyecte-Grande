@@ -8,9 +8,10 @@ using ElProyecteGrande.Services.Categories;
 using ElProyecteGrande.Data;
 using System.Text.Json.Serialization;
 using ElProyecteGrande.Models.Users;
-using ElProyecteGrande.Services.Users;
+//using ElProyecteGrande.Services.Users;
 using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Maps;
+using ElProyecteGrande.Dtos.Categories.Cuisine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,7 @@ builder.Services.AddScoped<IStatusMessageService<MealTime>, StatusMessageService
 builder.Services.AddScoped<IBasicCrudService<DishType>, DishTypeService>();
 builder.Services.AddScoped<IStatusMessageService<DishType>, StatusMessageService<DishType>>();
 
-builder.Services.AddScoped<IBasicCrudService<Cuisine>, CuisineService>();
+builder.Services.AddScoped<IBasicCrudService<CuisinePublic, CuisineWithoutId>, CuisineService>();
 builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
 
 builder.Services.AddScoped<IBasicCrudService<Ingredient>, IngredientService>();

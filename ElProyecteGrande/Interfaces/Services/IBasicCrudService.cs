@@ -1,14 +1,11 @@
-﻿using ElProyecteGrande.Models.Categories;
-
-namespace ElProyecteGrande.Interfaces.Services
+﻿namespace ElProyecteGrande.Interfaces.Services
 {
-    public interface IBasicCrudService<T> where T : class
+    public interface IBasicCrudService<ResponseDto, RequestDto> where ResponseDto : class where RequestDto : class
     {
-        Task<List<T>> GetAll();
-        Task Add(T model);
-        Task<T?> Find(int id);
-        Task Update(T model);
-        Task Delete(T model);
-        Task<bool> IsUnique(T model);
+        Task<List<ResponseDto>> GetAll();
+        Task<ResponseDto> Add(RequestDto requestDto);
+        Task<ResponseDto?> Find(int id);
+        Task<ResponseDto> Update(int id, RequestDto requestDto);
+        Task<bool> IsUnique(RequestDto requestDto);
     }
 }

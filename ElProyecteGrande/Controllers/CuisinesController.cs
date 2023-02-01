@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using ElProyecteGrande.Dtos.Categories.Cuisine;
+﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
@@ -11,68 +10,77 @@ namespace ElProyecteGrande.Controllers;
 [ApiController]
 public class CuisinesController : ControllerBase
 {
-    private readonly IBasicCrudService<Cuisine> _service;
+    private readonly IBasicCrudService<CuisinePublic, CuisineWithoutId> _service;
     private readonly IStatusMessageService<Cuisine> _statusMessage;
-    private readonly IMapper _mapper;
 
-    public CuisinesController(IBasicCrudService<Cuisine> cuisineService, 
-        IStatusMessageService<Cuisine> statusMessage, 
-        IMapper mapper)
+    public CuisinesController(IBasicCrudService<CuisinePublic, CuisineWithoutId> cuisineService,
+        IStatusMessageService<Cuisine> statusMessage)
     {
         _service = cuisineService;
         _statusMessage = statusMessage;
-        _mapper = mapper;
     }
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IEnumerable<CuisineFull>>> GetAllCuisines()
+    public async Task<ActionResult<IEnumerable<CuisinePublic>>> GetAllCuisines()
     {
-        var cuisines = await _service.GetAll();
-        if (cuisines != null)
+        try
         {
-            var cuisinesFull = _mapper.Map<IEnumerable<Cuisine>, IEnumerable<CuisineFull>>(cuisines);
-            return StatusCode(StatusCodes.Status200OK, cuisinesFull);
+            var cuisinesPublic = await _service.GetAll();
+            if (cuisinesPublic != null)
+            {
+                return StatusCode(StatusCodes.Status200OK, cuisinesPublic);
+            }
+            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
         }
-        return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
     }
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<CuisineFull>> AddCuisine(CuisineWithoutId cuisineWithoutId)
+    public async Task<ActionResult<CuisinePublic>> AddCuisine(CuisineWithoutId cuisineWithoutId)
     {
-        var cuisine = _mapper.Map<CuisineWithoutId, Cuisine>(cuisineWithoutId);
-        if (!await _service.IsUnique(cuisine))
-        {
-            return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
-        }
+
         try
         {
-            await _service.Add(cuisine);
+            if (!await _service.IsUnique(cuisineWithoutId))
+            {
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+            }
+            var cuisinePublic = await _service.Add(cuisineWithoutId);
+            return StatusCode(StatusCodes.Status201Created, cuisinePublic);
         }
         catch
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
-
-        var cuisineFull = _mapper.Map<Cuisine, CuisineFull>(cuisine);
-        return StatusCode(StatusCodes.Status201Created, cuisineFull);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<CuisineFull>> GetCuisineById(int id)
+    public async Task<ActionResult<CuisinePublic>> GetCuisineById(int id)
     {
-        var cuisine = await _service.Find(id);
-        if (cuisine != null)
+        try
         {
-            var cuisineFull = _mapper.Map<Cuisine, CuisineFull>(cuisine);
-            return StatusCode(StatusCodes.Status200OK, cuisineFull);
+            var cuisinePublic = await _service.Find(id);
+            if (cuisinePublic != null)
+            {
+                return StatusCode(StatusCodes.Status200OK, cuisinePublic);
+            }
+            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }
-        return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
     }
 
     [HttpPut("{id}")]
@@ -80,50 +88,25 @@ public class CuisinesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<CuisineFull>> UpdateCuisineById(int id, CuisineWithoutId cuisineWithoutId)
+    public async Task<ActionResult<CuisinePublic>> UpdateCuisineById(int id, CuisineWithoutId cuisineWithoutId)
     {
-        var cuisine = await _service.Find(id);
-        if (cuisine == null)
-        {
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-        }
-        cuisine = _mapper.Map<CuisineWithoutId, Cuisine>(cuisineWithoutId);
-        if (!await _service.IsUnique(cuisine))
-        {
-            return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
-        }
         try
         {
-            await _service.Update(cuisine);
+            var cuisinePublicOriginal = await _service.Find(id);
+            if (cuisinePublicOriginal == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+            }
+            if (!await _service.IsUnique(cuisineWithoutId))
+            {
+                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+            }
+            var cuisinePublic = await _service.Update(id, cuisineWithoutId);
+            return StatusCode(StatusCodes.Status200OK, cuisinePublic);
         }
         catch
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
-        var cuisineFull = _mapper.Map<Cuisine, CuisineFull>(cuisine);
-        return StatusCode(StatusCodes.Status200OK, cuisineFull);
     }
-
-    [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<StatusMessage>> DeleteCuisineById(int id)
-    {
-        var cuisine = await _service.Find(id);
-        if (cuisine == null)
-        {
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-        }
-        try
-        {
-            await _service.Delete(cuisine);
-        }
-        catch
-        {
-            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
-        }
-        return StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id));
-    }
-
 }
