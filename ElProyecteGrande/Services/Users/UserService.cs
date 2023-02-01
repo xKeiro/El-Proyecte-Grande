@@ -1,75 +1,82 @@
-﻿using ElProyecteGrande.Dtos.Users.User;
+﻿using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Interfaces.Services;
+using AutoMapper;
 using ElProyecteGrande.Models.Users;
-using Microsoft.EntityFrameworkCore;
+using ElProyecteGrande.Dtos.Users.User;
 
-namespace ElProyecteGrande.Services.Users
+namespace ElProyecteGrande.Services.Categories
 {
-    public class UserService : IUserService
+    public class UserService : IUserService<UserPublic, UserWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
-
-        public UserService(ElProyecteGrandeContext context)
+        private readonly IMapper _mapper;
+        public UserService(ElProyecteGrandeContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<UserPublic> Add(UserWithoutId userWithoutId)
+        {
+            var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<User, UserPublic>(user);
         }
 
         public async Task<List<UserPublic>> GetAll()
         {
-            return await _context.Users.AsNoTracking().Select(u => new UserPublic()
+            var users = await _context
+                .Users
+                .AsNoTracking()
+                .ToListAsync();
+            return _mapper.Map<List<User>, List<UserPublic>>(users);
+        }
+
+        public async Task<UserPublic?> Find(int id)
+        {
+            var user = await _context.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (user is null)
             {
-                Id = u.Id,
-                Username = u.Username,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                EmailAddress = u.EmailAddress,
-                IsAdmin = u.IsAdmin
-            }).ToListAsync();
+                return null;
+            }
+            return _mapper.Map<User, UserPublic>(user);
         }
 
-        public async Task Add(User user)
+        public async Task<UserPublic> Update(int id, UserWithoutId userWithoutId)
         {
-            await _context.Users.AddAsync(user);
+            var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
+            user.Id = id;
+            _context.Update(user);
             await _context.SaveChangesAsync();
+            return _mapper.Map<User, UserPublic>(user);
         }
 
-        public async Task<User?> Find(int id)
+        public async Task<bool> IsUnique(UserWithoutId userWithoutId)
         {
-            return await _context.Users.FindAsync(id);
+            var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
+            return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress == user.EmailAddress);
         }
 
-        public async Task<UserPublic?> FindPublic(int id)
+        public async Task<bool> Delete(int id)
         {
-            User? user = await _context.Users.FindAsync(id);
-
-            if (user is null) return null;
-
-            return new UserPublic()
+            var user = await _context.Users
+                 .FirstOrDefaultAsync(user => user.Id == id);
+            var userRecipe = await _context.UserRecipes
+                .FirstOrDefaultAsync(userRecipe => userRecipe.User == user);
+            if (user is null)
             {
-                Id = user.Id,
-                Username = user.Username,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                EmailAddress = user.EmailAddress,
-                IsAdmin = user.IsAdmin
-            };
-        }
-
-        public async Task Update(User user)
-        {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task Delete(User user)
-        {
+                return false;
+            }
+            if (userRecipe is not null)
+            {
+                _context.UserRecipes.Remove(userRecipe);
+            }
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
-        }
-
-        public async Task<bool> IsUnique(User user)
-        {
-            return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress == user.EmailAddress);
+            return true;
         }
     }
 }
