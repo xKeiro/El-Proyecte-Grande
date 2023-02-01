@@ -1,52 +1,64 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Interfaces.Services;
+using AutoMapper;
+using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Models;
 
-namespace ElProyecteGrande.Services
+namespace ElProyecteGrande.Services.Categories
 {
-    public class IngredientService: IBasicCrudService<Ingredient>
+    public class IngredientService : IBasicCrudService<IngredientPublic, IngredientWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
-        public IngredientService(ElProyecteGrandeContext context)
+        private readonly IMapper _mapper;
+        public IngredientService(ElProyecteGrandeContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task Add(Ingredient ingredient)
+        public async Task<IngredientPublic> Add(IngredientWithoutId ingredientWithoutId)
         {
+            var ingredient = _mapper.Map<IngredientWithoutId, Ingredient>(ingredientWithoutId);
             await _context.Ingredients.AddAsync(ingredient);
             await _context.SaveChangesAsync();
+            return _mapper.Map<Ingredient, IngredientPublic>(ingredient);
         }
 
-        public async Task Delete(Ingredient ingredient)
+        public async Task<List<IngredientPublic>> GetAll()
         {
-            _context.Ingredients.Remove(ingredient);
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task<List<Ingredient>> GetAll()
-        {
-            return await _context
+            var ingredients = await _context
                 .Ingredients
                 .AsNoTracking()
                 .ToListAsync();
+            return _mapper.Map<List<Ingredient>, List<IngredientPublic>>(ingredients);
         }
 
-        public async Task<Ingredient?> Find(int id)
+        public async Task<IngredientPublic?> Find(int id)
         {
-            return await _context.Ingredients.FindAsync(id);
+            var ingredient = await _context.Ingredients
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == id);
+            if (ingredient is null)
+            {
+                return null;
+            }
+            return _mapper.Map<Ingredient, IngredientPublic>(ingredient);
         }
-        
-        public async Task Update(Ingredient ingredient)
+
+        public async Task<IngredientPublic> Update(int id, IngredientWithoutId ingredientWithoutId)
         {
+            var ingredient = _mapper.Map<IngredientWithoutId, Ingredient>(ingredientWithoutId);
+            ingredient.Id = id;
             _context.Update(ingredient);
             await _context.SaveChangesAsync();
+            return _mapper.Map<Ingredient, IngredientPublic>(ingredient);
         }
 
-        public async Task<bool> IsUnique(Ingredient ingredient)
+        public async Task<bool> IsUnique(IngredientWithoutId ingredientWithoutId)
         {
-            return !await _context.Ingredients.AnyAsync(i => i.Name == ingredient.Name);
+            var ingredient = _mapper.Map<IngredientWithoutId, Ingredient>(ingredientWithoutId);
+            return !await _context.Ingredients.AnyAsync(c => c.Name == ingredient.Name);
         }
+
     }
 }
