@@ -25,13 +25,13 @@ public class IngredientsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IEnumerable<IngredientFull>>> GetAllIngredients()
+    public async Task<ActionResult<IEnumerable<IngredientPublic>>> GetAllIngredients()
     {
         var ingredients = await _service.GetAll();
         if (ingredients != null)
         {
-            var ingredientsFull = _mapper.Map<IEnumerable<Ingredient>, IEnumerable<IngredientFull>>(ingredients);
-            return StatusCode(StatusCodes.Status200OK, ingredientsFull);
+            var ingredientsPublic = _mapper.Map<IEnumerable<Ingredient>, IEnumerable<IngredientPublic>>(ingredients);
+            return StatusCode(StatusCodes.Status200OK, ingredientsPublic);
         }
         return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
     }
@@ -40,7 +40,7 @@ public class IngredientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IngredientFull>> AddIngredient(IngredientWithoutId ingredientWithoutId)
+    public async Task<ActionResult<IngredientPublic>> AddIngredient(IngredientWithoutId ingredientWithoutId)
     {
         var ingredient = _mapper.Map<IngredientWithoutId, Ingredient>(ingredientWithoutId);
         if (!await _service.IsUnique(ingredient))
@@ -55,20 +55,20 @@ public class IngredientsController : ControllerBase
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
-        var ingredientFull = _mapper.Map<Ingredient, IngredientFull>(ingredient);
-        return StatusCode(StatusCodes.Status201Created, ingredientFull);
+        var ingredientPublic = _mapper.Map<Ingredient, IngredientPublic>(ingredient);
+        return StatusCode(StatusCodes.Status201Created, ingredientPublic);
     }
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IngredientFull>> GetIngredientById(int id)
+    public async Task<ActionResult<IngredientPublic>> GetIngredientById(int id)
     {
         var ingredient = await _service.Find(id);
         if (ingredient != null)
         {
-            var ingredientFull = _mapper.Map<Ingredient, IngredientFull>(ingredient);
-            return StatusCode(StatusCodes.Status200OK, ingredientFull);
+            var ingredientPublic = _mapper.Map<Ingredient, IngredientPublic>(ingredient);
+            return StatusCode(StatusCodes.Status200OK, ingredientPublic);
         }
         return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
     }
@@ -78,7 +78,7 @@ public class IngredientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IngredientFull>> UpdateIngredientById(int id, IngredientWithoutId ingredientWithoutId)
+    public async Task<ActionResult<IngredientPublic>> UpdateIngredientById(int id, IngredientWithoutId ingredientWithoutId)
     {
         var ingredient = await _service.Find(id);
         if (ingredient == null)
@@ -98,8 +98,8 @@ public class IngredientsController : ControllerBase
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
-        var ingredientFull = _mapper.Map<Ingredient, IngredientFull>(ingredient);
-        return StatusCode(StatusCodes.Status200OK, ingredientFull);
+        var ingredientPublic = _mapper.Map<Ingredient, IngredientPublic>(ingredient);
+        return StatusCode(StatusCodes.Status200OK, ingredientPublic);
     }
 
     [HttpDelete("{id}")]

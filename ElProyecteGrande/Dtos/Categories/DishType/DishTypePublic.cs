@@ -3,6 +3,6 @@
 /// <summary>
 /// Type of a dish, like - soup, pizza, pasta, etc.
 /// </summary>
-public class DishTypeFull : CategoryWithNameAndId
+public class DishTypePublic : CategoryWithNameAndId
 {
 }

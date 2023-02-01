@@ -1,6 +1,6 @@
 ﻿namespace ElProyecteGrande.Dtos.Recipes.RecipeReview;
 
-public class RecipeReviewFull: RecipeReviewWithoutId
+public class RecipeReviewPublic: RecipeReviewWithoutId
 {
     public int Id { get; set; }
 }

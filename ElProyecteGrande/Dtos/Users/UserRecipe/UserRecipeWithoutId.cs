@@ -11,8 +11,8 @@ public class UserRecipeWithoutId
     public required UserPublic User { get; set; }
 
     [Required]
-    public required RecipeFull Recipe { get; set; }
+    public required RecipePublic Recipe { get; set; }
 
     [Required]
-    public required UserRecipeStatusFull Status { get; set; }
+    public required UserRecipeStatusPublic Status { get; set; }
 }

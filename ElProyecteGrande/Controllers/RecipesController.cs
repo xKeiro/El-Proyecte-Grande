@@ -27,13 +27,13 @@ namespace ElProyecteGrande.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<RecipeFull>>> GetAllRecipes()
+        public async Task<ActionResult<IEnumerable<RecipePublic>>> GetAllRecipes()
         {
             var recipes = await _service.GetAll();
             if (recipes != null)
             {
-                var recipesFull = _mapper.Map<IEnumerable<Recipe>, IEnumerable<RecipeFull>>(recipes);
-                return StatusCode(StatusCodes.Status200OK, recipesFull);
+                var recipesPublic = _mapper.Map<IEnumerable<Recipe>, IEnumerable<RecipePublic>>(recipes);
+                return StatusCode(StatusCodes.Status200OK, recipesPublic);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
         }
@@ -41,13 +41,13 @@ namespace ElProyecteGrande.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<RecipeFull>> RecipeById(int id)
+        public async Task<ActionResult<RecipePublic>> RecipeById(int id)
         {
             var recipe = await _service.Find(id);
             if (recipe != null)
             {
-                var recipeFull = _mapper.Map<Recipe, RecipeFull>(recipe);
-                return StatusCode(StatusCodes.Status200OK, recipeFull);
+                var recipePublic = _mapper.Map<Recipe, RecipePublic>(recipe);
+                return StatusCode(StatusCodes.Status200OK, recipePublic);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }

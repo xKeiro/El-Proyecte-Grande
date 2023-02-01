@@ -1,6 +1,6 @@
 ﻿namespace ElProyecteGrande.Dtos.Ingredient;
 
-public class IngredientFull: IngredientWithoutId
+public class IngredientPublic: IngredientWithoutId
 {
     public int Id { get; set; }
 }

@@ -4,6 +4,6 @@
 /// Different type of cuisines, like - Hungarian, Italian, French, etc.
 /// </summary>
 
-public class CuisineFull : CategoryWithNameAndId
+public class CuisinePublic : CategoryWithNameAndId
 {
 }

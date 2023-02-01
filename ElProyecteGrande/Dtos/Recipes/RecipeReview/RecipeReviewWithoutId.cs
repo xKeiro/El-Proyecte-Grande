@@ -10,7 +10,7 @@ public class RecipeReviewWithoutId
     public required User User { get; set; }
 
     [Required]
-    public required RecipeFull Recipe { get; set; }
+    public required RecipePublic Recipe { get; set; }
 
     [Required]
     [Range(1, 5)]

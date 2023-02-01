@@ -21,43 +21,43 @@ public class MappingProfile: Profile
 {
     public MappingProfile()
     {
-        CreateMap<Cuisine, CuisineFull>();
-        CreateMap<CuisineFull, Cuisine>();
+        CreateMap<Cuisine, CuisinePublic>();
+        CreateMap<CuisinePublic, Cuisine>();
         CreateMap<Cuisine, CuisineWithoutId>();
         CreateMap<CuisineWithoutId, Cuisine>();
         
-        CreateMap<Diet, DietFull>();
-        CreateMap<DietFull, Diet>();
+        CreateMap<Diet, DietPublic>();
+        CreateMap<DietPublic, Diet>();
         CreateMap<Diet, DietWithoutId>();
         CreateMap<DietWithoutId, Diet>();
 
-        CreateMap<DishType, DishTypeFull>();
-        CreateMap<DishTypeFull, DishType>();
+        CreateMap<DishType, DishTypePublic>();
+        CreateMap<DishTypePublic, DishType>();
         CreateMap<DishType, DishTypeWithoutId>();
         CreateMap<DishTypeWithoutId, DishType>();
         
-        CreateMap<MealTime, MealTimeFull>();
-        CreateMap<MealTimeFull, MealTime>();
+        CreateMap<MealTime, MealTimePublic>();
+        CreateMap<MealTimePublic, MealTime>();
         CreateMap<MealTime, MealTimeWithoutId>();
         CreateMap<MealTimeWithoutId, MealTime>();
 
-        CreateMap<Ingredient, IngredientFull>();
-        CreateMap<IngredientFull, Ingredient>();
+        CreateMap<Ingredient, IngredientPublic>();
+        CreateMap<IngredientPublic, Ingredient>();
         CreateMap<Ingredient, IngredientWithoutId>();
         CreateMap<IngredientWithoutId, Ingredient>();
 
-        CreateMap<Recipe, RecipeFull>();
-        CreateMap<RecipeFull, Recipe>();
+        CreateMap<Recipe, RecipePublic>();
+        CreateMap<RecipePublic, Recipe>();
         CreateMap<Recipe, RecipeWithoutId>();
         CreateMap<RecipeWithoutId, Recipe>();
 
-        CreateMap<RecipeIngredient, RecipeIngredientFull>();
-        CreateMap<RecipeIngredientFull, RecipeIngredient>();
+        CreateMap<RecipeIngredient, RecipeIngredientPublic>();
+        CreateMap<RecipeIngredientPublic, RecipeIngredient>();
         CreateMap<RecipeIngredient, RecipeIngredientWithoutId>();
         CreateMap<RecipeIngredientWithoutId, RecipeIngredient>();
 
-        CreateMap<RecipeReview, RecipeReviewFull>();
-        CreateMap<RecipeReviewFull, RecipeReview>();
+        CreateMap<RecipeReview, RecipeReviewPublic>();
+        CreateMap<RecipeReviewPublic, RecipeReview>();
         CreateMap<RecipeReview, RecipeReviewWithoutId>();
         CreateMap<RecipeReviewWithoutId, RecipeReview>();
 
@@ -66,13 +66,13 @@ public class MappingProfile: Profile
         CreateMap<User, UserWithoutId>();
         CreateMap<UserWithoutId, User>();
 
-        CreateMap<UserRecipe, UserRecipeFull>();
-        CreateMap<UserRecipeFull, UserRecipe>();
+        CreateMap<UserRecipe, UserRecipePublic>();
+        CreateMap<UserRecipePublic, UserRecipe>();
         CreateMap<UserRecipe, UserRecipeWithoutId>();
         CreateMap<UserRecipeWithoutId, UserRecipe>();
 
-        CreateMap<UserRecipeStatus, UserRecipeStatusFull>();
-        CreateMap<UserRecipeStatusFull, UserRecipeStatus>();
+        CreateMap<UserRecipeStatus, UserRecipeStatusPublic>();
+        CreateMap<UserRecipeStatusPublic, UserRecipeStatus>();
         CreateMap<UserRecipeStatus, UserRecipeStatusWithoutId>();
         CreateMap<UserRecipeStatusWithoutId, UserRecipeStatus>();
 

@@ -28,13 +28,13 @@ namespace ElProyecteGrande.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<DietFull>>> GetAllDiets()
+        public async Task<ActionResult<IEnumerable<DietPublic>>> GetAllDiets()
         {
             var diets = await _service.GetAll();
             if (diets != null)
             {
-                var dietsFull = _mapper.Map<IEnumerable<Diet>, IEnumerable<DietFull>>(diets);
-                return StatusCode(StatusCodes.Status200OK, dietsFull);
+                var dietsPublic = _mapper.Map<IEnumerable<Diet>, IEnumerable<DietPublic>>(diets);
+                return StatusCode(StatusCodes.Status200OK, dietsPublic);
             }
 
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
@@ -43,14 +43,14 @@ namespace ElProyecteGrande.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<IEnumerable<DietFull>>> GetDietById(int id)
+        public async Task<ActionResult<IEnumerable<DietPublic>>> GetDietById(int id)
         {
             var diet = await _service.Find(id);
 
             if (diet != null)
             {
-                var dietFull = _mapper.Map<Diet, DietFull>(diet);
-                return StatusCode(StatusCodes.Status200OK, dietFull);
+                var dietPublic = _mapper.Map<Diet, DietPublic>(diet);
+                return StatusCode(StatusCodes.Status200OK, dietPublic);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }
@@ -59,7 +59,7 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<DietFull>> AddDiet(DietWithoutId dietWithoutId)
+        public async Task<ActionResult<DietPublic>> AddDiet(DietWithoutId dietWithoutId)
         {
             var diet = _mapper.Map<DietWithoutId, Diet>(dietWithoutId);
             if (!await _service.IsUnique(diet))
@@ -74,8 +74,8 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
             }
-            var dietFull = _mapper.Map<Diet, DietFull>(diet);
-            return StatusCode(StatusCodes.Status201Created, dietFull);
+            var dietPublic = _mapper.Map<Diet, DietPublic>(diet);
+            return StatusCode(StatusCodes.Status201Created, dietPublic);
         }
 
         [HttpPut("{id}")]
@@ -83,7 +83,7 @@ namespace ElProyecteGrande.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
         [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-        public async Task<ActionResult<DietFull>> UpdateDietById(int id, DietWithoutId dietWithoutId)
+        public async Task<ActionResult<DietPublic>> UpdateDietById(int id, DietWithoutId dietWithoutId)
         {
             var diet = await _service.Find(id);
             if (diet == null)
@@ -103,8 +103,8 @@ namespace ElProyecteGrande.Controllers
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
             }
-            var dietFull = _mapper.Map<Diet, DietFull>(diet);
-            return StatusCode(StatusCodes.Status200OK, dietFull);
+            var dietPublic = _mapper.Map<Diet, DietPublic>(diet);
+            return StatusCode(StatusCodes.Status200OK, dietPublic);
         }
 
 

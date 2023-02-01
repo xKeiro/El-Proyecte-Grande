@@ -15,16 +15,16 @@ public class RecipeWithoutId
 
     [Required]
     [MinLength(1)]
-    public required ICollection<RecipeIngredientFull> RecipeIngredients { get; set; }
+    public required ICollection<RecipeIngredientPublic> RecipeIngredients { get; set; }
 
     [Required]
-    public CuisineFull Cuisine { get; set; }
+    public CuisinePublic Cuisine { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<MealTimeFull> MealTimes { get; set; }
+    public ICollection<MealTimePublic> MealTimes { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<DietFull> Diets { get; set; }
+    public ICollection<DietPublic> Diets { get; set; }
     [Required]
-    public DishTypeFull DishType { get; set; }
+    public DishTypePublic DishType { get; set; }
 }

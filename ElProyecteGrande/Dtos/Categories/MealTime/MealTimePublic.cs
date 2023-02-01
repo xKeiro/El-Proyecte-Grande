@@ -3,6 +3,6 @@
 /// <summary>
 /// Time of a meal, like - breakfast, lunch, dinner
 /// </summary>
-public class MealTimeFull : CategoryWithNameAndId
+public class MealTimePublic : CategoryWithNameAndId
 {
 }
