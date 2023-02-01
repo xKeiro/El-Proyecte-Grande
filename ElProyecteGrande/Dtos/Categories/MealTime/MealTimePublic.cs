@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Dtos.Categories.Cuisine;
+﻿namespace ElProyecteGrande.Dtos.Categories.MealTime;
 
 /// <summary>
 /// Time of a meal, like - breakfast, lunch, dinner

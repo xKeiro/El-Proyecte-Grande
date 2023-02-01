@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Dtos.Categories.Cuisine;
+﻿namespace ElProyecteGrande.Dtos.Categories.DishType;
 
 /// <summary>
 /// Type of a dish, like - soup, pizza, pasta, etc.
