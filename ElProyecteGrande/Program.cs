@@ -55,7 +55,7 @@ builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Die
 builder.Services.AddScoped<IUserService<UserPublic, UserWithoutId>, UserService>();
 builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<User>>();
 
-builder.Services.AddScoped<IRecipeService<RecipePublic, RecipeWithoutId>, RecipeService>();
+builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IStatusMessageService<Recipe>, StatusMessageService<Recipe>>();
 
 var app = builder.Build();

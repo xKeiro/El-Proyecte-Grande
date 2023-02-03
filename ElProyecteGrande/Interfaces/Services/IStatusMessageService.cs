@@ -10,5 +10,6 @@ namespace ElProyecteGrande.Interfaces.Services
         StatusMessage NotFound(int id);
         StatusMessage NotUnique();
         StatusMessage GenericError();
+        StatusMessage ANotExistingIdProvided();
     }
 }

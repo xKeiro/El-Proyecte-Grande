@@ -2,6 +2,7 @@
 using ElProyecteGrande.Dtos.Categories.Cuisine;
 using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
@@ -10,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Services
 {
-    public class RecipeService : IRecipeService<RecipePublic, RecipeWithoutId>
+    public class RecipeService : IRecipeService
     {
         private readonly ElProyecteGrandeContext _context;
         private readonly IMapper _mapper;
@@ -52,9 +53,69 @@ namespace ElProyecteGrande.Services
             return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
         }
 
-        public async Task<RecipePublic> Add(RecipeWithoutId recipeWithoutId)
+        public async Task<RecipePublic?> Add(RecipeAddNew recipeAddNew)
         {
-            throw new NotImplementedException();
+            var cuisine = _context.Cuisines.Find(recipeAddNew.CuisineId);
+            switch(cuisine)
+            {
+                case null: return null;
+            };
+            List<MealTime> mealTimes = new();
+            foreach(var mealTimeId in recipeAddNew.MealTimeIds)
+            {
+                var mealTime = _context.MealTimes.Find(mealTimeId);
+                switch (mealTime)
+                {
+                    case null: return null;
+                }
+                mealTimes.Add(mealTime);
+            }
+
+
+            List<Diet> diets = new();
+            foreach (var dietId in recipeAddNew.DietIds)
+            {
+                var diet = _context.Diets.Find(dietId);
+                switch(diet)
+                {
+                    case null: return null;
+                }
+                diets.Add(diet);
+            }
+
+            var dishType = _context.DishTypes.Find(recipeAddNew.DishTypeId);
+            switch (dishType)
+            {
+                case null: return null;
+            };
+            List<RecipeIngredient> recipeIngredients = new();
+            foreach ( var recipeIngredientAddNew in recipeAddNew.RecipieIngredientsAddNew) 
+            {
+                var ingredinent = _context.Ingredients.Find(recipeIngredientAddNew.IngredientId);
+                switch (ingredinent)
+                {
+                    case null: return null;
+                };
+                recipeIngredients.Add(
+                    new RecipeIngredient()
+                    {
+                        Amount = recipeIngredientAddNew.Amount,
+                        Ingredient = ingredinent
+                    });
+            }
+            Recipe recipe = new() 
+            { 
+                Name = recipeAddNew.Name,
+                Description = recipeAddNew.Description,
+                RecipeIngredients = recipeIngredients,
+                Cuisine = cuisine,
+                MealTimes = mealTimes,
+                Diets = diets,
+                DishType = dishType
+            };
+            await _context.Recipes.AddAsync(recipe);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Recipe, RecipePublic>(recipe);
         }
 
         public async Task<RecipePublic?> Find(int id)
@@ -102,7 +163,15 @@ namespace ElProyecteGrande.Services
 
         public async Task<bool> IsUnique(RecipeWithoutId recipeWithoutId)
         {
-            return !await _context.Recipes.AnyAsync(r => r.Name.ToLower() == recipeWithoutId.Name.ToLower());
+            return await IsNameUnique(recipeWithoutId.Name);
+        }
+        public async Task<bool> IsUnique(RecipeAddNew recipeAddNew)
+        {
+            return await IsNameUnique(recipeAddNew.Name);
+        }
+        private async Task<bool> IsNameUnique(string name)
+        {
+            return !await _context.Recipes.AnyAsync(r => r.Name.ToLower() == name.ToLower());
         }
     }
 }
