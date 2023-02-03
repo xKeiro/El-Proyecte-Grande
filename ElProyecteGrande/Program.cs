@@ -40,7 +40,7 @@ builder.Services.AddScoped<IStatusMessageService<MealTime>, StatusMessageService
 builder.Services.AddScoped<IBasicCrudService<DishTypePublic, DishTypeWithoutId>, DishTypeService>();
 builder.Services.AddScoped<IStatusMessageService<DishType>, StatusMessageService<DishType>>();
 
-builder.Services.AddScoped<IBasicCrudService<CuisinePublic, CuisineWithoutId>, CuisineService>();
+builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
 
 builder.Services.AddScoped<IBasicCrudService<IngredientPublic, IngredientWithoutId>, IngredientService>();
