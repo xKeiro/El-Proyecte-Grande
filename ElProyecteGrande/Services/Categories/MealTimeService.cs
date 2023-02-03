@@ -57,7 +57,7 @@ namespace ElProyecteGrande.Services.Categories
         public async Task<bool> IsUnique(MealTimeWithoutId mealTimeWithoutId)
         {
             var mealTime = _mapper.Map<MealTimeWithoutId, MealTime>(mealTimeWithoutId);
-            return !await _context.MealTimes.AnyAsync(c => c.Name == mealTime.Name);
+            return !await _context.MealTimes.AnyAsync(c => c.Name.ToLower() == mealTime.Name.ToLower());
         }
 
     }

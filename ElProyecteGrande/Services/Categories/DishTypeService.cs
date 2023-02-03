@@ -57,7 +57,7 @@ namespace ElProyecteGrande.Services.Categories
         public async Task<bool> IsUnique(DishTypeWithoutId dishTypeWithoutId)
         {
             var dishType = _mapper.Map<DishTypeWithoutId, DishType>(dishTypeWithoutId);
-            return !await _context.DishTypes.AnyAsync(c => c.Name == dishType.Name);
+            return !await _context.DishTypes.AnyAsync(c => c.Name.ToLower() == dishType.Name.ToLower());
         }
 
     }

@@ -57,7 +57,7 @@ namespace ElProyecteGrande.Services.Categories
         public async Task<bool> IsUnique(UserWithoutId userWithoutId)
         {
             var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
-            return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress == user.EmailAddress);
+            return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress.ToLower() == user.EmailAddress.ToLower());
         }
 
         public async Task<bool> Delete(int id)

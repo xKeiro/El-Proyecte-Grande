@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ElProyecteGrande.Dtos.Categories.Cuisine;
+using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
@@ -51,7 +52,7 @@ namespace ElProyecteGrande.Services
             return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
         }
 
-        public Task<RecipePublic> Add(RecipeWithoutId recipeWithoutId)
+        public async Task<RecipePublic> Add(RecipeWithoutId recipeWithoutId)
         {
             throw new NotImplementedException();
         }
@@ -101,7 +102,7 @@ namespace ElProyecteGrande.Services
 
         public async Task<bool> IsUnique(RecipeWithoutId recipeWithoutId)
         {
-            return !await _context.Recipes.AnyAsync(r => r.Name == recipeWithoutId.Name);
+            return !await _context.Recipes.AnyAsync(r => r.Name.ToLower() == recipeWithoutId.Name.ToLower());
         }
     }
 }
