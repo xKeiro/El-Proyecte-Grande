@@ -11,10 +11,11 @@ namespace ElProyecteGrande.Controllers;
 [ApiController]
 public class DishTypesController : ControllerBase
 {
-    private readonly IDishTypeService _service;
+    private readonly ICategoryService<DishTypePublic, DishTypeWithoutId> _service;
     private readonly IStatusMessageService<DishType> _statusMessage;
 
-    public DishTypesController(IDishTypeService dishTypeService,
+    public DishTypesController(
+        ICategoryService<DishTypePublic, DishTypeWithoutId> dishTypeService,
         IStatusMessageService<DishType> statusMessage)
     {
         _service = dishTypeService;
@@ -29,11 +30,11 @@ public class DishTypesController : ControllerBase
         try
         {
             var dishTypesPublic = await _service.GetAll();
-            if (dishTypesPublic != null)
+            return dishTypesPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, dishTypesPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+                null => (ActionResult<IEnumerable<DishTypePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => (ActionResult<IEnumerable<DishTypePublic>>)StatusCode(StatusCodes.Status200OK, dishTypesPublic)
+            };
         }
         catch
         {
@@ -50,12 +51,15 @@ public class DishTypesController : ControllerBase
 
         try
         {
-            if (!await _service.IsUnique(dishTypeWithoutId))
+            switch (await _service.IsUnique(dishTypeWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var dishTypePublic = await _service.Add(dishTypeWithoutId);
+                    return StatusCode(StatusCodes.Status201Created, dishTypePublic);
             }
-            var dishTypePublic = await _service.Add(dishTypeWithoutId);
-            return StatusCode(StatusCodes.Status201Created, dishTypePublic);
+
         }
         catch
         {
@@ -72,11 +76,11 @@ public class DishTypesController : ControllerBase
         try
         {
             var dishTypePublic = await _service.Find(id);
-            if (dishTypePublic != null)
+            return dishTypePublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, dishTypePublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                null => (ActionResult<DishTypePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => (ActionResult<DishTypePublic>)StatusCode(StatusCodes.Status200OK, dishTypePublic)
+            };
         }
         catch
         {
@@ -94,36 +98,40 @@ public class DishTypesController : ControllerBase
         try
         {
             var dishTypePublicOriginal = await _service.Find(id);
-            if (dishTypePublicOriginal == null)
+            switch (dishTypePublicOriginal)
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            if (!await _service.IsUnique(dishTypeWithoutId))
+            switch (await _service.IsUnique(dishTypeWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var dishTypePublic = await _service.Update(id, dishTypeWithoutId);
+                    return StatusCode(StatusCodes.Status200OK, dishTypePublic);
             }
-            var dishTypePublic = await _service.Update(id, dishTypeWithoutId);
-            return StatusCode(StatusCodes.Status200OK, dishTypePublic);
         }
         catch
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
     }
+
     [HttpGet("{id}/recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<RecipePublic>> GetRecipeByDishType(int id)
+    public async Task<ActionResult<RecipePublic>> GetRecipeByDishTypeId(int id)
     {
         try
         {
-            var recipeSelectionByDietId = await _service.GetRecipesByDishTypeId(id);
-            if (recipeSelectionByDietId == null)
+            var recipes = await _service.GetRecipes(id);
+            return recipes switch
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-            }
-            return StatusCode(StatusCodes.Status200OK, recipeSelectionByDietId);
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, recipes)
+            };
 
         }
         catch

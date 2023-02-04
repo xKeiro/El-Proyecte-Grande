@@ -1,14 +1,14 @@
-﻿using ElProyecteGrande.Models.Categories;
-using Microsoft.EntityFrameworkCore;
-using ElProyecteGrande.Interfaces.Services;
+﻿using AutoMapper;
 using ElProyecteGrande.Dtos.Categories.DishType;
-using AutoMapper;
 using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Recipes;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Services.Categories
 {
-    public class DishTypeService : IDishTypeService
+    public class DishTypeService : ICategoryService<DishTypePublic, DishTypeWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
         private readonly IMapper _mapper;
@@ -40,11 +40,11 @@ namespace ElProyecteGrande.Services.Categories
             var dishType = await _context.DishTypes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (dishType is null)
+            return dishType switch
             {
-                return null;
-            }
-            return _mapper.Map<DishType, DishTypePublic>(dishType);
+                null => null,
+                _ => _mapper.Map<DishType, DishTypePublic>(dishType)
+            };
         }
 
         public async Task<DishTypePublic> Update(int id, DishTypeWithoutId dishTypeWithoutId)
@@ -62,19 +62,17 @@ namespace ElProyecteGrande.Services.Categories
             return !await _context.DishTypes.AnyAsync(c => c.Name.ToLower() == dishType.Name.ToLower());
         }
 
-        public async Task<List<RecipePublic?>> GetRecipesByDishTypeId(int id)
+        public async Task<List<RecipePublic>?> GetRecipes(int dishTypeId)
         {
-            var recipes = await _context
-                .Recipes
-                .AsNoTracking()
-                .Where(c => c.DishType.Id == id)
-                .ToListAsync();
-
-            if (recipes.Count == 0)
+            var recipes = await _context.DishTypes
+                .Where(c => c.Id == dishTypeId)
+                .Select(c => c.Recipes.ToList())
+                .FirstOrDefaultAsync();
+            return recipes switch
             {
-                return null;
-            }
-            return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
+                null => null,
+                _ => _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes),
+            };
         }
     }
 }
