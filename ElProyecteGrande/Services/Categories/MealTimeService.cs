@@ -1,12 +1,14 @@
-﻿using ElProyecteGrande.Models.Categories;
-using Microsoft.EntityFrameworkCore;
-using ElProyecteGrande.Interfaces.Services;
+﻿using AutoMapper;
 using ElProyecteGrande.Dtos.Categories.MealTime;
-using AutoMapper;
+using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Recipes;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Services.Categories
 {
-    public class MealTimeService : IBasicCrudService<MealTimePublic, MealTimeWithoutId>
+    public class MealTimeService : ICategoryService<MealTimePublic, MealTimeWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
         private readonly IMapper _mapper;
@@ -38,11 +40,11 @@ namespace ElProyecteGrande.Services.Categories
             var mealTime = await _context.MealTimes
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (mealTime is null)
+            return mealTime switch
             {
-                return null;
-            }
-            return _mapper.Map<MealTime, MealTimePublic>(mealTime);
+                null => null,
+                _ => _mapper.Map<MealTime, MealTimePublic>(mealTime)
+            };
         }
 
         public async Task<MealTimePublic> Update(int id, MealTimeWithoutId mealTimeWithoutId)
@@ -60,5 +62,17 @@ namespace ElProyecteGrande.Services.Categories
             return !await _context.MealTimes.AnyAsync(c => c.Name.ToLower() == mealTime.Name.ToLower());
         }
 
+        public async Task<List<RecipePublic>?> GetRecipes(int mealTimeId)
+        {
+            var recipes = await _context.MealTimes
+                .Where(c => c.Id == mealTimeId)
+                .Select(c => c.Recipes.ToList())
+                .FirstOrDefaultAsync();
+            return recipes switch
+            {
+                null => null,
+                _ => _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes),
+            };
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ElProyecteGrande.Dtos.Categories.MealTime;
+using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
@@ -10,10 +11,11 @@ namespace ElProyecteGrande.Controllers;
 [ApiController]
 public class MealTimesController : ControllerBase
 {
-    private readonly IBasicCrudService<MealTimePublic, MealTimeWithoutId> _service;
+    private readonly ICategoryService<MealTimePublic, MealTimeWithoutId> _service;
     private readonly IStatusMessageService<MealTime> _statusMessage;
 
-    public MealTimesController(IBasicCrudService<MealTimePublic, MealTimeWithoutId> mealTimeService,
+    public MealTimesController(
+        ICategoryService<MealTimePublic, MealTimeWithoutId> mealTimeService,
         IStatusMessageService<MealTime> statusMessage)
     {
         _service = mealTimeService;
@@ -28,11 +30,11 @@ public class MealTimesController : ControllerBase
         try
         {
             var mealTimesPublic = await _service.GetAll();
-            if (mealTimesPublic != null)
+            return mealTimesPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, mealTimesPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+                null => (ActionResult<IEnumerable<MealTimePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => (ActionResult<IEnumerable<MealTimePublic>>)StatusCode(StatusCodes.Status200OK, mealTimesPublic)
+            };
         }
         catch
         {
@@ -49,12 +51,15 @@ public class MealTimesController : ControllerBase
 
         try
         {
-            if (!await _service.IsUnique(mealTimeWithoutId))
+            switch (await _service.IsUnique(mealTimeWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var mealTimePublic = await _service.Add(mealTimeWithoutId);
+                    return StatusCode(StatusCodes.Status201Created, mealTimePublic);
             }
-            var mealTimePublic = await _service.Add(mealTimeWithoutId);
-            return StatusCode(StatusCodes.Status201Created, mealTimePublic);
+
         }
         catch
         {
@@ -71,11 +76,11 @@ public class MealTimesController : ControllerBase
         try
         {
             var mealTimePublic = await _service.Find(id);
-            if (mealTimePublic != null)
+            return mealTimePublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, mealTimePublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                null => (ActionResult<MealTimePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => (ActionResult<MealTimePublic>)StatusCode(StatusCodes.Status200OK, mealTimePublic)
+            };
         }
         catch
         {
@@ -93,16 +98,41 @@ public class MealTimesController : ControllerBase
         try
         {
             var mealTimePublicOriginal = await _service.Find(id);
-            if (mealTimePublicOriginal == null)
+            switch (mealTimePublicOriginal)
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            if (!await _service.IsUnique(mealTimeWithoutId))
+            switch (await _service.IsUnique(mealTimeWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var mealTimePublic = await _service.Update(id, mealTimeWithoutId);
+                    return StatusCode(StatusCodes.Status200OK, mealTimePublic);
             }
-            var mealTimePublic = await _service.Update(id, mealTimeWithoutId);
-            return StatusCode(StatusCodes.Status200OK, mealTimePublic);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpGet("{id}/recipes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<RecipePublic>> GetRecipeByMealTimeId(int id)
+    {
+        try
+        {
+            var recipes = await _service.GetRecipes(id);
+            return recipes switch
+            {
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, recipes)
+            };
+
         }
         catch
         {
