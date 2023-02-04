@@ -11,10 +11,11 @@ namespace ElProyecteGrande.Controllers;
 [ApiController]
 public class DietsController : ControllerBase
 {
-    private readonly IDietService _service;
+    private readonly ICategoryService<DietPublic, DietWithoutId> _service;
     private readonly IStatusMessageService<Diet> _statusMessage;
 
-    public DietsController(IDietService dietService,
+    public DietsController(
+        ICategoryService<DietPublic, DietWithoutId> dietService,
         IStatusMessageService<Diet> statusMessage)
     {
         _service = dietService;
@@ -29,11 +30,11 @@ public class DietsController : ControllerBase
         try
         {
             var dietsPublic = await _service.GetAll();
-            if (dietsPublic != null)
+            return dietsPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, dietsPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+                null => (ActionResult<IEnumerable<DietPublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => (ActionResult<IEnumerable<DietPublic>>)StatusCode(StatusCodes.Status200OK, dietsPublic)
+            };
         }
         catch
         {
@@ -50,12 +51,15 @@ public class DietsController : ControllerBase
 
         try
         {
-            if (!await _service.IsUnique(dietWithoutId))
+            switch (await _service.IsUnique(dietWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var dietPublic = await _service.Add(dietWithoutId);
+                    return StatusCode(StatusCodes.Status201Created, dietPublic);
             }
-            var dietPublic = await _service.Add(dietWithoutId);
-            return StatusCode(StatusCodes.Status201Created, dietPublic);
+
         }
         catch
         {
@@ -72,11 +76,11 @@ public class DietsController : ControllerBase
         try
         {
             var dietPublic = await _service.Find(id);
-            if (dietPublic != null)
+            return dietPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, dietPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                null => (ActionResult<DietPublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => (ActionResult<DietPublic>)StatusCode(StatusCodes.Status200OK, dietPublic)
+            };
         }
         catch
         {
@@ -94,16 +98,19 @@ public class DietsController : ControllerBase
         try
         {
             var dietPublicOriginal = await _service.Find(id);
-            if (dietPublicOriginal == null)
+            switch (dietPublicOriginal)
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            if (!await _service.IsUnique(dietWithoutId))
+            switch (await _service.IsUnique(dietWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var dietPublic = await _service.Update(id, dietWithoutId);
+                    return StatusCode(StatusCodes.Status200OK, dietPublic);
             }
-            var dietPublic = await _service.Update(id, dietWithoutId);
-            return StatusCode(StatusCodes.Status200OK, dietPublic);
         }
         catch
         {
@@ -115,16 +122,16 @@ public class DietsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<RecipePublic>> GetRecipeByDiet(int id)
+    public async Task<ActionResult<RecipePublic>> GetRecipeByDietId(int id)
     {
         try
         {
-            var recipeSelectionByDietId = await _service.GetRecipesByDietId(id);
-            if (recipeSelectionByDietId == null)
+            var recipes = await _service.GetRecipes(id);
+            return recipes switch
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-            }
-            return StatusCode(StatusCodes.Status200OK, recipeSelectionByDietId);
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, recipes)
+            };
 
         }
         catch
