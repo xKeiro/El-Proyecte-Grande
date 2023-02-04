@@ -13,6 +13,7 @@ using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
 using ElProyecteGrande.Services;
 using ElProyecteGrande.Services.Categories;
+using ElProyecteGrande.Services.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 

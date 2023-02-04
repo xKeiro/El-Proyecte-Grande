@@ -28,11 +28,11 @@ public class UsersController : ControllerBase
         try
         {
             var usersPublic = await _service.GetAll();
-            if (usersPublic != null)
+            return usersPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, usersPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => StatusCode(StatusCodes.Status200OK, usersPublic)
+            };
         }
         catch
         {
@@ -49,12 +49,14 @@ public class UsersController : ControllerBase
 
         try
         {
-            if (!await _service.IsUnique(userWithoutId))
+            switch (await _service.IsUnique(userWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var userPublic = await _service.Add(userWithoutId);
+                    return StatusCode(StatusCodes.Status201Created, userPublic);
             }
-            var userPublic = await _service.Add(userWithoutId);
-            return StatusCode(StatusCodes.Status201Created, userPublic);
         }
         catch
         {
@@ -71,11 +73,11 @@ public class UsersController : ControllerBase
         try
         {
             var userPublic = await _service.Find(id);
-            if (userPublic != null)
+            return userPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, userPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, userPublic)
+            };
         }
         catch
         {
@@ -93,16 +95,19 @@ public class UsersController : ControllerBase
         try
         {
             var userPublicOriginal = await _service.Find(id);
-            if (userPublicOriginal == null)
+            switch (userPublicOriginal)
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            if (!await _service.IsUnique(userWithoutId))
+            switch (await _service.IsUnique(userWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var userPublic = await _service.Update(id, userWithoutId);
+                    return StatusCode(StatusCodes.Status200OK, userPublic);
             }
-            var userPublic = await _service.Update(id, userWithoutId);
-            return StatusCode(StatusCodes.Status200OK, userPublic);
         }
         catch
         {
@@ -118,12 +123,11 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var deleted = await _service.Delete(id);
-            if (!deleted)
+            return await _service.Delete(id) switch
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-            }
-            return StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id));
+                false => (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id)),
+            };
         }
         catch
         {

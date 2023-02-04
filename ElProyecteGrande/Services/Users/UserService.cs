@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ElProyecteGrande.Interfaces.Services;
-using AutoMapper;
-using ElProyecteGrande.Models.Users;
+﻿using AutoMapper;
 using ElProyecteGrande.Dtos.Users.User;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Users;
+using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Services.Categories
+namespace ElProyecteGrande.Services.Users
 {
     public class UserService : IUserService<UserPublic, UserWithoutId>
     {
@@ -38,11 +38,11 @@ namespace ElProyecteGrande.Services.Categories
             var user = await _context.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (user is null)
+            return user switch
             {
-                return null;
-            }
-            return _mapper.Map<User, UserPublic>(user);
+                null => null,
+                _ => _mapper.Map<User, UserPublic>(user)
+            };
         }
 
         public async Task<UserPublic> Update(int id, UserWithoutId userWithoutId)
@@ -66,13 +66,16 @@ namespace ElProyecteGrande.Services.Categories
                  .FirstOrDefaultAsync(user => user.Id == id);
             var userRecipe = await _context.UserRecipes
                 .FirstOrDefaultAsync(userRecipe => userRecipe.User == user);
-            if (user is null)
+            switch (user)
             {
-                return false;
+                case null:
+                    return false;
             }
-            if (userRecipe is not null)
+            switch (userRecipe)
             {
-                _context.UserRecipes.Remove(userRecipe);
+                case not null:
+                    _context.UserRecipes.Remove(userRecipe);
+                    break;
             }
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
