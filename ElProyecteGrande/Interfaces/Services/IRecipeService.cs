@@ -4,7 +4,7 @@ namespace ElProyecteGrande.Interfaces.Services
 {
     public interface IRecipeService     
     {
-        Task<List<RecipePublic>> GetAll();
+        Task<List<RecipePublic>> GetFiltered(RecipeFilter filter);
         Task<RecipePublic?> Add(RecipeAddNew recipeAddNew);
         Task<RecipePublic?> Find(int id);
         Task<RecipePublic> Update(int id, RecipeWithoutId recipeWithoutId);

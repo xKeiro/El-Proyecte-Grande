@@ -24,12 +24,12 @@ public class RecipesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IEnumerable<RecipePublic>>> GetAllRecipes()
+    public async Task<ActionResult<IEnumerable<RecipePublic>>> GetFilteredRecipes([FromQuery]RecipeFilter filter)
     {
         try
         {
-            var recipesPublic = await _service.GetAll();
-            if (recipesPublic != null)
+            var recipesPublic = await _service.GetFiltered(filter);
+            if (recipesPublic.Count() > 0)
             {
                 return StatusCode(StatusCodes.Status200OK, recipesPublic);
             }

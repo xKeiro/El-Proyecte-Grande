@@ -20,34 +20,26 @@ namespace ElProyecteGrande.Services
             _context = context;
             _mapper = mapper;
         }
-        public async Task<List<RecipePublic>> GetAll()
+        public async Task<List<RecipePublic>> GetFiltered(RecipeFilter filter)
         {
             var recipes = await _context.Recipes
+                .Where(recipe => filter.Name == null || recipe.Name.ToLower().Contains(filter.Name.ToLower()))
+                .Where(recipe => filter.DietIds == null || 
+                    recipe.Diets.Where(diet => filter.DietIds.Contains(diet.Id)).Count() > 0)
+                .Where(recipe => filter.MealTimeIds == null ||
+                    recipe.MealTimes.Where(mealTime => filter.MealTimeIds.Contains(mealTime.Id)).Count() > 0)
+                .Where(recipe => filter.CuisineIds == null || 
+                    filter.CuisineIds.Contains(recipe.Cuisine.Id))
+                .Where(recipe => filter.DishTypeIds == null || 
+                    filter.DishTypeIds.Contains(recipe.DishType.Id))
+                .Where(recipe => filter.IngredientIds == null ||
+                    recipe.RecipeIngredients.Where(recipeIngredient => filter.IngredientIds.Contains(recipeIngredient.Ingredient.Id)).Count() > 0)
                 .Include(recipe => recipe.Diets)
                 .Include(recipe => recipe.MealTimes)
                 .Include(recipe => recipe.Cuisine)
                 .Include(recipe => recipe.DishType)
                 .Include(recipe => recipe.RecipeIngredients)
                     .ThenInclude(recipeIngredient => recipeIngredient.Ingredient)
-                //.Select(recipe => new Recipe()
-                //{
-                //    Id = recipe.Id,
-                //    Name = recipe.Name,
-                //    Description = recipe.Description,
-                //    Cuisine = recipe.Cuisine,
-                //    MealTimes = recipe.MealTimes,
-                //    Diets = recipe.Diets,
-                //    DishType = recipe.DishType,
-                //    RecipeIngredients = recipe.RecipeIngredients.Select(recipeIngredient => new RecipeIngredient()
-                //    {
-                //        Amount = recipeIngredient.Amount,
-                //        Ingredient = new Ingredient()
-                //        {
-                //            Name = recipeIngredient.Ingredient.Name,
-                //            UnitOfMeasure = recipeIngredient.Ingredient.UnitOfMeasure,
-                //        }
-                //    }).ToList()
-                //})
                 .AsNoTracking()
                 .ToListAsync();
             return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
