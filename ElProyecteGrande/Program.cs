@@ -1,22 +1,20 @@
-using ElProyecteGrande.Services;
-using Microsoft.EntityFrameworkCore;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Services.Categories;
 using ElProyecteGrande.Data;
-using System.Text.Json.Serialization;
-using ElProyecteGrande.Models.Users;
-//using ElProyecteGrande.Services.Users;
-using ElProyecteGrande.Models.Recipes;
-using ElProyecteGrande.Maps;
 using ElProyecteGrande.Dtos.Categories.Cuisine;
 using ElProyecteGrande.Dtos.Categories.Diet;
+using ElProyecteGrande.Dtos.Categories.DishType;
 using ElProyecteGrande.Dtos.Categories.MealTime;
 using ElProyecteGrande.Dtos.Ingredient;
-using ElProyecteGrande.Dtos.Categories.DishType;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Dtos.Users.User;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Maps;
+using ElProyecteGrande.Models;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Recipes;
+using ElProyecteGrande.Models.Users;
+using ElProyecteGrande.Services;
+using ElProyecteGrande.Services.Categories;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,19 +32,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Services
-builder.Services.AddScoped<IBasicCrudService<MealTimePublic, MealTimeWithoutId>, MealTimeService>();
+builder.Services.AddScoped<ICategoryService<MealTimePublic, MealTimeWithoutId>, MealTimeService>();
 builder.Services.AddScoped<IStatusMessageService<MealTime>, StatusMessageService<MealTime>>();
 
-builder.Services.AddScoped<IDishTypeService, DishTypeService>();
+builder.Services.AddScoped<ICategoryService<DishTypePublic, DishTypeWithoutId>, DishTypeService>();
 builder.Services.AddScoped<IStatusMessageService<DishType>, StatusMessageService<DishType>>();
 
-builder.Services.AddScoped<ICuisineService, CuisineService>();
+builder.Services.AddScoped<ICategoryService<CuisinePublic, CuisineWithoutId>, CuisineService>();
 builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<Cuisine>>();
 
 builder.Services.AddScoped<IBasicCrudService<IngredientPublic, IngredientWithoutId>, IngredientService>();
 builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageService<Ingredient>>();
 
-builder.Services.AddScoped<IDietService, DietService>();
+builder.Services.AddScoped<ICategoryService<DietPublic, DietWithoutId>, DietService>();
 builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Diet>>();
 
 //builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
