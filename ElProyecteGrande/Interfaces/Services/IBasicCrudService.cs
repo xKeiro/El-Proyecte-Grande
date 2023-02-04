@@ -1,11 +1,11 @@
 ﻿namespace ElProyecteGrande.Interfaces.Services
 {
-    public interface IBasicCrudService<ResponseDto, RequestDto> where ResponseDto : class where RequestDto : class
+    public interface IBasicCrudService<TResponseDto, TRequestDto> where TResponseDto : class where TRequestDto : class
     {
-        Task<List<ResponseDto>> GetAll();
-        Task<ResponseDto> Add(RequestDto requestDto);
-        Task<ResponseDto?> Find(int id);
-        Task<ResponseDto> Update(int id, RequestDto requestDto);
-        Task<bool> IsUnique(RequestDto requestDto);
+        Task<List<TResponseDto>> GetAll();
+        Task<TResponseDto> Add(TRequestDto requestDto);
+        Task<TResponseDto?> Find(int id);
+        Task<TResponseDto> Update(int id, TRequestDto requestDto);
+        Task<bool> IsUnique(TRequestDto requestDto);
     }
 }

@@ -32,5 +32,9 @@ namespace ElProyecteGrande.Services
         {
             Message = "There was a problem!"
         };
+        public StatusMessage ANotExistingIdProvided() => new()
+        {
+            Message = "At least one Id was provided that does not exist in our system!"
+        };
     }
 }

@@ -1,12 +1,14 @@
-﻿using ElProyecteGrande.Models.Categories;
-using Microsoft.EntityFrameworkCore;
-using ElProyecteGrande.Interfaces.Services;
+﻿using AutoMapper;
 using ElProyecteGrande.Dtos.Categories.Diet;
-using AutoMapper;
+using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Recipes;
+using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Services.Categories
 {
-    public class DietService : IBasicCrudService<DietPublic, DietWithoutId>
+    public class DietService : ICategoryService<DietPublic, DietWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
         private readonly IMapper _mapper;
@@ -38,11 +40,11 @@ namespace ElProyecteGrande.Services.Categories
             var diet = await _context.Diets
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (diet is null)
+            return diet switch
             {
-                return null;
-            }
-            return _mapper.Map<Diet, DietPublic>(diet);
+                null => null,
+                _ => _mapper.Map<Diet, DietPublic>(diet),
+            };
         }
 
         public async Task<DietPublic> Update(int id, DietWithoutId dietWithoutId)
@@ -57,8 +59,20 @@ namespace ElProyecteGrande.Services.Categories
         public async Task<bool> IsUnique(DietWithoutId dietWithoutId)
         {
             var diet = _mapper.Map<DietWithoutId, Diet>(dietWithoutId);
-            return !await _context.Diets.AnyAsync(c => c.Name == diet.Name);
+            return !await _context.Diets.AnyAsync(c => c.Name.ToLower() == diet.Name.ToLower());
         }
 
+        public async Task<List<RecipePublic>?> GetRecipes(int dietId)
+        {
+            var recipes = await _context.Diets
+                .Where(c => c.Id == dietId)
+                .Select(c => c.Recipes.ToList())
+                .FirstOrDefaultAsync();
+            return recipes switch
+            {
+                null => null,
+                _ => _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes),
+            };
+        }
     }
 }

@@ -32,5 +32,12 @@ public class ElProyecteGrandeContext : DbContext
             .Entity<UserRecipeStatus>()
             .Property(userRecipeStatus => userRecipeStatus.Name)
             .HasConversion(new EnumToStringConverter<RecipeStatus>());
+        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Diets).AutoInclude();
+        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.MealTimes).AutoInclude();
+        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Cuisine).AutoInclude();
+        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.DishType).AutoInclude();
+        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
+        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
+        modelBuilder.Entity<RecipeIngredient>().Navigation(recipeIngredient => recipeIngredient.Ingredient).AutoInclude();
     }
 }
