@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
-using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
 using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
@@ -83,8 +79,8 @@ namespace ElProyecteGrande.Services
             List<RecipeIngredient> recipeIngredients = new();
             foreach ( var recipeIngredientAddNew in recipeAddNew.RecipieIngredientsAddNew) 
             {
-                var ingredinent = _context.Ingredients.Find(recipeIngredientAddNew.IngredientId);
-                switch (ingredinent)
+                var ingredient = _context.Ingredients.Find(recipeIngredientAddNew.IngredientId);
+                switch (ingredient)
                 {
                     case null: return null;
                 };
@@ -92,7 +88,7 @@ namespace ElProyecteGrande.Services
                     new RecipeIngredient()
                     {
                         Amount = recipeIngredientAddNew.Amount,
-                        Ingredient = ingredinent
+                        Ingredient = ingredient
                     });
             }
             Recipe recipe = new() 
