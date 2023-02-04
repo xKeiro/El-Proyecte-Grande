@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Dtos.Recipes.Recipe;
 
-public class RecipeAddNew
+public class RecipeRequest
 {
     [Required(ErrorMessage = "Name is required")]
     [StringLength(120, MinimumLength = 2)]

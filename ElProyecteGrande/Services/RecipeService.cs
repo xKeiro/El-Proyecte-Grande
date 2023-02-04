@@ -4,6 +4,7 @@ using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
 
 namespace ElProyecteGrande.Services
 {
@@ -35,73 +36,14 @@ namespace ElProyecteGrande.Services
             return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
         }
 
-        public async Task<RecipePublic?> Add(RecipeAddNew recipeAddNew)
+        public async Task<RecipePublic?> Add(RecipeRequest recipeRequest)
         {
-            var cuisine = _context.Cuisines.Find(recipeAddNew.CuisineId);
-            switch (cuisine)
+            var recipe = GetNewRecipeOrUpdateExisting(recipeRequest);
+            switch(recipe)
             {
                 case null:
                     return null;
-            };
-            List<MealTime> mealTimes = new();
-            foreach (var mealTimeId in recipeAddNew.MealTimeIds)
-            {
-                var mealTime = _context.MealTimes.Find(mealTimeId);
-                switch (mealTime)
-                {
-                    case null:
-                        return null;
-                }
-                mealTimes.Add(mealTime);
             }
-
-
-            List<Diet> diets = new();
-            foreach (var dietId in recipeAddNew.DietIds)
-            {
-                var diet = _context.Diets.Find(dietId);
-                switch (diet)
-                {
-                    case null:
-                        return null;
-                }
-                diets.Add(diet);
-            }
-
-            var dishType = _context.DishTypes.Find(recipeAddNew.DishTypeId);
-            switch (dishType)
-            {
-                case null:
-                    return null;
-            };
-
-            List<RecipeIngredient> recipeIngredients = new();
-            foreach (var recipeIngredientAddNew in recipeAddNew.RecipieIngredientsAddNew)
-            {
-                var ingredient = _context.Ingredients.Find(recipeIngredientAddNew.IngredientId);
-                switch (ingredient)
-                {
-                    case null:
-                        return null;
-                };
-                recipeIngredients.Add(
-                    new RecipeIngredient()
-                    {
-                        Amount = recipeIngredientAddNew.Amount,
-                        Ingredient = ingredient
-                    });
-            }
-
-            Recipe recipe = new()
-            {
-                Name = recipeAddNew.Name,
-                Description = recipeAddNew.Description,
-                RecipeIngredients = recipeIngredients,
-                Cuisine = cuisine,
-                MealTimes = mealTimes,
-                Diets = diets,
-                DishType = dishType
-            };
             await _context.Recipes.AddAsync(recipe);
             await _context.SaveChangesAsync();
             return _mapper.Map<Recipe, RecipePublic>(recipe);
@@ -119,9 +61,23 @@ namespace ElProyecteGrande.Services
             };
         }
 
-        public Task<RecipePublic> Update(int id, RecipeWithoutId RecipeWithoutId)
+        public async Task<RecipePublic?> Update(int id, RecipeRequest recipeRequest)
         {
-            throw new NotImplementedException();
+            var oldRecipe = await _context.Recipes.FindAsync(id);
+            switch (oldRecipe)
+            {
+                case null:
+                    return null;
+            }
+            switch (GetNewRecipeOrUpdateExisting(recipeRequest, oldRecipe))
+            {
+                case null:
+                    return null;
+            }
+            _context.Update(oldRecipe);
+            await _context.SaveChangesAsync();
+            return _mapper.Map<Recipe, RecipePublic>(oldRecipe);
+            
         }
 
         public async Task<bool> Delete(int id)
@@ -143,13 +99,97 @@ namespace ElProyecteGrande.Services
         {
             return await IsNameUnique(recipeWithoutId.Name);
         }
-        public async Task<bool> IsUnique(RecipeAddNew recipeAddNew)
+        public async Task<bool> IsUnique(RecipeRequest recipeRequest)
         {
-            return await IsNameUnique(recipeAddNew.Name);
+            return await IsNameUnique(recipeRequest.Name);
         }
         private async Task<bool> IsNameUnique(string name)
         {
             return !await _context.Recipes.AnyAsync(r => r.Name.ToLower() == name.ToLower());
+        }
+        
+        private Recipe? GetNewRecipeOrUpdateExisting(RecipeRequest recipeRequest, Recipe? recipeToUpdate = null)
+        {
+            var cuisine = _context.Cuisines.Find(recipeRequest.CuisineId);
+            switch (cuisine)
+            {
+                case null:
+                    return null;
+            };
+            List<MealTime> mealTimes = new();
+            foreach (var mealTimeId in recipeRequest.MealTimeIds)
+            {
+                var mealTime = _context.MealTimes.Find(mealTimeId);
+                switch (mealTime)
+                {
+                    case null:
+                        return null;
+                }
+                mealTimes.Add(mealTime);
+            }
+
+
+            List<Diet> diets = new();
+            foreach (var dietId in recipeRequest.DietIds)
+            {
+                var diet = _context.Diets.Find(dietId);
+                switch (diet)
+                {
+                    case null:
+                        return null;
+                }
+                diets.Add(diet);
+            }
+
+            var dishType = _context.DishTypes.Find(recipeRequest.DishTypeId);
+            switch (dishType)
+            {
+                case null:
+                    return null;
+            };
+
+            List<RecipeIngredient> recipeIngredients = new();
+            foreach (var recipeIngredientAddNew in recipeRequest.RecipieIngredientsAddNew)
+            {
+                var ingredient = _context.Ingredients.Find(recipeIngredientAddNew.IngredientId);
+                switch (ingredient)
+                {
+                    case null:
+                        return null;
+                };
+                recipeIngredients.Add(
+                    new RecipeIngredient()
+                    {
+                        Amount = recipeIngredientAddNew.Amount,
+                        Ingredient = ingredient
+                    });
+            }
+
+            switch (recipeToUpdate)
+            {
+                case null:
+                    Recipe recipe = new()
+                    {
+                        Name = recipeRequest.Name,
+                        Description = recipeRequest.Description,
+                        RecipeIngredients = recipeIngredients,
+                        Cuisine = cuisine,
+                        MealTimes = mealTimes,
+                        Diets = diets,
+                        DishType = dishType
+                    };
+                    return recipe;
+                default:
+                    recipeToUpdate.Name = recipeRequest.Name;
+                    recipeToUpdate.Description = recipeRequest.Description;
+                    recipeToUpdate.RecipeIngredients = recipeIngredients;
+                    recipeToUpdate.Cuisine = cuisine;
+                    recipeToUpdate.MealTimes = mealTimes;
+                    recipeToUpdate.Diets = diets;
+                    recipeToUpdate.DishType = dishType;
+                    return recipeToUpdate;
+            }
+            
         }
     }
 }

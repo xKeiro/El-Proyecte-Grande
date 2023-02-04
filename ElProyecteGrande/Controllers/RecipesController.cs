@@ -46,16 +46,16 @@ public class RecipesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<RecipePublic>> AddRecipe(RecipeAddNew recipeAddNew)
+    public async Task<ActionResult<RecipePublic>> AddRecipe(RecipeRequest recipeRequest)
     {
 
         try
         {
-            if (!await _service.IsUnique(recipeAddNew))
+            if (!await _service.IsUnique(recipeRequest))
             {
                 return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
             }
-            var recipePublic = await _service.Add(recipeAddNew);
+            var recipePublic = await _service.Add(recipeRequest);
             if (recipePublic == null)
             {
                 return StatusCode(StatusCodes.Status409Conflict, _statusMessage.ANotExistingIdProvided());
@@ -83,6 +83,41 @@ public class RecipesController : ControllerBase
                 return StatusCode(StatusCodes.Status200OK, recipePublic);
             }
             return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<RecipePublic>> UpdateRecipeById(int id, RecipeRequest recipeRequest)
+    {
+        try
+        {
+            var recipePublicOriginal = await _service.Find(id);
+            switch (recipePublicOriginal)
+            {
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+            }
+            switch (await _service.IsUnique(recipeRequest))
+            {
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+            }
+            var recipePublic = await _service.Update(id, recipeRequest);
+            switch (recipePublic)
+            {
+                case null:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.ANotExistingIdProvided());
+                default:
+                    return StatusCode(StatusCodes.Status200OK, recipePublic);
+            }
         }
         catch
         {
