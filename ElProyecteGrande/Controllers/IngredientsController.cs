@@ -1,6 +1,4 @@
-﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Categories.Ingredient;
-using ElProyecteGrande.Dtos.Ingredient;
+﻿using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using Microsoft.AspNetCore.Mvc;
