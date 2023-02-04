@@ -38,11 +38,11 @@ namespace ElProyecteGrande.Services.Categories
             var ingredient = await _context.Ingredients
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (ingredient is null)
+            return ingredient switch
             {
-                return null;
-            }
-            return _mapper.Map<Ingredient, IngredientPublic>(ingredient);
+                null => null,
+                _ => _mapper.Map<Ingredient, IngredientPublic>(ingredient)
+            };
         }
 
         public async Task<IngredientPublic> Update(int id, IngredientWithoutId ingredientWithoutId)

@@ -1,4 +1,6 @@
-﻿using ElProyecteGrande.Dtos.Ingredient;
+﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
+using ElProyecteGrande.Dtos.Categories.Ingredient;
+using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -27,11 +29,11 @@ public class IngredientsController : ControllerBase
         try
         {
             var ingredientsPublic = await _service.GetAll();
-            if (ingredientsPublic != null)
+            return ingredientsPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, ingredientsPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => StatusCode(StatusCodes.Status200OK, ingredientsPublic)
+            };
         }
         catch
         {
@@ -45,15 +47,16 @@ public class IngredientsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IngredientPublic>> AddIngredient(IngredientWithoutId ingredientWithoutId)
     {
-
         try
         {
-            if (!await _service.IsUnique(ingredientWithoutId))
+            switch (await _service.IsUnique(ingredientWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var ingredientPublic = await _service.Add(ingredientWithoutId);
+                    return StatusCode(StatusCodes.Status201Created, ingredientPublic);
             }
-            var ingredientPublic = await _service.Add(ingredientWithoutId);
-            return StatusCode(StatusCodes.Status201Created, ingredientPublic);
         }
         catch
         {
@@ -70,11 +73,11 @@ public class IngredientsController : ControllerBase
         try
         {
             var ingredientPublic = await _service.Find(id);
-            if (ingredientPublic != null)
+            return ingredientPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, ingredientPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, ingredientPublic)
+            };
         }
         catch
         {
@@ -92,16 +95,19 @@ public class IngredientsController : ControllerBase
         try
         {
             var ingredientPublicOriginal = await _service.Find(id);
-            if (ingredientPublicOriginal == null)
+            switch (ingredientPublicOriginal)
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            if (!await _service.IsUnique(ingredientWithoutId))
+            switch (await _service.IsUnique(ingredientWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var ingredientPublic = await _service.Update(id, ingredientWithoutId);
+                    return StatusCode(StatusCodes.Status200OK, ingredientPublic);
             }
-            var ingredientPublic = await _service.Update(id, ingredientWithoutId);
-            return StatusCode(StatusCodes.Status200OK, ingredientPublic);
         }
         catch
         {
