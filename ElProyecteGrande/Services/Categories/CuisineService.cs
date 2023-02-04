@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace ElProyecteGrande.Services.Categories
 {
-    public class CuisineService : ICuisineService
+    public class CuisineService : ICategoryService<CuisinePublic, CuisineWithoutId>
     {
         private readonly ElProyecteGrandeContext _context;
         private readonly IMapper _mapper;
@@ -42,11 +42,11 @@ namespace ElProyecteGrande.Services.Categories
             var cuisine = await _context.Cuisines
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == id);
-            if (cuisine is null)
+            return cuisine switch
             {
-                return null;
-            }
-            return _mapper.Map<Cuisine, CuisinePublic>(cuisine);
+                null => null,
+                _ => _mapper.Map<Cuisine, CuisinePublic>(cuisine)
+            };
         }
 
         public async Task<CuisinePublic> Update(int id, CuisineWithoutId cuisineWithoutId)
@@ -64,18 +64,17 @@ namespace ElProyecteGrande.Services.Categories
             return !await _context.Cuisines.AnyAsync(c => c.Name.ToLower() == cuisine.Name.ToLower());
         }
 
-        public async Task<List<RecipePublic>> GetRecipesByCuisine(int id)
+        public async Task<List<RecipePublic>?> GetRecipes(int cuisineId)
         {
-            var recipes = await _context
-                .Recipes
-                .AsNoTracking()
-                .Where(c => c.Cuisine.Id == id)
-                .ToListAsync();
-            if (recipes.Count == 0)
+            var recipes = await _context.Cuisines
+                .Where(c => c.Id == cuisineId)
+                .Select(c => c.Recipes.ToList())
+                .FirstOrDefaultAsync();
+            return recipes switch
             {
-                return null;
-            }
-            return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
+                null => null,
+                _ => _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes),
+            };
         }
     }
 }

@@ -11,10 +11,11 @@ namespace ElProyecteGrande.Controllers;
 [ApiController]
 public class CuisinesController : ControllerBase
 {
-    private readonly ICuisineService _service;
+    private readonly ICategoryService<CuisinePublic, CuisineWithoutId> _service;
     private readonly IStatusMessageService<Cuisine> _statusMessage;
 
-    public CuisinesController(ICuisineService cuisineService,
+    public CuisinesController(
+        ICategoryService<CuisinePublic, CuisineWithoutId> cuisineService,
         IStatusMessageService<Cuisine> statusMessage)
     {
         _service = cuisineService;
@@ -29,11 +30,11 @@ public class CuisinesController : ControllerBase
         try
         {
             var cuisinesPublic = await _service.GetAll();
-            if (cuisinesPublic != null)
+            return cuisinesPublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, cuisinesPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+                null => (ActionResult<IEnumerable<CuisinePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => (ActionResult<IEnumerable<CuisinePublic>>)StatusCode(StatusCodes.Status200OK, cuisinesPublic)
+            };
         }
         catch
         {
@@ -50,12 +51,15 @@ public class CuisinesController : ControllerBase
 
         try
         {
-            if (!await _service.IsUnique(cuisineWithoutId))
+            switch (await _service.IsUnique(cuisineWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var cuisinePublic = await _service.Add(cuisineWithoutId);
+                    return StatusCode(StatusCodes.Status201Created, cuisinePublic);
             }
-            var cuisinePublic = await _service.Add(cuisineWithoutId);
-            return StatusCode(StatusCodes.Status201Created, cuisinePublic);
+
         }
         catch
         {
@@ -72,11 +76,11 @@ public class CuisinesController : ControllerBase
         try
         {
             var cuisinePublic = await _service.Find(id);
-            if (cuisinePublic != null)
+            return cuisinePublic switch
             {
-                return StatusCode(StatusCodes.Status200OK, cuisinePublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                null => (ActionResult<CuisinePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => (ActionResult<CuisinePublic>)StatusCode(StatusCodes.Status200OK, cuisinePublic)
+            };
         }
         catch
         {
@@ -94,16 +98,19 @@ public class CuisinesController : ControllerBase
         try
         {
             var cuisinePublicOriginal = await _service.Find(id);
-            if (cuisinePublicOriginal == null)
+            switch (cuisinePublicOriginal)
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+                case null:
+                    return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
-            if (!await _service.IsUnique(cuisineWithoutId))
+            switch (await _service.IsUnique(cuisineWithoutId))
             {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                case false:
+                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+                default:
+                    var cuisinePublic = await _service.Update(id, cuisineWithoutId);
+                    return StatusCode(StatusCodes.Status200OK, cuisinePublic);
             }
-            var cuisinePublic = await _service.Update(id, cuisineWithoutId);
-            return StatusCode(StatusCodes.Status200OK, cuisinePublic);
         }
         catch
         {
@@ -119,12 +126,12 @@ public class CuisinesController : ControllerBase
     {
         try
         {
-            var recipeSelectionByCuisineId = await _service.GetRecipesByCuisine(id);
-            if (recipeSelectionByCuisineId == null)
+            var recipes = await _service.GetRecipes(id);
+            return recipes switch
             {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-            }
-            return StatusCode(StatusCodes.Status200OK, recipeSelectionByCuisineId);
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, recipes)
+            };
 
         }
         catch
