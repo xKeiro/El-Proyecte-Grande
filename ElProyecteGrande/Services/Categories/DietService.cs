@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Dtos.Categories.Diet;
 using AutoMapper;
+using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Models.Recipes;
 
 namespace ElProyecteGrande.Services.Categories
 {
-    public class DietService : IBasicCrudService<DietPublic, DietWithoutId>
+    public class DietService : IDietService
     {
         private readonly ElProyecteGrandeContext _context;
         private readonly IMapper _mapper;
@@ -60,5 +62,27 @@ namespace ElProyecteGrande.Services.Categories
             return !await _context.Diets.AnyAsync(c => c.Name.ToLower() == diet.Name.ToLower());
         }
 
+        public async Task<List<RecipePublic>> GetRecipesByDietId(int id)
+        {
+            throw new NotImplementedException();
+            //var diet = await _context
+            //    .Diets
+            //    .AsNoTracking()
+            //    .Where(d => d.Id == id)
+            //    .ToArrayAsync();
+
+
+            //var recipes = await _context
+            //    .Recipes
+            //    .AsNoTracking()
+            //    .Where(re => re.Diets == diet)
+            //    .ToListAsync();
+
+            //if (recipes.Count == 0)
+            //{
+            //    return null;
+            //}
+            //return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
+        }
     }
 }

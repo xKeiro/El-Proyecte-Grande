@@ -37,7 +37,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IBasicCrudService<MealTimePublic, MealTimeWithoutId>, MealTimeService>();
 builder.Services.AddScoped<IStatusMessageService<MealTime>, StatusMessageService<MealTime>>();
 
-builder.Services.AddScoped<IBasicCrudService<DishTypePublic, DishTypeWithoutId>, DishTypeService>();
+builder.Services.AddScoped<IDishTypeService, DishTypeService>();
 builder.Services.AddScoped<IStatusMessageService<DishType>, StatusMessageService<DishType>>();
 
 builder.Services.AddScoped<ICuisineService, CuisineService>();
@@ -46,7 +46,7 @@ builder.Services.AddScoped<IStatusMessageService<Cuisine>, StatusMessageService<
 builder.Services.AddScoped<IBasicCrudService<IngredientPublic, IngredientWithoutId>, IngredientService>();
 builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageService<Ingredient>>();
 
-builder.Services.AddScoped<IBasicCrudService<DietPublic, DietWithoutId>, DietService>();
+builder.Services.AddScoped<IDietService, DietService>();
 builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Diet>>();
 
 //builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();

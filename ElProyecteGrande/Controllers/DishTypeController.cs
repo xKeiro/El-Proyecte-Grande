@@ -1,4 +1,5 @@
 ﻿using ElProyecteGrande.Dtos.Categories.DishType;
+using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
@@ -10,10 +11,10 @@ namespace ElProyecteGrande.Controllers;
 [ApiController]
 public class DishTypesController : ControllerBase
 {
-    private readonly IBasicCrudService<DishTypePublic, DishTypeWithoutId> _service;
+    private readonly IDishTypeService _service;
     private readonly IStatusMessageService<DishType> _statusMessage;
 
-    public DishTypesController(IBasicCrudService<DishTypePublic, DishTypeWithoutId> dishTypeService,
+    public DishTypesController(IDishTypeService dishTypeService,
         IStatusMessageService<DishType> statusMessage)
     {
         _service = dishTypeService;
@@ -103,6 +104,27 @@ public class DishTypesController : ControllerBase
             }
             var dishTypePublic = await _service.Update(id, dishTypeWithoutId);
             return StatusCode(StatusCodes.Status200OK, dishTypePublic);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+    [HttpGet("{id}/recipes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<RecipePublic>> GetRecipeByDishType(int id)
+    {
+        try
+        {
+            var recipeSelectionByDietId = await _service.GetRecipesByDishTypeId(id);
+            if (recipeSelectionByDietId == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+            }
+            return StatusCode(StatusCodes.Status200OK, recipeSelectionByDietId);
+
         }
         catch
         {
