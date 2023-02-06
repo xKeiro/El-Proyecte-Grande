@@ -1,9 +1,10 @@
 ﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
 
-namespace ElProyecteGrande.Interfaces.Services
+namespace ElProyecteGrande.Interfaces.Services;
+
+public interface ICategoryService<TResponseDto, TRequestDto> : IBasicCrudService<TResponseDto, TRequestDto>
+    where TResponseDto : class
+    where TRequestDto : class
 {
-    public interface ICategoryService<ResponseDto, RequestDto> : IBasicCrudService<ResponseDto, RequestDto> where ResponseDto : class where RequestDto : class
-    {
-        Task<List<RecipePublic>?> GetRecipes(int categoryId);
-    }
+    Task<List<RecipePublic>?> GetRecipes(int categoryId);
 }

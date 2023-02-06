@@ -21,6 +21,7 @@ public class DietsController : ControllerBase
         _service = dietService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -48,7 +49,6 @@ public class DietsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<DietPublic>> AddDiet(DietWithoutId dietWithoutId)
     {
-
         try
         {
             switch (await _service.IsUnique(dietWithoutId))
@@ -59,7 +59,6 @@ public class DietsController : ControllerBase
                     var dietPublic = await _service.Add(dietWithoutId);
                     return StatusCode(StatusCodes.Status201Created, dietPublic);
             }
-
         }
         catch
         {
@@ -103,6 +102,7 @@ public class DietsController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(dietWithoutId))
             {
                 case false:
@@ -132,7 +132,6 @@ public class DietsController : ControllerBase
                 null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
                 _ => StatusCode(StatusCodes.Status200OK, recipes)
             };
-
         }
         catch
         {

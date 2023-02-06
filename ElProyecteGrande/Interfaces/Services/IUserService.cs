@@ -1,10 +1,9 @@
-﻿namespace ElProyecteGrande.Interfaces.Services
+﻿namespace ElProyecteGrande.Interfaces.Services;
+
+public interface IUserService<TResponseDto, TRequestDto> :
+    IBasicCrudService<TResponseDto, TRequestDto>
+    where TResponseDto : class
+    where TRequestDto : class
 {
-    public interface IUserService<ResponseDto, RequestDto> :
-        IBasicCrudService<ResponseDto, RequestDto>
-        where ResponseDto : class
-        where RequestDto : class
-    {
-        Task<bool> Delete(int id);
-    }
+    Task<bool> Delete(int id);
 }

@@ -28,16 +28,16 @@ public class ElProyecteGrandeContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder
+        _ = modelBuilder
             .Entity<UserRecipeStatus>()
             .Property(userRecipeStatus => userRecipeStatus.Name)
             .HasConversion(new EnumToStringConverter<RecipeStatus>());
-        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Diets).AutoInclude();
-        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.MealTimes).AutoInclude();
-        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Cuisine).AutoInclude();
-        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.DishType).AutoInclude();
-        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
-        modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
-        modelBuilder.Entity<RecipeIngredient>().Navigation(recipeIngredient => recipeIngredient.Ingredient).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Diets).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.MealTimes).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Cuisine).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.DishType).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
+        _ = modelBuilder.Entity<RecipeIngredient>().Navigation(recipeIngredient => recipeIngredient.Ingredient).AutoInclude();
     }
 }

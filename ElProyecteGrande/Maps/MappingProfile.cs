@@ -1,80 +1,79 @@
 ﻿using AutoMapper;
-using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Dtos.Categories.Cuisine;
 using ElProyecteGrande.Dtos.Categories.Diet;
 using ElProyecteGrande.Dtos.Categories.DishType;
 using ElProyecteGrande.Dtos.Categories.MealTime;
-using ElProyecteGrande.Models.Recipes;
+using ElProyecteGrande.Dtos.Ingredient;
 using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
 using ElProyecteGrande.Dtos.Recipes.RecipeReview;
-using ElProyecteGrande.Models.Users;
 using ElProyecteGrande.Dtos.Users.User;
-using ElProyecteGrande.Dtos.Ingredient;
-using ElProyecteGrande.Models;
 using ElProyecteGrande.Dtos.Users.UserRecipe;
 using ElProyecteGrande.Dtos.Users.UserRecipeStatus;
+using ElProyecteGrande.Models;
+using ElProyecteGrande.Models.Categories;
+using ElProyecteGrande.Models.Recipes;
+using ElProyecteGrande.Models.Users;
 
 namespace ElProyecteGrande.Maps;
 
-public class MappingProfile: Profile
+public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Cuisine, CuisinePublic>();
-        CreateMap<CuisinePublic, Cuisine>();
-        CreateMap<Cuisine, CuisineWithoutId>();
-        CreateMap<CuisineWithoutId, Cuisine>();
-        
-        CreateMap<Diet, DietPublic>();
-        CreateMap<DietPublic, Diet>();
-        CreateMap<Diet, DietWithoutId>();
-        CreateMap<DietWithoutId, Diet>();
+        _ = CreateMap<Cuisine, CuisinePublic>();
+        _ = CreateMap<CuisinePublic, Cuisine>();
+        _ = CreateMap<Cuisine, CuisineWithoutId>();
+        _ = CreateMap<CuisineWithoutId, Cuisine>();
 
-        CreateMap<DishType, DishTypePublic>();
-        CreateMap<DishTypePublic, DishType>();
-        CreateMap<DishType, DishTypeWithoutId>();
-        CreateMap<DishTypeWithoutId, DishType>();
-        
-        CreateMap<MealTime, MealTimePublic>();
-        CreateMap<MealTimePublic, MealTime>();
-        CreateMap<MealTime, MealTimeWithoutId>();
-        CreateMap<MealTimeWithoutId, MealTime>();
+        _ = CreateMap<Diet, DietPublic>();
+        _ = CreateMap<DietPublic, Diet>();
+        _ = CreateMap<Diet, DietWithoutId>();
+        _ = CreateMap<DietWithoutId, Diet>();
 
-        CreateMap<Ingredient, IngredientPublic>();
-        CreateMap<IngredientPublic, Ingredient>();
-        CreateMap<Ingredient, IngredientWithoutId>();
-        CreateMap<IngredientWithoutId, Ingredient>();
+        _ = CreateMap<DishType, DishTypePublic>();
+        _ = CreateMap<DishTypePublic, DishType>();
+        _ = CreateMap<DishType, DishTypeWithoutId>();
+        _ = CreateMap<DishTypeWithoutId, DishType>();
 
-        CreateMap<Recipe, RecipePublic>();
-        CreateMap<RecipePublic, Recipe>();
-        CreateMap<Recipe, RecipeWithoutId>();
-        CreateMap<RecipeWithoutId, Recipe>();
+        _ = CreateMap<MealTime, MealTimePublic>();
+        _ = CreateMap<MealTimePublic, MealTime>();
+        _ = CreateMap<MealTime, MealTimeWithoutId>();
+        _ = CreateMap<MealTimeWithoutId, MealTime>();
 
-        CreateMap<RecipeIngredient, RecipeIngredientPublic>();
-        CreateMap<RecipeIngredientPublic, RecipeIngredient>();
-        CreateMap<RecipeIngredient, RecipeIngredientWithoutId>();
-        CreateMap<RecipeIngredientWithoutId, RecipeIngredient>();
+        _ = CreateMap<Ingredient, IngredientPublic>();
+        _ = CreateMap<IngredientPublic, Ingredient>();
+        _ = CreateMap<Ingredient, IngredientWithoutId>();
+        _ = CreateMap<IngredientWithoutId, Ingredient>();
 
-        CreateMap<RecipeReview, RecipeReviewPublic>();
-        CreateMap<RecipeReviewPublic, RecipeReview>();
-        CreateMap<RecipeReview, RecipeReviewWithoutId>();
-        CreateMap<RecipeReviewWithoutId, RecipeReview>();
+        _ = CreateMap<Recipe, RecipePublic>();
+        _ = CreateMap<RecipePublic, Recipe>();
+        _ = CreateMap<Recipe, RecipeWithoutId>();
+        _ = CreateMap<RecipeWithoutId, Recipe>();
 
-        CreateMap<User, UserPublic>();
-        CreateMap<UserPublic, User>();
-        CreateMap<User, UserWithoutId>();
-        CreateMap<UserWithoutId, User>();
+        _ = CreateMap<RecipeIngredient, RecipeIngredientPublic>();
+        _ = CreateMap<RecipeIngredientPublic, RecipeIngredient>();
+        _ = CreateMap<RecipeIngredient, RecipeIngredientWithoutId>();
+        _ = CreateMap<RecipeIngredientWithoutId, RecipeIngredient>();
 
-        CreateMap<UserRecipe, UserRecipePublic>();
-        CreateMap<UserRecipePublic, UserRecipe>();
-        CreateMap<UserRecipe, UserRecipeWithoutId>();
-        CreateMap<UserRecipeWithoutId, UserRecipe>();
+        _ = CreateMap<RecipeReview, RecipeReviewPublic>();
+        _ = CreateMap<RecipeReviewPublic, RecipeReview>();
+        _ = CreateMap<RecipeReview, RecipeReviewWithoutId>();
+        _ = CreateMap<RecipeReviewWithoutId, RecipeReview>();
 
-        CreateMap<UserRecipeStatus, UserRecipeStatusPublic>();
-        CreateMap<UserRecipeStatusPublic, UserRecipeStatus>();
-        CreateMap<UserRecipeStatus, UserRecipeStatusWithoutId>();
-        CreateMap<UserRecipeStatusWithoutId, UserRecipeStatus>();
+        _ = CreateMap<User, UserPublic>();
+        _ = CreateMap<UserPublic, User>();
+        _ = CreateMap<User, UserWithoutId>();
+        _ = CreateMap<UserWithoutId, User>();
 
+        _ = CreateMap<UserRecipe, UserRecipePublic>();
+        _ = CreateMap<UserRecipePublic, UserRecipe>();
+        _ = CreateMap<UserRecipe, UserRecipeWithoutId>();
+        _ = CreateMap<UserRecipeWithoutId, UserRecipe>();
+
+        _ = CreateMap<UserRecipeStatus, UserRecipeStatusPublic>();
+        _ = CreateMap<UserRecipeStatusPublic, UserRecipeStatus>();
+        _ = CreateMap<UserRecipeStatus, UserRecipeStatusWithoutId>();
+        _ = CreateMap<UserRecipeStatusWithoutId, UserRecipeStatus>();
     }
 }

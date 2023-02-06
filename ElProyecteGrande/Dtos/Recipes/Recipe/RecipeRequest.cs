@@ -1,8 +1,4 @@
-﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Categories.Diet;
-using ElProyecteGrande.Dtos.Categories.DishType;
-using ElProyecteGrande.Dtos.Categories.MealTime;
-using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
+﻿using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
 using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Dtos.Recipes.Recipe;
@@ -21,13 +17,13 @@ public class RecipeRequest
     public required ICollection<RecipieIngredientAddNew> RecipieIngredientsAddNew { get; set; }
 
     [Required]
-    public int CuisineId { get; set; }
+    public required int CuisineId { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<int> MealTimeIds { get; set; }
+    public required ICollection<int> MealTimeIds { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<int> DietIds { get; set; }
+    public required ICollection<int> DietIds { get; set; }
     [Required]
-    public int DishTypeId { get; set; }
+    public required int DishTypeId { get; set; }
 }

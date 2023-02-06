@@ -21,6 +21,7 @@ public class CuisinesController : ControllerBase
         _service = cuisineService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -48,7 +49,6 @@ public class CuisinesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<CuisinePublic>> AddCuisine(CuisineWithoutId cuisineWithoutId)
     {
-
         try
         {
             switch (await _service.IsUnique(cuisineWithoutId))
@@ -59,7 +59,6 @@ public class CuisinesController : ControllerBase
                     var cuisinePublic = await _service.Add(cuisineWithoutId);
                     return StatusCode(StatusCodes.Status201Created, cuisinePublic);
             }
-
         }
         catch
         {
@@ -103,6 +102,7 @@ public class CuisinesController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(cuisineWithoutId))
             {
                 case false:
@@ -132,7 +132,6 @@ public class CuisinesController : ControllerBase
                 null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
                 _ => StatusCode(StatusCodes.Status200OK, recipes)
             };
-
         }
         catch
         {

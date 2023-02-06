@@ -11,8 +11,8 @@ public class Ingredient : BaseModel
 {
     [Required]
     [StringLength(60, MinimumLength = 2)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
     [Required]
-    public string UnitOfMeasure { get; set; }
+    public required string UnitOfMeasure { get; set; }
 }

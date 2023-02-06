@@ -1,5 +1,4 @@
 ﻿using ElProyecteGrande.Models.Categories;
-using System.Collections;
 using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Models.Recipes;
@@ -18,14 +17,13 @@ public class Recipe : BaseModel
     public required ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
     [Required]
-    public Cuisine Cuisine { get; set; }
+    public required Cuisine Cuisine { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<MealTime> MealTimes { get; set; }
+    public required ICollection<MealTime> MealTimes { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<Diet> Diets { get; set; }
+    public required ICollection<Diet> Diets { get; set; }
     [Required]
-    public DishType DishType { get; set; }
-
+    public required DishType DishType { get; set; }
 }

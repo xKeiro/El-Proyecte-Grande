@@ -8,7 +8,6 @@ public class RecipeIngredient : BaseModel
     [Required]
     public required Ingredient Ingredient { get; set; }
     [Required]
-    [Precision(6,2)]
+    [Precision(6, 2)]
     public required decimal Amount { get; set; }
-
 }

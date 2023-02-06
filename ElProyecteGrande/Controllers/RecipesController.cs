@@ -1,5 +1,4 @@
-﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
+﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Recipes;
@@ -14,33 +13,31 @@ public class RecipesController : ControllerBase
     private readonly IRecipeService _service;
     private readonly IStatusMessageService<Recipe> _statusMessage;
 
-    public RecipesController(IRecipeService recipeService,
+    public RecipesController(
+        IRecipeService recipeService,
         IStatusMessageService<Recipe> statusMessage)
     {
         _service = recipeService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IEnumerable<RecipePublic>>> GetFilteredRecipes([FromQuery]RecipeFilter filter)
+    public async Task<ActionResult<IEnumerable<RecipePublic>>> GetFilteredRecipes([FromQuery] RecipeFilter filter)
     {
         try
         {
             var recipesPublic = await _service.GetFiltered(filter);
-            if (recipesPublic.Count() > 0)
-            {
-                return StatusCode(StatusCodes.Status200OK, recipesPublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
+            return recipesPublic.Any() ? (ActionResult<IEnumerable<RecipePublic>>)StatusCode(StatusCodes.Status200OK, recipesPublic)
+                : (ActionResult<IEnumerable<RecipePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound());
         }
         catch
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
     }
-
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
@@ -48,26 +45,23 @@ public class RecipesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<RecipePublic>> AddRecipe(RecipeRequest recipeRequest)
     {
-
         try
         {
             if (!await _service.IsUnique(recipeRequest))
             {
                 return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
             }
+
             var recipePublic = await _service.Add(recipeRequest);
-            if (recipePublic == null)
-            {
-                return StatusCode(StatusCodes.Status409Conflict, _statusMessage.ANotExistingIdProvided());
-            }
-            return StatusCode(StatusCodes.Status201Created, recipePublic);
+            return recipePublic == null
+                ? (ActionResult<RecipePublic>)StatusCode(StatusCodes.Status409Conflict, _statusMessage.ANotExistingIdProvided())
+                : (ActionResult<RecipePublic>)StatusCode(StatusCodes.Status201Created, recipePublic);
         }
         catch
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
     }
-
 
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -78,11 +72,9 @@ public class RecipesController : ControllerBase
         try
         {
             var recipePublic = await _service.Find(id);
-            if (recipePublic != null)
-            {
-                return StatusCode(StatusCodes.Status200OK, recipePublic);
-            }
-            return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
+            return recipePublic != null
+                ? (ActionResult<RecipePublic>)StatusCode(StatusCodes.Status200OK, recipePublic)
+                : (ActionResult<RecipePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
         }
         catch
         {
@@ -105,19 +97,19 @@ public class RecipesController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(recipeRequest))
             {
                 case false:
                     return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
             }
+
             var recipePublic = await _service.Update(id, recipeRequest);
-            switch (recipePublic)
+            return recipePublic switch
             {
-                case null:
-                    return StatusCode(StatusCodes.Status409Conflict, _statusMessage.ANotExistingIdProvided());
-                default:
-                    return StatusCode(StatusCodes.Status200OK, recipePublic);
-            }
+                null => (ActionResult<RecipePublic>)StatusCode(StatusCodes.Status409Conflict, _statusMessage.ANotExistingIdProvided()),
+                _ => (ActionResult<RecipePublic>)StatusCode(StatusCodes.Status200OK, recipePublic),
+            };
         }
         catch
         {
@@ -134,16 +126,13 @@ public class RecipesController : ControllerBase
         try
         {
             var deleted = await _service.Delete(id);
-            if (!deleted)
-            {
-                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
-            }
-            return StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id));
+            return !deleted
+                ? (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id))
+                : (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id));
         }
         catch
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
     }
-
 }

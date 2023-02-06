@@ -1,28 +1,27 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models.Users
+namespace ElProyecteGrande.Models.Users;
+
+[Index(nameof(Username), IsUnique = true)]
+[Index(nameof(EmailAddress), IsUnique = true)]
+public class User : BaseModel
 {
-    [Index(nameof(Username), IsUnique = true)]
-    [Index(nameof(EmailAddress), IsUnique = true)]
-    public class User : BaseModel
-    {
-        [Required]
-        public string Username { get; set; }
+    [Required]
+    public required string Username { get; set; }
 
-        public string? FirstName { get; set; }
+    public string? FirstName { get; set; }
 
-        public string? LastName { get; set; }
+    public string? LastName { get; set; }
 
-        [Required]
-        [EmailAddress]
-        public string EmailAddress { get; set; }
+    [Required]
+    [EmailAddress]
+    public required string EmailAddress { get; set; }
 
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+    [Required]
+    [DataType(DataType.Password)]
+    public required string Password { get; set; }
 
-        [Required]
-        public bool IsAdmin { get; set; } = false;
-    }
+    [Required]
+    public bool IsAdmin { get; set; } = false;
 }

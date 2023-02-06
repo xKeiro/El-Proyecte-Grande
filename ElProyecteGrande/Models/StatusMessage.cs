@@ -1,7 +1,6 @@
-﻿namespace ElProyecteGrande.Models
+﻿namespace ElProyecteGrande.Models;
+
+public class StatusMessage
 {
-    public class StatusMessage
-    {
-        public required string Message { get; set; }
-    }
+    public required string Message { get; set; }
 }

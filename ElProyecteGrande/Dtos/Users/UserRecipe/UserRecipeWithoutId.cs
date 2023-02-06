@@ -8,11 +8,11 @@ namespace ElProyecteGrande.Dtos.Users.UserRecipe;
 public class UserRecipeWithoutId
 {
     [Required]
-    public required UserPublic User { get; set; }
+    required public UserPublic User { get; set; }
 
     [Required]
-    public required RecipePublic Recipe { get; set; }
+    required public RecipePublic Recipe { get; set; }
 
     [Required]
-    public required UserRecipeStatusPublic Status { get; set; }
+    required public UserRecipeStatusPublic Status { get; set; }
 }
