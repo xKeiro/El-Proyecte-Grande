@@ -72,8 +72,8 @@ public class DishTypesController : ControllerBase
             var dishTypePublic = await _service.Find(id);
             return dishTypePublic switch
             {
-                null => (ActionResult<DishTypePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => (ActionResult<DishTypePublic>)StatusCode(StatusCodes.Status200OK, dishTypePublic)
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, dishTypePublic)
             };
         }
         catch
