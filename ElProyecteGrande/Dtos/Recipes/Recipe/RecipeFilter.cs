@@ -21,5 +21,6 @@ namespace ElProyecteGrande.Dtos.Recipes.Recipe
         public IEnumerable<int>? DietIds { get; set; } = null;
         [MinLength(1)]
         public IEnumerable<int>? DishTypeIds { get; set; } = null;
+        public int? MaxNumberOfNotOwnedIngredients { get; set; } = null;
     }
 }

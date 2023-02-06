@@ -4,7 +4,6 @@ using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Net.Http.Headers;
 
 namespace ElProyecteGrande.Services
 {
@@ -19,7 +18,7 @@ namespace ElProyecteGrande.Services
         }
         public async Task<List<RecipePublic>> GetFiltered(RecipeFilter filter)
         {
-            var recipes = await _context.Recipes
+            var recipesQuery = _context.Recipes
                 .Where(recipe => filter.Name == null || recipe.Name.ToLower().Contains(filter.Name.ToLower()))
                 .Where(recipe => filter.DietIds == null ||
                     recipe.Diets.Where(diet => filter.DietIds.Contains(diet.Id)).Count() > 0)
@@ -28,18 +27,70 @@ namespace ElProyecteGrande.Services
                 .Where(recipe => filter.CuisineIds == null ||
                     filter.CuisineIds.Contains(recipe.Cuisine.Id))
                 .Where(recipe => filter.DishTypeIds == null ||
-                    filter.DishTypeIds.Contains(recipe.DishType.Id))
-                .Where(recipe => filter.IngredientIds == null ||
-                    recipe.RecipeIngredients.Where(recipeIngredient => filter.IngredientIds.Contains(recipeIngredient.Ingredient.Id)).Count() > 0)
-                .AsNoTracking()
-                .ToListAsync();
+                    filter.DishTypeIds.Contains(recipe.DishType.Id));
+            var recipes = await FilterIngredients(filter, recipesQuery);
             return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
+        }
+
+        private static async Task<List<Recipe>> FilterIngredients(RecipeFilter filter, IQueryable<Recipe> recipesQuery)
+        {
+            List<Recipe> recipes = new();
+            if (filter.IngredientIds == null)
+            {
+                if (filter.MaxNumberOfNotOwnedIngredients == null)
+                {
+                    recipes = await recipesQuery
+                        .AsNoTracking()
+                        .ToListAsync();
+                }
+                else
+                {
+                    recipes = await recipesQuery
+                        .Where(recipe => recipe.RecipeIngredients.Count() <= filter.MaxNumberOfNotOwnedIngredients)
+                        .AsNoTracking()
+                        .ToListAsync();
+                }
+            }
+            else
+            {
+                if (filter.MaxNumberOfNotOwnedIngredients == null)
+                {
+                    recipes = await recipesQuery
+                        .Where(recipe => recipe.RecipeIngredients
+                            .Any(recipeIngredient => filter.IngredientIds
+                            .Any(ingredientId => ingredientId == recipeIngredient.Ingredient.Id)))
+                        .AsNoTracking()
+                        .ToListAsync();
+                }
+                else
+                {
+                    foreach (var recipe in recipesQuery)
+                    {
+                        int matchingIngredientCount = 0;
+                        foreach (var recipeIngredient in recipe.RecipeIngredients)
+                        {
+                            var ingredientId = recipeIngredient.Ingredient.Id;
+                            if (filter.IngredientIds.Contains(ingredientId))
+                            {
+                                matchingIngredientCount++;
+                            }
+                        }
+                        if (recipe.RecipeIngredients.Count() <= (matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients))
+                        {
+                            recipes.Add(recipe);
+                        }
+
+                    }
+                }
+            }
+
+            return recipes;
         }
 
         public async Task<RecipePublic?> Add(RecipeRequest recipeRequest)
         {
             var recipe = GetNewRecipeOrUpdateExisting(recipeRequest);
-            switch(recipe)
+            switch (recipe)
             {
                 case null:
                     return null;
@@ -77,7 +128,7 @@ namespace ElProyecteGrande.Services
             _context.Update(oldRecipe);
             await _context.SaveChangesAsync();
             return _mapper.Map<Recipe, RecipePublic>(oldRecipe);
-            
+
         }
 
         public async Task<bool> Delete(int id)
@@ -107,7 +158,7 @@ namespace ElProyecteGrande.Services
         {
             return !await _context.Recipes.AnyAsync(r => r.Name.ToLower() == name.ToLower());
         }
-        
+
         private Recipe? GetNewRecipeOrUpdateExisting(RecipeRequest recipeRequest, Recipe? recipeToUpdate = null)
         {
             var cuisine = _context.Cuisines.Find(recipeRequest.CuisineId);
@@ -189,7 +240,7 @@ namespace ElProyecteGrande.Services
                     recipeToUpdate.DishType = dishType;
                     return recipeToUpdate;
             }
-            
+
         }
     }
 }
