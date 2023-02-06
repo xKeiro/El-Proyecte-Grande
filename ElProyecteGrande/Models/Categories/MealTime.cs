@@ -1,11 +1,9 @@
-﻿using ElProyecteGrande.Models.Recipes;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace ElProyecteGrande.Models.Categories;
 
 /// <summary>
-/// Time of a meal, like - breakfast, lunch, dinner
+/// Time of a meal, like - breakfast, lunch, dinner.
 /// </summary>
 [Index(nameof(Name), IsUnique = true)]
 public class MealTime : BaseCategory

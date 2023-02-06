@@ -11,23 +11,23 @@ public class RecipeWithoutId
 {
     [Required(ErrorMessage = "Name is required")]
     [StringLength(120, MinimumLength = 2)]
-    public required string Name { get; set; }
-    
+    required public string Name { get; set; }
+
     [Required]
-    public required string Description { get; set; }
+    required public string Description { get; set; }
 
     [Required]
     [MinLength(1)]
-    public required ICollection<RecipeIngredientPublic> RecipeIngredients { get; set; }
+    required public ICollection<RecipeIngredientPublic> RecipeIngredients { get; set; }
 
     [Required]
-    public CuisinePublic Cuisine { get; set; }
+    public required CuisinePublic Cuisine { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<MealTimePublic> MealTimes { get; set; }
+    public required ICollection<MealTimePublic> MealTimes { get; set; }
     [Required]
     [MinLength(1)]
-    public ICollection<DietPublic> Diets { get; set; }
+    public required ICollection<DietPublic> Diets { get; set; }
     [Required]
-    public DishTypePublic DishType { get; set; }
+    public required DishTypePublic DishType { get; set; }
 }

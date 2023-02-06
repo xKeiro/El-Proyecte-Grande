@@ -21,6 +21,7 @@ public class MealTimesController : ControllerBase
         _service = mealTimeService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -48,7 +49,6 @@ public class MealTimesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<MealTimePublic>> AddMealTime(MealTimeWithoutId mealTimeWithoutId)
     {
-
         try
         {
             switch (await _service.IsUnique(mealTimeWithoutId))
@@ -59,7 +59,6 @@ public class MealTimesController : ControllerBase
                     var mealTimePublic = await _service.Add(mealTimeWithoutId);
                     return StatusCode(StatusCodes.Status201Created, mealTimePublic);
             }
-
         }
         catch
         {
@@ -103,6 +102,7 @@ public class MealTimesController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(mealTimeWithoutId))
             {
                 case false:
@@ -132,7 +132,6 @@ public class MealTimesController : ControllerBase
                 null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
                 _ => StatusCode(StatusCodes.Status200OK, recipes)
             };
-
         }
         catch
         {

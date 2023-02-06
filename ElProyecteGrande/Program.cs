@@ -20,10 +20,10 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -48,9 +48,8 @@ builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageServi
 builder.Services.AddScoped<ICategoryService<DietPublic, DietWithoutId>, DietService>();
 builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Diet>>();
 
-//builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
-//builder.Services.AddScoped<IStatusMessageService<UserRecipe>, StatusMessageService<UserRecipe>>();
-
+// builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
+// builder.Services.AddScoped<IStatusMessageService<UserRecipe>, StatusMessageService<UserRecipe>>();
 builder.Services.AddScoped<IUserService<UserPublic, UserWithoutId>, UserService>();
 builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<User>>();
 
@@ -62,8 +61,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    _ = app.UseSwagger();
+    _ = app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();

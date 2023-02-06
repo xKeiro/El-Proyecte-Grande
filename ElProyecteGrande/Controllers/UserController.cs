@@ -13,12 +13,14 @@ public class UsersController : ControllerBase
     private readonly IUserService<UserPublic, UserWithoutId> _service;
     private readonly IStatusMessageService<User> _statusMessage;
 
-    public UsersController(IUserService<UserPublic, UserWithoutId> userService,
+    public UsersController(
+        IUserService<UserPublic, UserWithoutId> userService,
         IStatusMessageService<User> statusMessage)
     {
         _service = userService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -46,7 +48,6 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<UserPublic>> AddUser(UserWithoutId userWithoutId)
     {
-
         try
         {
             switch (await _service.IsUnique(userWithoutId))
@@ -100,6 +101,7 @@ public class UsersController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(userWithoutId))
             {
                 case false:
@@ -134,5 +136,4 @@ public class UsersController : ControllerBase
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
     }
-
 }

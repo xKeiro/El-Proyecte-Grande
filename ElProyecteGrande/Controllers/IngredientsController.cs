@@ -12,12 +12,14 @@ public class IngredientsController : ControllerBase
     private readonly IBasicCrudService<IngredientPublic, IngredientWithoutId> _service;
     private readonly IStatusMessageService<Ingredient> _statusMessage;
 
-    public IngredientsController(IBasicCrudService<IngredientPublic, IngredientWithoutId> ingredientService,
+    public IngredientsController(
+        IBasicCrudService<IngredientPublic, IngredientWithoutId> ingredientService,
         IStatusMessageService<Ingredient> statusMessage)
     {
         _service = ingredientService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -98,6 +100,7 @@ public class IngredientsController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(ingredientWithoutId))
             {
                 case false:

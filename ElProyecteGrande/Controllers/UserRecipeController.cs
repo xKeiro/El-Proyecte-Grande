@@ -1,10 +1,10 @@
-﻿//using AutoMapper;
-//using ElProyecteGrande.Interfaces.Services;
-//using ElProyecteGrande.Models.Users;
-//using Microsoft.AspNetCore.Mvc;
+﻿// using AutoMapper;
+// using ElProyecteGrande.Interfaces.Services;
+// using ElProyecteGrande.Models.Users;
+// using Microsoft.AspNetCore.Mvc;
 
-//namespace ElProyecteGrande.Controllers
-//{
+// namespace ElProyecteGrande.Controllers
+// {
 //    [ApiController]
 //    [Route("api/[controller]")]
 //    public class UserRecipeController : Controller
@@ -13,7 +13,7 @@
 //        private readonly IStatusMessageService<UserRecipe> _statusMessageService;
 //        private readonly IMapper _mapper;
 
-//        public UserRecipeController(IBasicCrudService<UserRecipe> userRecipeService,
+// public UserRecipeController(IBasicCrudService<UserRecipe> userRecipeService,
 //            IStatusMessageService<UserRecipe> statusMessage,
 //            IMapper mapper)
 //        {
@@ -22,4 +22,4 @@
 //            _mapper = mapper;
 //        }
 //    }
-//}
+// }

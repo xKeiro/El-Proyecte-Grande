@@ -21,6 +21,7 @@ public class DishTypesController : ControllerBase
         _service = dishTypeService;
         _statusMessage = statusMessage;
     }
+
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -48,7 +49,6 @@ public class DishTypesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(StatusMessage))]
     public async Task<ActionResult<DishTypePublic>> AddDishType(DishTypeWithoutId dishTypeWithoutId)
     {
-
         try
         {
             switch (await _service.IsUnique(dishTypeWithoutId))
@@ -59,7 +59,6 @@ public class DishTypesController : ControllerBase
                     var dishTypePublic = await _service.Add(dishTypeWithoutId);
                     return StatusCode(StatusCodes.Status201Created, dishTypePublic);
             }
-
         }
         catch
         {
@@ -103,6 +102,7 @@ public class DishTypesController : ControllerBase
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
+
             switch (await _service.IsUnique(dishTypeWithoutId))
             {
                 case false:
@@ -132,7 +132,6 @@ public class DishTypesController : ControllerBase
                 null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
                 _ => StatusCode(StatusCodes.Status200OK, recipes)
             };
-
         }
         catch
         {
