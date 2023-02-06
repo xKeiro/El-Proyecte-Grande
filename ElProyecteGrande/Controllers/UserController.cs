@@ -24,17 +24,12 @@ public class UsersController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<UserPublic>>> GetAllUsers()
     {
         try
         {
             var usersPublic = await _service.GetAll();
-            return usersPublic switch
-            {
-                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
-                _ => StatusCode(StatusCodes.Status200OK, usersPublic)
-            };
+            return StatusCode(StatusCodes.Status200OK, usersPublic);
         }
         catch
         {

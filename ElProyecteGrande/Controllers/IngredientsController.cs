@@ -23,17 +23,12 @@ public class IngredientsController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<IngredientPublic>>> GetAllIngredients()
     {
         try
         {
             var ingredientsPublic = await _service.GetAll();
-            return ingredientsPublic switch
-            {
-                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
-                _ => StatusCode(StatusCodes.Status200OK, ingredientsPublic)
-            };
+            return StatusCode(StatusCodes.Status200OK, ingredientsPublic);
         }
         catch
         {

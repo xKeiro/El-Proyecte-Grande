@@ -25,17 +25,12 @@ public class CuisinesController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<CuisinePublic>>> GetAllCuisines()
     {
         try
         {
             var cuisinesPublic = await _service.GetAll();
-            return cuisinesPublic switch
-            {
-                null => (ActionResult<IEnumerable<CuisinePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
-                _ => (ActionResult<IEnumerable<CuisinePublic>>)StatusCode(StatusCodes.Status200OK, cuisinesPublic)
-            };
+            return (ActionResult<IEnumerable<CuisinePublic>>)StatusCode(StatusCodes.Status200OK, cuisinesPublic);
         }
         catch
         {
@@ -77,8 +72,8 @@ public class CuisinesController : ControllerBase
             var cuisinePublic = await _service.Find(id);
             return cuisinePublic switch
             {
-                null => (ActionResult<CuisinePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => (ActionResult<CuisinePublic>)StatusCode(StatusCodes.Status200OK, cuisinePublic)
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, cuisinePublic)
             };
         }
         catch
@@ -127,11 +122,7 @@ public class CuisinesController : ControllerBase
         try
         {
             var recipes = await _service.GetRecipes(id);
-            return recipes switch
-            {
-                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => StatusCode(StatusCodes.Status200OK, recipes)
-            };
+            return StatusCode(StatusCodes.Status200OK, recipes);
         }
         catch
         {

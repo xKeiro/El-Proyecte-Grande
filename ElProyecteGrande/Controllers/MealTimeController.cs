@@ -25,17 +25,12 @@ public class MealTimesController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<MealTimePublic>>> GetAllMealTimes()
     {
         try
         {
             var mealTimesPublic = await _service.GetAll();
-            return mealTimesPublic switch
-            {
-                null => (ActionResult<IEnumerable<MealTimePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
-                _ => (ActionResult<IEnumerable<MealTimePublic>>)StatusCode(StatusCodes.Status200OK, mealTimesPublic)
-            };
+            return StatusCode(StatusCodes.Status200OK, mealTimesPublic);
         }
         catch
         {
@@ -77,8 +72,8 @@ public class MealTimesController : ControllerBase
             var mealTimePublic = await _service.Find(id);
             return mealTimePublic switch
             {
-                null => (ActionResult<MealTimePublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => (ActionResult<MealTimePublic>)StatusCode(StatusCodes.Status200OK, mealTimePublic)
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, mealTimePublic)
             };
         }
         catch
@@ -121,17 +116,12 @@ public class MealTimesController : ControllerBase
     [HttpGet("{id}/recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<RecipePublic>> GetRecipeByMealTimeId(int id)
     {
         try
         {
             var recipes = await _service.GetRecipes(id);
-            return recipes switch
-            {
-                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => StatusCode(StatusCodes.Status200OK, recipes)
-            };
+            return StatusCode(StatusCodes.Status200OK, recipes);
         }
         catch
         {

@@ -25,17 +25,12 @@ public class DishTypesController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<DishTypePublic>>> GetAllDishTypes()
     {
         try
         {
             var dishTypesPublic = await _service.GetAll();
-            return dishTypesPublic switch
-            {
-                null => (ActionResult<IEnumerable<DishTypePublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
-                _ => (ActionResult<IEnumerable<DishTypePublic>>)StatusCode(StatusCodes.Status200OK, dishTypesPublic)
-            };
+            return StatusCode(StatusCodes.Status200OK, dishTypesPublic);
         }
         catch
         {
@@ -121,17 +116,12 @@ public class DishTypesController : ControllerBase
     [HttpGet("{id}/recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<RecipePublic>> GetRecipeByDishTypeId(int id)
     {
         try
         {
             var recipes = await _service.GetRecipes(id);
-            return recipes switch
-            {
-                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => StatusCode(StatusCodes.Status200OK, recipes)
-            };
+            return StatusCode(StatusCodes.Status200OK, recipes);
         }
         catch
         {

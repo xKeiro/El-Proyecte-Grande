@@ -31,11 +31,7 @@ public class DietsController : ControllerBase
         try
         {
             var dietsPublic = await _service.GetAll();
-            return dietsPublic switch
-            {
-                null => (ActionResult<IEnumerable<DietPublic>>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
-                _ => (ActionResult<IEnumerable<DietPublic>>)StatusCode(StatusCodes.Status200OK, dietsPublic)
-            };
+            return (ActionResult<IEnumerable<DietPublic>>)StatusCode(StatusCodes.Status200OK, dietsPublic);
         }
         catch
         {
@@ -77,8 +73,8 @@ public class DietsController : ControllerBase
             var dietPublic = await _service.Find(id);
             return dietPublic switch
             {
-                null => (ActionResult<DietPublic>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => (ActionResult<DietPublic>)StatusCode(StatusCodes.Status200OK, dietPublic)
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, dietPublic)
             };
         }
         catch
@@ -121,17 +117,12 @@ public class DietsController : ControllerBase
     [HttpGet("{id}/recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<RecipePublic>> GetRecipeByDietId(int id)
     {
         try
         {
             var recipes = await _service.GetRecipes(id);
-            return recipes switch
-            {
-                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => StatusCode(StatusCodes.Status200OK, recipes)
-            };
+            return StatusCode(StatusCodes.Status200OK, recipes);
         }
         catch
         {
