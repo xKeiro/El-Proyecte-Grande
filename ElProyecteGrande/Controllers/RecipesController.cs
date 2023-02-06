@@ -129,8 +129,8 @@ public class RecipesController : ControllerBase
         {
             var deleted = await _service.Delete(id);
             return !deleted
-                ? (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id))
-                : (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id));
+                ? StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id))
+                : StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id));
         }
         catch
         {

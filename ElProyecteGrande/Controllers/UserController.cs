@@ -122,8 +122,8 @@ public class UsersController : ControllerBase
         {
             return await _service.Delete(id) switch
             {
-                false => (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
-                _ => (ActionResult<StatusMessage>)StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id)),
+                false => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
+                _ => StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id)),
             };
         }
         catch

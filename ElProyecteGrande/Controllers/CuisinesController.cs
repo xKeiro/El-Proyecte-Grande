@@ -30,7 +30,7 @@ public class CuisinesController : ControllerBase
         try
         {
             var cuisinesPublic = await _service.GetAll();
-            return (ActionResult<IEnumerable<CuisinePublic>>)StatusCode(StatusCodes.Status200OK, cuisinesPublic);
+            return StatusCode(StatusCodes.Status200OK, cuisinesPublic);
         }
         catch
         {

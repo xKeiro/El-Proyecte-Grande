@@ -31,7 +31,7 @@ public class DietsController : ControllerBase
         try
         {
             var dietsPublic = await _service.GetAll();
-            return (ActionResult<IEnumerable<DietPublic>>)StatusCode(StatusCodes.Status200OK, dietsPublic);
+            return StatusCode(StatusCodes.Status200OK, dietsPublic);
         }
         catch
         {
