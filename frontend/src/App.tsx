@@ -1,17 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { RecipesRoutes } from '@/features/recipes'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
-  const [count, setCount] = useState(0)
 
+export const App = () =>{
   return (
-    <div className="App">
-      <h1>
-        What can I make?
-      </h1>
-    </div>
+      <BrowserRouter>
+        <RecipesRoutes/>
+      </BrowserRouter>
   )
 }
-
-export default App
