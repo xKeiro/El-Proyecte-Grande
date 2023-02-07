@@ -1,5 +1,16 @@
+import React from 'react'
 import { Fragment } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import Footer from '../footer/Footer'
+import logo from '../../assets/logo.png';
+
+const styles = {
+  logo: {
+    height: 120,
+    display: "flex",
+    alignItems: 'center',
+  },
+} as const;
 
 const Navigation = () => {
   return (
@@ -18,6 +29,7 @@ const Navigation = () => {
         </div>
       </div>
       <div className="navbar-center">
+        <img src={ logo } style={styles.logo}/>
         <a className="btn btn-ghost normal-case text-xl">What can I make?</a>
       </div>
       <div className="navbar-end">
@@ -34,7 +46,9 @@ const Navigation = () => {
       </div>
     </div>
     <Outlet />
+    <Footer /> 
     </Fragment>
+    
   );
 };
 
