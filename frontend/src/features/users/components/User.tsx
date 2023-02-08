@@ -22,17 +22,23 @@ const User = () => {
     }, [id]);
 
     return (
-        <div>
-            <div className="card-body">
-                <h2 className="card-title">Name: {user.username}</h2>
-                <p>Email: {user.emailAddress}</p>
-                <SavedRecipes />
-                <LikedRecipes />
-                <DislikedRecipes/>
-                
+        <div className="min-h-screen flex items-center justify-center">
+            <div className="w-1/2 mx-auto p-4 flex flex-col">
+                <div className="flex items-center justify-start bg-base-300 shadow rounded p-4">
+                    <div className="text-center">
+                        <h1 className="text-2xl font-medium text-primary">{user.username}</h1>
+                        <small className="text-xs text-info">{user.emailAddress}</small>
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <SavedRecipes />
+                    <LikedRecipes />
+                    <DislikedRecipes />
+                </div>
             </div>
         </div>
     )
 }
 
 export default User;
+

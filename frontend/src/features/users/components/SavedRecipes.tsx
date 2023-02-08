@@ -15,15 +15,23 @@ const SavedRecipes = () => {
         };
         fetchData();
     }, [id]);
-    
+
     return (
-        <div>
-            <p>Saved Recipes:</p>
-            {
-                Array.isArray(savedRecipes) && savedRecipes.length > 0
-                    ? savedRecipes.map(recipe => <p key={recipe.id}>{recipe.name}</p>)
-                    : <p>No liked recipes</p>
-            }
+
+        <div tabIndex={0} className="collapse collapse-arrow w-6/12">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+                Saved Recipes
+            </div>
+            <div className="collapse-content">
+                <ul>
+                    {
+                        Array.isArray(savedRecipes) && savedRecipes.length > 0
+                            ? savedRecipes.map(recipe => <li key={recipe.id}>{recipe.name}</li>)
+                            : <p>This user hasn't got any saved recipes</p>
+                    }
+                </ul>
+            </div>
         </div>
     );
 }

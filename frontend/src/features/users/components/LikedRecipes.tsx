@@ -16,15 +16,21 @@ const LikedRecipes = () => {
     }, [id]);
 
     return (
-        <div>
-            <p>Liked Recipes:
-                {
-                    Array.isArray(likedRecipes) && likedRecipes.length > 0
-                        ? likedRecipes.map(recipe => <p key={recipe.id}>{recipe.name}</p>)
-                        : <p>No liked recipes</p>
-                }
-            </p>
-
+        
+        <div tabIndex={0} className="collapse collapse-arrow w-6/12">
+            <input type="checkbox" />
+            <div className="collapse-title text-xl font-medium">
+                Liked Recipes
+            </div>
+            <div className="collapse-content">
+                <ul>
+                    {
+                        Array.isArray(likedRecipes) && likedRecipes.length > 0
+                            ? likedRecipes.map(recipe => <li key={recipe.id}>{recipe.name}</li>)
+                            : <p>This user hasn't got any liked recipes</p>
+                    }
+                </ul>
+            </div>
         </div>
     );
 }

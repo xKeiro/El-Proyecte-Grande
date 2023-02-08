@@ -30,8 +30,9 @@ const Users = () => {
         }, []) */
 
     return (
-        <div className='overflow-x-auto'>
-            <table className="table table-normal">
+        <div className='flex items-center justify-center py-14'>
+        <div className='overflow-x-auto w-9/12'>
+            <table className="table table-normal w-full">
                 <thead>
                     <tr>
                         <th>User Name</th>
@@ -40,7 +41,7 @@ const Users = () => {
                 </thead>
                 <tbody>
                     {users.map(user =>
-                        <tr key={user.id}>
+                        <tr className="hover" key={user.id}>
 
                             <td><Link to={`/users/` + user.id}>{user.username}</Link></td>
                             <td>{user.emailAddress}</td>
@@ -49,6 +50,7 @@ const Users = () => {
                     )}
                 </tbody>
             </table>
+        </div>
         </div>);
 }
 
