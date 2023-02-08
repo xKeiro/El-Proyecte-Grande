@@ -1,4 +1,6 @@
-﻿namespace ElProyecteGrande.Dtos.Users.User;
+﻿using backend.Dtos.Users.User;
+
+namespace ElProyecteGrande.Dtos.Users.User;
 
 public class UserPublic : UserBaseDetails
 {

@@ -12,5 +12,6 @@ public class IngredientWithoutId
     public required string Name { get; set; }
 
     [Required]
+    [StringLength(25, MinimumLength = 1)]
     public required string UnitOfMeasure { get; set; }
 }

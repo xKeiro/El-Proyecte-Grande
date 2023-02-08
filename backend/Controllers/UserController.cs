@@ -1,4 +1,5 @@
-﻿using ElProyecteGrande.Dtos.Users.User;
+﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Dtos.Users.User;
 using ElProyecteGrande.Interfaces.Services;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Users;
@@ -79,6 +80,51 @@ public class UsersController : ControllerBase
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
+    }
+
+    [HttpGet("{id}/liked")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<List<RecipePublic>>> GetLikedRecipes(int id)
+    {
+        var result = await _service.LikedRecipes(id);
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id}/saved")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<List<RecipePublic>>> GetSavedRecipes(int id)
+    {
+        var result = await _service.SavedRecipes(id);
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
+    }
+
+    [HttpGet("{id}/disliked")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<List<RecipePublic>>> GetDislikedRecipes(int id)
+    {
+        var result = await _service.DislikedRecipes(id);
+        if (result == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(result);
     }
 
     [HttpPut("{id}")]

@@ -1,14 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Users.User;
+namespace backend.Dtos.Users.User;
 
 public abstract class UserBaseDetails
 {
     [Required]
+    [StringLength(50, MinimumLength = 2)]
     public required string Username { get; set; }
 
+    [StringLength(100, MinimumLength = 2)]
     public string? FirstName { get; set; }
 
+    [StringLength(100, MinimumLength = 2)]
     public string? LastName { get; set; }
 
     [Required]

@@ -1,10 +1,11 @@
-import './App.css'
-import AdminPage from './features/admin'
+import { RecipesRoutes } from '@/features/recipes'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+
+export const App = () =>{
   return (
-    <AdminPage />
+      <BrowserRouter>
+        <RecipesRoutes/>
+      </BrowserRouter>
   )
 }
-
-export default App

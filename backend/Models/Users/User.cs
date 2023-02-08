@@ -8,10 +8,13 @@ namespace ElProyecteGrande.Models.Users;
 public class User : BaseModel
 {
     [Required]
+    [StringLength(50, MinimumLength = 2)]
     public required string Username { get; set; }
 
+    [StringLength(100, MinimumLength = 2)]
     public string? FirstName { get; set; }
 
+    [StringLength(100, MinimumLength = 2)]
     public string? LastName { get; set; }
 
     [Required]
