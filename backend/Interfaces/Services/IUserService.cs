@@ -13,4 +13,8 @@ public interface IUserService<TResponseDto, TRequestDto> :
 
     Task<List<RecipePublic>> LikedRecipes(int userId);
 
+    Task<List<RecipePublic>> SavedRecipes(int userId);
+
+    Task<List<RecipePublic>> DislikedRecipes(int userId);
+
 }
