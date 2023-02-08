@@ -3,6 +3,8 @@ import { Fragment } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import Footer from '../footer/Footer'
 import logo from '../../assets/logo.png';
+import { useEffect } from 'react'
+import { themeChange } from 'theme-change'
 
 const styles = {
   logo: {
@@ -13,6 +15,9 @@ const styles = {
 } as const;
 
 const Navigation = () => {
+  useEffect(() => {
+    themeChange(false)
+  }, [])
   return (
     <Fragment>
     <div className="navbar bg-base-100">
@@ -32,10 +37,19 @@ const Navigation = () => {
         <img src={ logo } style={styles.logo}/>
         <a className="btn btn-ghost normal-case text-xl">What can I make?</a>
       </div>
-      <div className="navbar-end">
-      <div className="dropdown dropdown-end">
+      <div className="navbar navbar-end">
+        <div className='px-8'>
+          <span className='px-8'>Themes</span>
+          <select className='select rounded-box font-bold' data-choose-theme>
+            <option value="fantasy">Fantasy</option>
+            <option value="coffee">Coffee</option>
+            <option value="luxury">Luxury</option>
+            <option value="garden">Garden</option>
+          </select>
+        </div>
+      <div className="dropdown dropdown-end pr-4">
           <label tabIndex={0} className="btn btn-ghost btn-circle">
-            Login
+            Options
           </label>
           <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
             <li><a>Placeholder 1</a></li>
