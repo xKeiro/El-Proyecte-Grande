@@ -21,7 +21,7 @@ const Recipe = () => {
                 </div>
             </div>
             <RecipePreparation />
-            <RecipeButtons />
+            <RecipeButtons recipeId={recipe.id} />
         </div>
     )
 }
