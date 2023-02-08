@@ -37,6 +37,7 @@ const Users = () => {
                     <tr>
                         <th>User Name</th>
                         <th>Email</th>
+                        <th>Admin</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +46,7 @@ const Users = () => {
 
                             <td><Link to={`/users/` + user.id}>{user.username}</Link></td>
                             <td>{user.emailAddress}</td>
+                            <td>{user.isAdmin ? "Admin":"-"}</td>
 
                         </tr>
                     )}
