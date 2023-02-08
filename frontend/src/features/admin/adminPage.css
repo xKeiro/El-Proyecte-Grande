@@ -41,15 +41,15 @@ figure > img {
     margin-right: 15px;
 }
 
-.recipe-body {
+.recipe-info {
     text-align: left;
 }
 
-.recipe-body > ul {
+.recipe-info > ul {
     padding-left: 20px;
 }
 
-.recipe-body > ul > li {
+.recipe-info > ul > li {
     margin-top: 10px;
 }
 
@@ -70,4 +70,12 @@ figure > img {
 .card-body :where(p) {
     flex-grow: unset;
     margin-bottom: 20px;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+.card-side {
+    border-radius: 0;
 }
