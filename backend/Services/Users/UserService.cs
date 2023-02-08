@@ -92,10 +92,10 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
     public async Task<List<RecipePublic>> LikedRecipes(int userId)
     {
         var result = await (from u in _context.Users
-                            join rs in _context.UserRecipes on u.Id equals rs.User.Id
-                            join r in _context.Recipes on rs.Recipe.Id equals r.Id
-                            where u.Id == userId && rs.Status.Name == RecipeStatus.Liked
-                            select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
+            join rs in _context.UserRecipes on u.Id equals rs.User.Id
+            join r in _context.Recipes on rs.Recipe.Id equals r.Id
+            where u.Id == userId && rs.Status.Name == RecipeStatus.Liked
+            select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
         return result;
     }
 
@@ -118,5 +118,4 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
             select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
         return result;
     }
-
 }
