@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using backend.Dtos.Users.User;
+using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Dtos.Users.User;
 
