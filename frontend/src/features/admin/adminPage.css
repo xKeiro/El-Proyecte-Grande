@@ -24,21 +24,15 @@ h1 {
     text-decoration: underline;
 }
 
-figure > img {
+.card-side > img {
     max-height: 500px;
+    min-width: 400px;
 }
 
 .recipe-header {
     font-size: 28px;
     font-style: italic;
     margin-bottom: 20px;
-}
-
-.recipe-name {
-    font-weight: bold;
-    float: left;
-    display: inline;
-    margin-right: 15px;
 }
 
 .recipe-info {
@@ -59,11 +53,6 @@ figure > img {
     font-weight: bold;
 }
 
-.badges {
-    float: left;
-    display: inline;
-}
-
 .badges > div + div {
     margin-left: 10px;
 }
@@ -81,7 +70,7 @@ ol li {
     padding-left: 15px;
 }
 
-ol > ::marker {
+.recipe-name, ol > ::marker {
     font-weight: bold;
 }
 
