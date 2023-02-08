@@ -1,3 +1,3 @@
 export type BaseEntity = {
-  id: int;
+  id: number;
 };
