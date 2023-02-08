@@ -6,4 +6,4 @@ export const ingredientSchema = z.object({
     unitOfMeasure: z.string().min(2).max(25),
     })
 
-export type ingredient = z.infer<typeof ingredientSchema>
+export type Ingredient = z.infer<typeof ingredientSchema>
