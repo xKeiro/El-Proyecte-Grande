@@ -1,4 +1,4 @@
-import { RecipesRoutes } from '@/features/recipes'
+import { RecipesRoutes } from "./features/recipes/routes";
 import { UsersRoutes } from './features/users/routes';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
