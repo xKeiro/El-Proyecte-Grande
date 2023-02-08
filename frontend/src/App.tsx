@@ -1,16 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import './App.css'
+import AdminPage from './features/admin'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <h1>
-        What can I make?
-      </h1>
-    </div>
+    <AdminPage />
   )
 }
 
