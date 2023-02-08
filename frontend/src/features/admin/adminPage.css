@@ -1,0 +1,73 @@
+.container {
+    margin: auto;
+    text-align: center;
+    font-family: "Bahnschrift", sans-serif;
+    /*padding: 10px 10px 20px 10px;*/
+    padding-bottom: 20px;
+    min-height: 700px;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.navbar {
+    margin-bottom: 70px;
+}
+
+#recipes-container > a {
+    margin: 5px 0 5px 0;
+}
+
+#recipes-container > a:hover {
+    text-decoration: underline;
+}
+
+figure > img {
+    max-height: 500px;
+}
+
+.recipe-header {
+    font-size: 28px;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+.recipe-name {
+    font-weight: bold;
+    float: left;
+    display: inline;
+    margin-right: 15px;
+}
+
+.recipe-body {
+    text-align: left;
+}
+
+.recipe-body > ul {
+    padding-left: 20px;
+}
+
+.recipe-body > ul > li {
+    margin-top: 10px;
+}
+
+.recipe-sub-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.badges {
+    float: left;
+    display: inline;
+}
+
+.badges > div + div {
+    margin-left: 10px;
+}
+
+.card-body :where(p) {
+    flex-grow: unset;
+    margin-bottom: 20px;
+}
