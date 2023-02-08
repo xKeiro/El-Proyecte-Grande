@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using ElProyecteGrande.Dtos.Recipes.Recipe;
 using ElProyecteGrande.Dtos.Users.User;
+using ElProyecteGrande.Enums;
 using ElProyecteGrande.Interfaces.Services;
+using ElProyecteGrande.Models.Recipes;
 using ElProyecteGrande.Models.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -82,5 +85,35 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         _ = _context.Users.Remove(user);
         _ = await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<List<RecipePublic>> LikedRecipes(int userId)
+    {
+        var result = await (from u in _context.Users
+            join rs in _context.UserRecipes on u.Id equals rs.User.Id
+            join r in _context.Recipes on rs.Recipe.Id equals r.Id
+            where u.Id == userId && rs.Status.Name == RecipeStatus.Liked
+            select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<RecipePublic>> SavedRecipes(int userId)
+    {
+        var result = await (from u in _context.Users
+            join rs in _context.UserRecipes on u.Id equals rs.User.Id
+            join r in _context.Recipes on rs.Recipe.Id equals r.Id
+            where u.Id == userId && rs.Status.Name == RecipeStatus.Saved
+            select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
+        return result;
+    }
+
+    public async Task<List<RecipePublic>> DislikedRecipes(int userId)
+    {
+        var result = await (from u in _context.Users
+            join rs in _context.UserRecipes on u.Id equals rs.User.Id
+            join r in _context.Recipes on rs.Recipe.Id equals r.Id
+            where u.Id == userId && rs.Status.Name == RecipeStatus.Disliked
+            select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
+        return result;
     }
 }
