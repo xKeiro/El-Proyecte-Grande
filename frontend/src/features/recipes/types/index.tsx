@@ -5,7 +5,7 @@ import * as z from 'zod';
 export const recipeIngredientSchema = z.object({
     id: z.number().int().positive(),
     ingredient: ingredientSchema,
-    amount: z.number().int().positive()
+    amount: z.number().positive()
 });
 
 export const recipesSchema =z.array(z.object({
