@@ -19,7 +19,7 @@ export const recipesSchema =z.array(z.object({
     dishType: categorySchema
 }))
 
-export type RecipeIngredient = z.infer<typeof recipeIngredientSchema>;
+export type TRecipeIngredient = z.infer<typeof recipeIngredientSchema>;
 
 
 export const recipeSchema = z.object({
@@ -33,4 +33,4 @@ export const recipeSchema = z.object({
     dishType: categorySchema
 });
 
-export type Recipe = z.infer<typeof recipeSchema>;
+export type TRecipe = z.infer<typeof recipeSchema>;

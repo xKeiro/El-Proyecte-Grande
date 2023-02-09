@@ -1,5 +1,3 @@
-import React from "react";
-
 export const RecipeSearchBox = () => {
   return (
     <input
