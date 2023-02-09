@@ -22,13 +22,13 @@ const User = () => {
     }, [id]);
 
     return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-screen flex  justify-center">
                 <div className="w-2/5 mx-auto p-4 flex flex-col">
-                    <div className="flex items-center justify-start bg-base-300 shadow rounded p-4">
-                        <div className="justify-start">
-                            <h1 className="text-2xl font-medium text-accent">{user.username}</h1>
+                    <div className="flex items-center justify-center bg-base-300 rounded p-4">
+                        <div className="text-center">
+                            <h1 className="text-2xl font-medium"><u>{user.username}</u></h1>
                             <h3><b>{user.isAdmin ? "ADMIN" : ""}</b></h3>
-                            <h5 className="text-s text-primary"><i>{user.emailAddress}</i></h5>
+                            <h5 className="text-md"><i>{user.emailAddress}</i></h5>
                         </div>
                     </div>
                     <div className="mt-4 grid grid-columns-1 gap-2">

@@ -18,7 +18,6 @@ const SavedRecipes = () => {
     }, [id]);
 
     return (
-
         <div tabIndex={0} className="collapse collapse-arrow w-2/15 bg-base-300 rounded">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
