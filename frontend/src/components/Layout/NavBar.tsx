@@ -1,64 +1,136 @@
-import React from 'react'
+import React from 'react';
 import { Fragment } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
-import { useEffect } from 'react'
-import { themeChange } from 'theme-change'
+import { useEffect } from 'react';
+import { themeChange } from 'theme-change';
+
+const themes = [
+  'light',
+  'dark',
+  'cupcake',
+  'bumblebee',
+  'emerald',
+  'corporate',
+  'synthwave',
+  'retro',
+  'cyberpunk',
+  'valentine',
+  'halloween',
+  'garden',
+  'forest',
+  'aqua',
+  'lofi',
+  'pastel',
+  'fantasy',
+  'wireframe',
+  'black',
+  'luxury',
+  'dracula',
+  'cmyk',
+  'autumn',
+  'business',
+  'acid',
+  'lemonade',
+  'night',
+  'coffee',
+  'winter',
+];
 
 const styles = {
   logo: {
     height: 50,
-    display: "flex",
+    display: 'flex',
     alignItems: 'center',
   },
 } as const;
 
 export const NavBar = () => {
   useEffect(() => {
-    themeChange(false)
-  }, [])
+    themeChange(false);
+  }, []);
   return (
     <Fragment>
-    <div className="navbar bg-base-100">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-          </label>
-          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-            <li><Link to="/">Recipes</Link></li>
-            <li><Link to="/users">Users</Link></li>
-            <li><a>About</a></li>
-          </ul>
+      <div className="navbar bg-neutral text-neutral-content mb-5">
+        <div className="navbar-start">
+          <div className="dropdown">
+            <label tabIndex={0} className="btn btn-ghost btn-circle">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16M4 18h7"
+                />
+              </svg>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow-xl rounded-box w-52 bg-neutral"
+            >
+              <li>
+                <Link to="/admin/recipes" className="text-xl">
+                  Recipes
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/users" className="text-xl">
+                  Users
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="navbar-center">
+          <Link to="/">
+            <img src={logo} style={styles.logo} />
+          </Link>
+          <Link to="/" className="btn btn-ghost normal-case text-xl">
+            What can I cook?
+          </Link>
+        </div>
+        <div className="navbar navbar-end">
+          <div className="px-8">
+            <span className="mr-2">Theme:</span>
+            <select
+              className="select rounded-box font-bold items-center justify-center bg-neutral text-neutral-content"
+              data-choose-theme
+            >
+              {themes.map((theme) => (
+                <option className="text-l" value={theme}>
+                  {theme.charAt(0).toUpperCase() + theme.slice(1)}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="dropdown dropdown-end pr-4">
+            <label tabIndex={0} className="btn btn-ghost btn-circle">
+            <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52"
+            >
+              <li>
+                <Link to="/login" className="text-xl">
+                  Login
+                </Link>
+              </li>
+              <li>
+                <Link to="/register" className="text-xl">
+                  Register
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div className="navbar-center">
-        <img src={ logo } style={styles.logo}/>
-        <a className="btn btn-ghost normal-case text-xl">What can I cook?</a>
-      </div>
-      <div className="navbar navbar-end">
-        <div className='px-8'>
-          <span className='px-8'>Themes</span>
-          <select className='select rounded-box font-bold' data-choose-theme>
-            <option value="fantasy">Fantasy</option>
-            <option value="coffee">Coffee</option>
-            <option value="luxury">Luxury</option>
-            <option value="garden">Garden</option>
-          </select>
-        </div>
-      <div className="dropdown dropdown-end pr-4">
-          <label tabIndex={0} className="btn btn-ghost btn-circle">
-            Options
-          </label>
-          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a>Placeholder 1</a></li>
-            <li><a>placeholder 2</a></li>
-            <li><a>Placeholder 3</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
     </Fragment>
-    
   );
 };
