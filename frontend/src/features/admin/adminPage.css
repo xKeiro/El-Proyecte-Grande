@@ -2,7 +2,6 @@
     margin: auto;
     text-align: center;
     font-family: "Bahnschrift", sans-serif;
-    /*padding: 10px 10px 20px 10px;*/
     padding-bottom: 20px;
     min-height: 700px;
 }
@@ -14,10 +13,6 @@ h1 {
 
 .navbar {
     margin-bottom: 70px;
-}
-
-#recipes-container > a {
-    margin: 5px 0 5px 0;
 }
 
 #recipes-container > a:hover {
