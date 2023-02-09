@@ -26,9 +26,9 @@ const User = () => {
                 <div className="w-2/5 mx-auto p-4 flex flex-col">
                     <div className="flex items-center justify-start bg-base-300 shadow rounded p-4">
                         <div className="justify-start">
-                            <h1 className="text-2xl font-medium text-primary">{user.username}</h1>
+                            <h1 className="text-2xl font-medium text-accent">{user.username}</h1>
                             <h3><b>{user.isAdmin ? "ADMIN" : ""}</b></h3>
-                            <h5 className="text-s text-info"><i>{user.emailAddress}</i></h5>
+                            <h5 className="text-s text-primary"><i>{user.emailAddress}</i></h5>
                         </div>
                     </div>
                     <div className="mt-4">
