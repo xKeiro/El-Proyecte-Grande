@@ -1,4 +1,5 @@
 ﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
+using ElProyecteGrande.Dtos.Users.User;
 
 namespace ElProyecteGrande.Interfaces.Services;
 

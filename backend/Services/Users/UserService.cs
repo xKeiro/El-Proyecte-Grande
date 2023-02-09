@@ -13,6 +13,7 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
 {
     private readonly ElProyecteGrandeContext _context;
     private readonly IMapper _mapper;
+
     public UserService(ElProyecteGrandeContext context, IMapper mapper)
     {
         _context = context;
@@ -60,13 +61,14 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
     public async Task<bool> IsUnique(UserWithoutId userWithoutId)
     {
         var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
-        return !await _context.Users.AnyAsync(u => u.Username == user.Username || u.EmailAddress.ToLower() == user.EmailAddress.ToLower());
+        return !await _context.Users.AnyAsync(u =>
+            u.Username == user.Username || u.EmailAddress.ToLower() == user.EmailAddress.ToLower());
     }
 
     public async Task<bool> Delete(int id)
     {
         var user = await _context.Users
-             .FirstOrDefaultAsync(user => user.Id == id);
+            .FirstOrDefaultAsync(user => user.Id == id);
         var userRecipe = await _context.UserRecipes
             .FirstOrDefaultAsync(userRecipe => userRecipe.User == user);
         switch (user)
