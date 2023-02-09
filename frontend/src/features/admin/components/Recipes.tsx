@@ -1,9 +1,10 @@
 import {getRecipes} from "../api/RecipesHandler";
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import {Recipe} from "@/features/recipes";
 
 const Recipes = () => {
-  const [recipes, setRecipes] = useState<any[]>([])
+  const [recipes, setRecipes] = useState<Recipe[]>([])
 
    useEffect(() => {
      const fetchData = async () => {
@@ -14,9 +15,9 @@ const Recipes = () => {
     }, [])
 
     return (
-      <div id="recipes-container" className="grid grid-cols-4">
+      <div id="recipes-container" className="grid grid-cols-4 gap-5">
           {recipes.map(recipe => (
-              <Link key={recipe.id} to={recipe.name.replaceAll(" ", "")} state={recipe}>{recipe.name}</Link>
+              <Link key={recipe.id} to={recipe.name} state={recipe}>{recipe.name}</Link>
           ))}
       </div>
     )

@@ -1,19 +1,21 @@
+import {Recipe} from "@/features/recipes";
 
-const RecipeHeader = (props : any) => {
+const RecipeHeader = (props : {recipe : Recipe}) => {
+    const recipe = props.recipe
     return (
         <div className="recipe-header">
-            <div className="recipe-name">{props.name}</div>
+            <div className="recipe-name">{recipe.name}</div>
             <div className="badges">
-                <div className="badge badge-accent">{props.cuisine.name}</div>
-                <div className="badge badge-accent">{props.dishType.name}</div>
+                <div className="badge badge-accent">{recipe.cuisine.name}</div>
+                <div className="badge badge-accent">{recipe.dishType.name}</div>
                 {
-                    props.diets.map((d : any) => (
-                        <div key={d.id} className="badge badge-accent">{d.name}</div>
+                    recipe.diets.map((diet) => (
+                        <div key={diet.id} className="badge badge-accent">{diet.name}</div>
                     ))
                 }
                 {
-                    props.mealTimes.map((m : any) => (
-                        <div key={m.id} className="badge badge-accent">{m.name}</div>
+                    recipe.mealTimes.map((mealTime) => (
+                        <div key={mealTime.id} className="badge badge-accent">{mealTime.name}</div>
                     ))
                 }
             </div>

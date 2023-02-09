@@ -1,5 +1,5 @@
 
-const RecipeDescription = (props : any) => {
+const RecipeDescription = (props : {description : string}) => {
     return (
         <p>{props.description}</p>
     )

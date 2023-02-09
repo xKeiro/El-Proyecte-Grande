@@ -1,17 +1,18 @@
+import {RecipeIngredient} from "@/features/recipes";
 
-const RecipeIngredients = (props : any) => {
+const RecipeIngredients = (props : {ingredients : RecipeIngredient[]}) => {
     const longUnitOfMeasures = ["bunch", "piece"]
     return (
         <div className="recipe-info grid grid-cols-3">
             <ul>
                 {
-                    props.ingredients.map((ing : any) => (
+                    props.ingredients.map((ing : RecipeIngredient) => (
                         <li key={ing.id}>
-                            <b><i>
+                            <b>
                                 {ing.amount}
                                 {longUnitOfMeasures.includes(ing.ingredient.unitOfMeasure) ? " " : ""}
                                 {ing.ingredient.unitOfMeasure}
-                            </i></b> - {ing.ingredient.name}
+                            </b> <span className="text-info">{ing.ingredient.name}</span>
                         </li>
                     ))
                 }

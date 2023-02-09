@@ -14,7 +14,7 @@ const Recipe = () => {
             <div className="card card-side bg-base-100">
                 <RecipeImage />
                 <div className="card-body recipe-info">
-                    <RecipeHeader name={recipe.name} cuisine={recipe.cuisine} dishType={recipe.dishType} diets={recipe.diets} mealTimes={recipe.mealTimes} />
+                    <RecipeHeader recipe={recipe} />
                     <RecipeDescription description={recipe.description} />
                     <h3 className="recipe-sub-title">Ingredients</h3>
                     <RecipeIngredients ingredients={recipe.recipeIngredients} />

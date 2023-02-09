@@ -1,7 +1,7 @@
 import {deleteRecipeById} from "@/features/admin/api/RecipesHandler";
 import { useNavigate } from 'react-router-dom';
 
-export const RecipeButtons = (props : any) => {
+export const RecipeButtons = (props : {recipeId : number}) => {
     const navigate = useNavigate()
 
     async function deleteRecipe(recipeId : number) {

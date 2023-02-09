@@ -1,17 +1,16 @@
 import axios from "axios";
+import {recipesSchema} from "@/features/recipes";
 
 export async function getRecipes() {
      const res = await axios.get(`https://localhost:44329/api/Recipes`);
-     res.data.sort((n1: { name: string; }, n2: { name: string; }) => {
-          if (n1.name > n2.name) {
-               return 1;
-          }
-          if (n1.name < n2.name) {
-               return -1;
-          }
-          return 0;
-     })
-     return res.data
+     const result = recipesSchema.safeParse(res.data);
+
+     if (result.success) {
+          return res.data
+     }
+     else {
+          console.log(result.error.issues)
+     }
 }
 
 export async function deleteRecipeById(id : number) {
