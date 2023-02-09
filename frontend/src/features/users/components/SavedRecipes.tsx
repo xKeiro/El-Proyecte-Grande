@@ -19,17 +19,17 @@ const SavedRecipes = () => {
 
     return (
 
-        <div tabIndex={0} className="collapse collapse-arrow w-2/15">
+        <div tabIndex={0} className="collapse collapse-arrow w-2/15 bg-base-300 rounded">
             <input type="checkbox" />
             <div className="collapse-title text-xl font-medium">
                 Saved Recipes {Array.isArray(savedRecipes) && savedRecipes.length > 0 ? `(${savedRecipes.length})` : "(0)"}
             </div>
-            <div className="collapse-content">
-                <ul>
+            <div className="collapse-content bg-base-200 grid grid-columns-1 align-middle">
+                <ul className='align-middle pt-3'>
                     {
                         Array.isArray(savedRecipes) && savedRecipes.length > 0
                             ? savedRecipes.map(recipe => <li key={recipe.id}><Link to={`/recipes/` + recipe.id}>{recipe.name}</Link></li>)
-                            : <p>This user hasn't got any saved recipes</p>
+                            : <p>This user doesn't have any saved recipes</p>
                     }
                 </ul>
             </div>
