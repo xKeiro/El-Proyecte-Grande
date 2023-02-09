@@ -2,11 +2,11 @@ import './adminPage.css';
 import { Route, Routes } from 'react-router-dom';
 import Users from './components/Users';
 import Recipes from './components/Recipes';
-import Recipe from './components/Recipe';
+import {Recipe} from '@/features/recipes/routes/Recipe';
 
 export const AdminRoutes = () => {
   return (
-    <div className="container bg-neutral rounded-box">
+    <div className="container bg-neutral rounded-box grid grid-cols-1 mx-auto">
       <Routes>
         <Route path="/admin/users" element={<Users />}></Route>
         <Route path="/admin/recipes" element={<Recipes />}></Route>

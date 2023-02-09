@@ -1,7 +1,7 @@
 
 const RecipeDescription = (props : {description : string}) => {
     return (
-        <p>{props.description}</p>
+        <p className="grow-0 mb-5">{props.description}</p>
     )
 }
 

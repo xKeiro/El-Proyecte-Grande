@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_URL } from "@/config";
 
 export async function getUsers() {
-     const res = await axios.get(`https://localhost:44329/api/users`);
+     const res = await axios.get(`${API_URL}/users`);
      return res.data
 }
