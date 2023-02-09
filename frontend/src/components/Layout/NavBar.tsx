@@ -1,20 +1,19 @@
 import React from 'react'
 import { Fragment } from 'react';
 import { Outlet, Link } from 'react-router-dom';
-import Footer from '../footer/Footer'
 import logo from '@/assets/logo.png';
 import { useEffect } from 'react'
 import { themeChange } from 'theme-change'
 
 const styles = {
   logo: {
-    height: 120,
+    height: 50,
     display: "flex",
     alignItems: 'center',
   },
 } as const;
 
-const Navigation = () => {
+export const NavBar = () => {
   useEffect(() => {
     themeChange(false)
   }, [])
@@ -59,11 +58,7 @@ const Navigation = () => {
         </div>
       </div>
     </div>
-    <Outlet />
-    <Footer /> 
     </Fragment>
     
   );
 };
-
-export default Navigation;

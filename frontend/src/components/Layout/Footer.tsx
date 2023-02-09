@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-const Footer = () => {
+export const Footer = () => {
     return (
         <Fragment>
             <footer className="w-full fixed left-0 bottom-0 footer items-center p-4 bg-neutral text-neutral-content">
@@ -19,4 +19,3 @@ const Footer = () => {
         </Fragment>
     )
 }
-export default Footer;

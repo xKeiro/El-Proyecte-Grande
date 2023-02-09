@@ -5,7 +5,7 @@ import { MainPage } from './MainPage';
 export const RecipesRoutes = () => {
   return (
     <Routes>
-      <Route path="" element={<MainPage />} />
+      <Route index path="/recipe" element={<MainPage />} />
     </Routes>
   );
 };

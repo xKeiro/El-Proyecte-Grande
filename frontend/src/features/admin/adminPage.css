@@ -11,10 +11,6 @@ h1 {
     font-size: 36px;
 }
 
-.navbar {
-    margin-bottom: 70px;
-}
-
 #recipes-container > a:hover {
     text-decoration: underline;
 }
