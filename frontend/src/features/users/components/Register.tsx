@@ -6,6 +6,7 @@ const Register = () => {
     };
 
     return (
+        <div className='sm:container mx-auto'>
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="card flex-shrink-0 w-full max-w-xl shadow-2xl bg-base-100">
                     <div className="card-body">
@@ -52,7 +53,7 @@ const Register = () => {
                     </div>
                 </div>
             </div>
-        
+        </div>
     );
 }
 

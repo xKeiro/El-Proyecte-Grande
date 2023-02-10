@@ -15,14 +15,13 @@ export const Recipe = () => {
   const [recipe, setRecipe] = useState<TRecipe | null>(null);
   const { id } = useParams<{ id: string }>();
   const idNumeric = parseInt(id!);
-  console.log(id);
   useEffect(() => {
     RecipesApi.get(idNumeric).then((recipe: TRecipe) => {
     console.log(recipe)
       setRecipe(recipe);
     });
   }, []);
-  if (!recipe) return <div>Loading...</div>;
+  if (!recipe) return (<div>Loading...</div>);
   return (
     <div className="card shadow-xl">
       <div className="card card-side bg-base-100">
