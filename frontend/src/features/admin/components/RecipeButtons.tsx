@@ -8,7 +8,7 @@ export const RecipeButtons = (props: { recipeId: number }) => {
     let confirmed = confirm('Do you really want to delete this item?');
     if (confirmed) {
       await RecipesApi.deleteById(recipeId);
-      navigate('/Recipes');
+      navigate('/admin/recipes');
     }
   }
 
