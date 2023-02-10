@@ -17,7 +17,6 @@ export const Recipe = () => {
   const idNumeric = parseInt(id!);
   useEffect(() => {
     RecipesApi.get(idNumeric).then((recipe: TRecipe) => {
-    console.log(recipe)
       setRecipe(recipe);
     });
   }, []);

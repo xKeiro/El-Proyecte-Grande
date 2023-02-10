@@ -4,6 +4,7 @@ import axios from 'axios';
 import SavedRecipes from './SavedRecipes';
 import LikedRecipes from './LikedRecipes';
 import DislikedRecipes from './DislikedRecipes';
+import {API_URL} from "@/config";
 
 const User = () => {
 
@@ -13,9 +14,8 @@ const User = () => {
     //fetch the user
     useEffect(() => {
         const fetchUsers = async () => {
-            const res = await axios.get(`https://localhost:7161/api/users/${id}`);
+            const res = await axios.get(`${API_URL}/users/${id}`);
             setUser(res.data);
-            console.log(res.data);
         };
         fetchUsers();
 

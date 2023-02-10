@@ -12,7 +12,6 @@ const Users = () => {
         const fetchUsers = async () => {
             const data = await allUsers();
             setUsers(data);
-            console.log(data);
         };
         fetchUsers();
     }, []);
@@ -24,7 +23,6 @@ const Users = () => {
             fetchUserData();
             async function fetchUserData(){
                 const res = await axios.get(`https://localhost:7161/api/users`);
-                console.log(res.data);
                 setUsersData(res.data);
             }
         }, []) */

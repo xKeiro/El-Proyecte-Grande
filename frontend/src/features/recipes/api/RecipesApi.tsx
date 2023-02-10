@@ -16,7 +16,6 @@ export abstract class RecipesApi {
 
   public static async get(id : number) {
     const res = await axios.get(`${API_URL}/Recipes/${id}`);
-    print(res.data)
     const result = recipeSchema.safeParse(res.data);
     if (result.success) {
       return res.data;

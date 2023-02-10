@@ -103,7 +103,7 @@ export const NavBar = () => {
               data-choose-theme
             >
               {themes.map((theme) => (
-                <option className="text-l" value={theme}>
+                <option key={theme} className="text-l" value={theme}>
                   {theme.charAt(0).toUpperCase() + theme.slice(1)}
                 </option>
               ))}
