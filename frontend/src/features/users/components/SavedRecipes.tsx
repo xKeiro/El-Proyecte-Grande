@@ -12,7 +12,6 @@ const SavedRecipes = () => {
         const fetchData = async () => {
             const data = await fetchSavedRecipes(id || "");
             setSavedRecipes(data);
-            console.log(data);
         };
         fetchData();
     }, [id]);

@@ -12,12 +12,9 @@ const DislikedRecipes = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await fetchDislikedRecipes(id || '');
-      console.log(data);
       const result = recipesSchema.safeParse(data);
-      console.log(result);
       if (result.success) {
         setDislikedRecipes(data);
-        console.log(data);
       } else {
         console.log(result.error.issues);
       }

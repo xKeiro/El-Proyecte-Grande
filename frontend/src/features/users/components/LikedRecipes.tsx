@@ -11,7 +11,6 @@ const LikedRecipes = () => {
         const fetchData = async () => {
             const data = await fetchLikedRecipes(id ||"");
             setLikedRecipes(data);
-            console.log(data);
         };
         fetchData();
     }, [id]);

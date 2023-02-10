@@ -15,10 +15,8 @@ export const Recipe = () => {
   const [recipe, setRecipe] = useState<TRecipe | null>(null);
   const { id } = useParams<{ id: string }>();
   const idNumeric = parseInt(id!);
-  console.log(id);
   useEffect(() => {
     RecipesApi.get(idNumeric).then((recipe: TRecipe) => {
-    console.log(recipe)
       setRecipe(recipe);
     });
   }, []);
