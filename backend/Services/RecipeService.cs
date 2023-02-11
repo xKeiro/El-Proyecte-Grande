@@ -204,7 +204,7 @@ public class RecipeService : IRecipeService
         }
 
         List<RecipeIngredient> recipeIngredients = new();
-        foreach (var recipeIngredientAddNew in recipeRequest.RecipieIngredientsAddNew)
+        foreach (var recipeIngredientAddNew in recipeRequest.RecipeIngredientsAddNew)
         {
             var ingredient = _context.Ingredients.Find(recipeIngredientAddNew.IngredientId);
             switch (ingredient)

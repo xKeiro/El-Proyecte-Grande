@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
 
-public class RecipieIngredientAddNew
+public class RecipeIngredientAddNew
 {
     [Required]
     public required int IngredientId { get; set; }

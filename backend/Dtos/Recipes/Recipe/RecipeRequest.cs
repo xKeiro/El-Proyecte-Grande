@@ -15,7 +15,7 @@ public class RecipeRequest
 
     [Required]
     [MinLength(1)]
-    public required ICollection<RecipieIngredientAddNew> RecipieIngredientsAddNew { get; set; }
+    public required ICollection<RecipeIngredientAddNew> RecipeIngredientsAddNew { get; set; }
 
     [Required]
     public required int CuisineId { get; set; }
