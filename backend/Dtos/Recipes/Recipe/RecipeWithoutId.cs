@@ -1,4 +1,5 @@
-﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
+﻿using backend.Enums;
+using ElProyecteGrande.Dtos.Categories.Cuisine;
 using ElProyecteGrande.Dtos.Categories.Diet;
 using ElProyecteGrande.Dtos.Categories.DishType;
 using ElProyecteGrande.Dtos.Categories.MealTime;
@@ -30,4 +31,6 @@ public class RecipeWithoutId
     public required ICollection<DietPublic> Diets { get; set; }
     [Required]
     public required DishTypePublic DishType { get; set; }
+    [Required]
+    public required PreparationDifficulty Difficulty { get; set; }
 }

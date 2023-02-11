@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using backend.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace ElProyecteGrande.Dtos.Recipes.Recipe;
 
@@ -16,5 +17,6 @@ public class RecipeFilter
     public IEnumerable<int>? DietIds { get; set; } = null;
     [MinLength(1)]
     public IEnumerable<int>? DishTypeIds { get; set; } = null;
+    public PreparationDifficulty? MaxDifficulty { get; set; } = null;
     public int? MaxNumberOfNotOwnedIngredients { get; set; } = null;
 }

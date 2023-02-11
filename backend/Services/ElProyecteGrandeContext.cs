@@ -1,4 +1,5 @@
-﻿using ElProyecteGrande.Enums;
+﻿using backend.Enums;
+using ElProyecteGrande.Enums;
 using ElProyecteGrande.Models;
 using ElProyecteGrande.Models.Categories;
 using ElProyecteGrande.Models.Recipes;
@@ -32,6 +33,10 @@ public class ElProyecteGrandeContext : DbContext
             .Entity<UserRecipeStatus>()
             .Property(userRecipeStatus => userRecipeStatus.Name)
             .HasConversion(new EnumToStringConverter<RecipeStatus>());
+        _ = modelBuilder
+            .Entity<Recipe>()
+            .Property(recipe => recipe.Difficulty)
+            .HasConversion(new EnumToStringConverter<PreparationDifficulty>());
         _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Diets).AutoInclude();
         _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.MealTimes).AutoInclude();
         _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Cuisine).AutoInclude();

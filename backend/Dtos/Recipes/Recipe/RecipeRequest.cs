@@ -1,7 +1,8 @@
-﻿using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
+﻿using backend.Enums;
+using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Recipes.Recipe;
+namespace backend.Dtos.Recipes.Recipe;
 
 public class RecipeRequest
 {
@@ -26,4 +27,6 @@ public class RecipeRequest
     public required ICollection<int> DietIds { get; set; }
     [Required]
     public required int DishTypeId { get; set; }
+    [Required]
+    public required PreparationDifficulty Difficulty { get; set; }
 }
