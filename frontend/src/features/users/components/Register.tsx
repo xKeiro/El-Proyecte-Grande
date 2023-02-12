@@ -7,7 +7,7 @@ const Register = () => {
 
     return (
         <div className='sm:container mx-auto'>
-            <div className="hero-content flex-col lg:flex-row-reverse">
+            <div className="hero-content flex-col lg:flex-row-reverse mx-auto">
                 <div className="card flex-shrink-0 w-full max-w-xl shadow-2xl bg-base-100">
                     <div className="card-body">
                         <h1 className="text-5xl font-bold">Register</h1>

@@ -24,7 +24,7 @@ const DislikedRecipes = () => {
 
   return (
     <div tabIndex={0} className="collapse collapse-arrow w-2/15 bg-base-300 rounded">
-      <input type="checkbox" />
+      <input type="checkbox" aria-label="Search"/>
       <div className="collapse-title text-xl font-medium">
         Disliked Recipes{' '}
         {Array.isArray(dislikedRecipes) && dislikedRecipes.length > 0
@@ -40,7 +40,7 @@ const DislikedRecipes = () => {
               </li>
             ))
           ) : (
-            <p>This user doesn't have any disliked recipes</p>
+            <li>This user doesn't have any disliked recipes</li>
           )}
         </ul>
       </div>

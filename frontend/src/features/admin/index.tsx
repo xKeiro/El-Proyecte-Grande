@@ -6,7 +6,7 @@ import {Recipe} from '@/features/recipes/routes/Recipe';
 
 export const AdminRoutes = () => {
   return (
-    <div className="container bg-neutral rounded-box grid grid-cols-1 mx-auto">
+    <div className="container bg-neutral rounded-box grid grid-cols-1 mx-auto shadow-2xl">
       <Routes>
         <Route path="/admin/users" element={<Users />}></Route>
         <Route path="/admin/recipes" element={<Recipes />}></Route>

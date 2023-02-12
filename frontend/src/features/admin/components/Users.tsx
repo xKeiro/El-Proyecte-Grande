@@ -15,7 +15,7 @@ const Users = () => {
   }, []);
 
   return (
-    <div className="overflow-x-auto mx-auto">
+    <div className="overflow-x-auto mx-auto my-6">
       <table className="table w-full">
         <thead>
           <tr>
