@@ -42,7 +42,7 @@ public class ElProyecteGrandeContext : DbContext
         _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.Cuisine).AutoInclude();
         _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.DishType).AutoInclude();
         _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
-        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.RecipeIngredients).AutoInclude();
+        _ = modelBuilder.Entity<Recipe>().Navigation(recipe => recipe.PreparationSteps).AutoInclude();
         _ = modelBuilder.Entity<RecipeIngredient>().Navigation(recipeIngredient => recipeIngredient.Ingredient).AutoInclude();
     }
 }
