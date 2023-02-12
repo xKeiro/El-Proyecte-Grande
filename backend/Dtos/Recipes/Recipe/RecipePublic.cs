@@ -2,8 +2,9 @@
 using backend.Dtos.Categories.Diet;
 using backend.Dtos.Categories.DishType;
 using backend.Dtos.Categories.MealTime;
-using backend.Dtos.PreparationStep;
+using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.RecipeIngredient;
+using backend.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace backend.Dtos.Recipes.Recipe;
@@ -20,7 +21,7 @@ public class RecipePublic
     [StringLength(4000, MinimumLength = 2)]
     public required string Description { get; set; }
     [Required]
-    public required PreparationStepPublic Difficulty { get; set; }
+    public required PreparationDifficulty Difficulty { get; set; }
     [Required]
     [MinLength(1)]
     public required ICollection<PreparationStepPublic> PreparationSteps { get; set; }
@@ -39,5 +40,4 @@ public class RecipePublic
     public required ICollection<DietPublic> Diets { get; set; }
     [Required]
     public required DishTypePublic DishType { get; set; }
-    [Required]
 }

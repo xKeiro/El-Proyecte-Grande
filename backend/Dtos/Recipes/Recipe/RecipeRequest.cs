@@ -1,6 +1,6 @@
-﻿using backend.Dtos.PreparationStep;
+﻿using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.RecipeIngredient;
-using backend.Models;
+using backend.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace backend.Dtos.Recipes.Recipe;
@@ -14,10 +14,10 @@ public class RecipeRequest
     [Required]
     public required string Description { get; set; }
     [Required]
-    public required PreparationStepWithoutId Difficulty { get; set; }
+    public required PreparationDifficulty Difficulty { get; set; }
     [Required]
     [MinLength(1)]
-    public required ICollection<PreparationStep> PreparationSteps { get; set; }
+    public required ICollection<int> PreparationStepsId { get; set; }
 
     [Required]
     [MinLength(1)]
@@ -33,5 +33,4 @@ public class RecipeRequest
     public required ICollection<int> DietIds { get; set; }
     [Required]
     public required int DishTypeId { get; set; }
-    [Required]
 }

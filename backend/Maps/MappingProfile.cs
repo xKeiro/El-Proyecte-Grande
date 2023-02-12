@@ -4,7 +4,7 @@ using backend.Dtos.Categories.Diet;
 using backend.Dtos.Categories.DishType;
 using backend.Dtos.Categories.MealTime;
 using backend.Dtos.Ingredient;
-using backend.Dtos.PreparationStep;
+using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Recipes.RecipeIngredient;
 using backend.Dtos.Recipes.RecipeReview;

@@ -8,7 +8,6 @@ public interface IRecipeService
     Task<RecipePublic?> Add(RecipeRequest recipeRequest);
     Task<RecipePublic?> Find(int id);
     Task<RecipePublic?> Update(int id, RecipeRequest recipeRequest);
-    Task<bool> IsUnique(RecipeWithoutId recipeWithoutId);
     Task<bool> IsUnique(RecipeRequest recipeRequest);
     Task<bool> Delete(int id);
 }

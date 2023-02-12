@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using backend.Dtos.Recipes.Recipe;
+using backend.Dtos.Recipes.RecipeIngredient;
 using backend.Interfaces.Services;
+using backend.Models;
 using backend.Models.Categories;
 using backend.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
@@ -145,11 +147,6 @@ public class RecipeService : IRecipeService
         return true;
     }
 
-    public async Task<bool> IsUnique(RecipeWithoutId recipeWithoutId)
-    {
-        return await IsNameUnique(recipeWithoutId.Name);
-    }
-
     public async Task<bool> IsUnique(RecipeRequest recipeRequest)
     {
         return await IsNameUnique(recipeRequest.Name);
@@ -219,6 +216,18 @@ public class RecipeService : IRecipeService
                     Ingredient = ingredient
                 });
         }
+        List<PreparationStep> preparationSteps = new();
+        foreach (var preparationStepId in recipeRequest.PreparationStepsId)
+        {
+            var preparationStep = _context.PreparationSteps.Find(preparationStepId);
+            switch (preparationStep)
+            {
+                case null:
+                    return null;
+            }
+
+            preparationSteps.Add(preparationStep);
+        }
 
         switch (recipeToUpdate)
         {
@@ -231,7 +240,9 @@ public class RecipeService : IRecipeService
                     Cuisine = cuisine,
                     MealTimes = mealTimes,
                     Diets = diets,
-                    DishType = dishType
+                    DishType = dishType,
+                    Difficulty = recipeRequest.Difficulty,
+                    PreparationSteps = preparationSteps
                 };
                 return recipe;
             default:
