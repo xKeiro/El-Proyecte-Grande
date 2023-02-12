@@ -2,7 +2,7 @@
 using backend.Dtos.Categories.Diet;
 using backend.Dtos.Categories.DishType;
 using backend.Dtos.Categories.MealTime;
-using backend.Dtos.Recipes.PreparationStep;
+using backend.Dtos.PreparationStep;
 using backend.Dtos.Recipes.RecipeIngredient;
 using System.ComponentModel.DataAnnotations;
 
