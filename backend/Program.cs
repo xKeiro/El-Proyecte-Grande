@@ -1,30 +1,27 @@
-using ElProyecteGrande.Data;
-using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Categories.Diet;
-using ElProyecteGrande.Dtos.Categories.DishType;
-using ElProyecteGrande.Dtos.Categories.MealTime;
-using ElProyecteGrande.Dtos.Ingredient;
-using ElProyecteGrande.Dtos.Users.User;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Maps;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Recipes;
-using ElProyecteGrande.Models.Users;
-using ElProyecteGrande.Services;
-using ElProyecteGrande.Services.Categories;
-using ElProyecteGrande.Services.Users;
+using backend.Data;
+using backend.Dtos.Categories.Cuisine;
+using backend.Dtos.Categories.Diet;
+using backend.Dtos.Categories.DishType;
+using backend.Dtos.Categories.MealTime;
+using backend.Dtos.Ingredient;
+using backend.Dtos.Users.User;
+using backend.Interfaces.Services;
+using backend.Maps;
+using backend.Models;
+using backend.Models.Categories;
+using backend.Models.Recipes;
+using backend.Models.Users;
+using backend.Services;
+using backend.Services.Categories;
+using backend.Services.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
-{
-    build.WithOrigins("http://localhost:5173")
+builder.Services.AddCors(p => p.AddPolicy("corspolicy", build => build.WithOrigins("http://localhost:5173")
         .AllowAnyMethod()
-        .AllowAnyHeader();
-}));
+        .AllowAnyHeader()));
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>

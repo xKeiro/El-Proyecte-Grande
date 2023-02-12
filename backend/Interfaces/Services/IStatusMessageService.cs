@@ -1,6 +1,6 @@
-﻿using ElProyecteGrande.Models;
+﻿using backend.Models;
 
-namespace ElProyecteGrande.Interfaces.Services;
+namespace backend.Interfaces.Services;
 
 public interface IStatusMessageService<T>
     where T : class

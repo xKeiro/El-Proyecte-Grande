@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models;
+namespace backend.Models;
 
 /// <summary>
 /// Different type of ingredients, like - onion, penne, tomato etc.

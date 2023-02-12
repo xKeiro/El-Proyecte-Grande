@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Dtos.Ingredient;
+﻿namespace backend.Dtos.Ingredient;
 
 public class IngredientPublic : IngredientWithoutId
 {

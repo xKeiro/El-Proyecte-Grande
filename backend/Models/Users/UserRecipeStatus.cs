@@ -1,7 +1,7 @@
-﻿using ElProyecteGrande.Enums;
+﻿using backend.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models.Users;
+namespace backend.Models.Users;
 
 public class UserRecipeStatus : BaseModel
 {

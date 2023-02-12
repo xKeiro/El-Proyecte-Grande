@@ -1,6 +1,6 @@
-﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
+﻿using backend.Dtos.Recipes.Recipe;
 
-namespace ElProyecteGrande.Interfaces.Services;
+namespace backend.Interfaces.Services;
 
 public interface ICategoryService<TResponseDto, TRequestDto> : IBasicCrudService<TResponseDto, TRequestDto>
     where TResponseDto : class

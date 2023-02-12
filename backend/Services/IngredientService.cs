@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using ElProyecteGrande.Dtos.Ingredient;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
+using backend.Dtos.Ingredient;
+using backend.Interfaces.Services;
+using backend.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Services;
+namespace backend.Services;
 
 public class IngredientService : IBasicCrudService<IngredientPublic, IngredientWithoutId>
 {

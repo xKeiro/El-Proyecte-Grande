@@ -1,7 +1,7 @@
-﻿using ElProyecteGrande.Enums;
+﻿using backend.Enums;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Users.UserRecipeStatus;
+namespace backend.Dtos.Users.UserRecipeStatus;
 
 public class UserRecipeStatusWithoutId
 {

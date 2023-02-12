@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Dtos.Categories.Cuisine;
+﻿namespace backend.Dtos.Categories.Cuisine;
 
 /// <summary>
 /// Different type of cuisines, like - Hungarian, Italian, French, etc.

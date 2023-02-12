@@ -1,12 +1,11 @@
-﻿using backend.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Recipes.Recipe;
+namespace backend.Dtos.Recipes.Recipe;
 
 public class RecipeFilter
 {
     [StringLength(120, MinimumLength = 2)]
-    required public string? Name { get; set; } = null;
+    public required string? Name { get; set; } = null;
     [MinLength(1)]
     public IEnumerable<int>? IngredientIds { get; set; } = null;
     [MinLength(1)]

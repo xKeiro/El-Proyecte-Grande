@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Models.Categories;
+namespace backend.Models.Categories;
 
 /// <summary>
 /// Different type of diets, like - vegetarian, gluten free, paleo etc.

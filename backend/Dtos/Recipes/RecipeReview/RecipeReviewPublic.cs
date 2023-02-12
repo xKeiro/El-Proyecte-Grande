@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Dtos.Recipes.RecipeReview;
+﻿namespace backend.Dtos.Recipes.RecipeReview;
 
 public class RecipeReviewPublic : RecipeReviewWithoutId
 {

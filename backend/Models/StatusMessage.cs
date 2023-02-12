@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Models;
+﻿namespace backend.Models;
 
 public class StatusMessage
 {

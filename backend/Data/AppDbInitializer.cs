@@ -1,11 +1,10 @@
-﻿using ElProyecteGrande.Enums;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Recipes;
+﻿using backend.Enums;
+using backend.Models.Categories;
+using backend.Models.Recipes;
+using backend.Services;
 using ElProyecteGrande.Models.Users;
-using ElProyecteGrande.Services;
 
-namespace ElProyecteGrande.Data;
+namespace backend.Data;
 
 public static class AppDbInitializer
 {

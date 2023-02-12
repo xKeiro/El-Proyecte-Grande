@@ -1,8 +1,8 @@
 ﻿// import controller StatusCode
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
+using backend.Interfaces.Services;
+using backend.Models;
 
-namespace ElProyecteGrande.Services;
+namespace backend.Services;
 
 public class StatusMessageService<T> : IStatusMessageService<T>
     where T : class

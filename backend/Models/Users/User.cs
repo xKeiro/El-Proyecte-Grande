@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models.Users;
+namespace backend.Models.Users;
 
 [Index(nameof(Username), IsUnique = true)]
 [Index(nameof(EmailAddress), IsUnique = true)]

@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using backend.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Recipes;
+using backend.Interfaces.Services;
+using backend.Models.Categories;
+using backend.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Services;
+namespace backend.Services;
 
 public class RecipeService : IRecipeService
 {
@@ -73,7 +72,7 @@ public class RecipeService : IRecipeService
                         }
                     }
 
-                    if (recipe.RecipeIngredients.Count <= (matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients))
+                    if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
                     {
                         recipes.Add(recipe);
                     }

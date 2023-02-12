@@ -1,8 +1,8 @@
-﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Models.Users;
+﻿using backend.Dtos.Recipes.Recipe;
+using backend.Models.Users;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Recipes.RecipeReview;
+namespace backend.Dtos.Recipes.RecipeReview;
 
 public class RecipeReviewWithoutId
 {

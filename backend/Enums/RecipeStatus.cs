@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Enums;
+﻿namespace backend.Enums;
 
 public enum RecipeStatus
 {

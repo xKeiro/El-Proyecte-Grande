@@ -1,11 +1,11 @@
-﻿using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
+﻿using backend.Dtos.Categories.Cuisine;
+using backend.Dtos.Recipes.Recipe;
+using backend.Interfaces.Services;
+using backend.Models;
+using backend.Models.Categories;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ElProyecteGrande.Controllers;
+namespace backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

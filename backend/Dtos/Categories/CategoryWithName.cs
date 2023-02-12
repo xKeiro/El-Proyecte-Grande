@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Categories;
+namespace backend.Dtos.Categories;
 
 public abstract class CategoryWithName
 {

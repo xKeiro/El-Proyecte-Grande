@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Ingredient;
+namespace backend.Dtos.Ingredient;
 
 /// <summary>
 /// Different type of ingredients, like - onion, penne, tomato etc.

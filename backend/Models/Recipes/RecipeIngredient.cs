@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models.Recipes;
+namespace backend.Models.Recipes;
 
 public class RecipeIngredient : BaseModel
 {

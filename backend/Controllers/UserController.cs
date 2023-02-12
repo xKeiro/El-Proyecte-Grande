@@ -1,11 +1,11 @@
-﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Dtos.Users.User;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Users;
+﻿using backend.Dtos.Recipes.Recipe;
+using backend.Dtos.Users.User;
+using backend.Interfaces.Services;
+using backend.Models;
+using backend.Models.Users;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ElProyecteGrande.Controllers;
+namespace backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -89,12 +89,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipePublic>>> GetLikedRecipes(int id)
     {
         var result = await _service.LikedRecipes(id);
-        if (result == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(result);
+        return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
     [HttpGet("{id}/saved")]
@@ -104,12 +99,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipePublic>>> GetSavedRecipes(int id)
     {
         var result = await _service.SavedRecipes(id);
-        if (result == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(result);
+        return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
     [HttpGet("{id}/disliked")]
@@ -119,12 +109,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipePublic>>> GetDislikedRecipes(int id)
     {
         var result = await _service.DislikedRecipes(id);
-        if (result == null)
-        {
-            return NotFound();
-        }
-
-        return Ok(result);
+        return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
     [HttpPut("{id}")]

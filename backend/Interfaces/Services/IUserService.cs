@@ -1,7 +1,6 @@
-﻿using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Dtos.Users.User;
+﻿using backend.Dtos.Recipes.Recipe;
 
-namespace ElProyecteGrande.Interfaces.Services;
+namespace backend.Interfaces.Services;
 
 public interface IUserService<TResponseDto, TRequestDto> :
     IBasicCrudService<TResponseDto, TRequestDto>

@@ -1,7 +1,6 @@
 ﻿using backend.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
 
-namespace ElProyecteGrande.Interfaces.Services;
+namespace backend.Interfaces.Services;
 
 public interface IRecipeService
 {

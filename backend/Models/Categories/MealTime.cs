@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Models.Categories;
+namespace backend.Models.Categories;
 
 /// <summary>
 /// Time of a meal, like - breakfast, lunch, dinner.

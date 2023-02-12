@@ -1,9 +1,9 @@
-﻿using ElProyecteGrande.Dtos.Ingredient;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models;
+﻿using backend.Dtos.Ingredient;
+using backend.Interfaces.Services;
+using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ElProyecteGrande.Controllers;
+namespace backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

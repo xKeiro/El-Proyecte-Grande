@@ -1,6 +1,6 @@
-﻿namespace ElProyecteGrande.Dtos.Users.UserRecipeStatus;
+﻿namespace backend.Dtos.Users.UserRecipeStatus;
 
 public class UserRecipeStatusPublic : UserRecipeStatusWithoutId
 {
-    required public int Id { get; set; }
+    public required int Id { get; set; }
 }

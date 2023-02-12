@@ -1,13 +1,12 @@
 ﻿using backend.Enums;
-using ElProyecteGrande.Enums;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Recipes;
-using ElProyecteGrande.Models.Users;
+using backend.Models;
+using backend.Models.Categories;
+using backend.Models.Recipes;
+using backend.Models.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ElProyecteGrande.Services;
+namespace backend.Services;
 
 public class ElProyecteGrandeContext : DbContext
 {
@@ -19,6 +18,7 @@ public class ElProyecteGrandeContext : DbContext
     public DbSet<RecipeReview> RecipeReviews { get; set; } = default!;
     public DbSet<RecipeIngredient> RecipeIngredients { get; set; } = default!;
     public DbSet<Ingredient> Ingredients { get; set; } = default!;
+    public DbSet<PreparationStep> PreparationSteps { get; set; } = default!;
     public DbSet<User> Users { get; set; } = default!;
     public DbSet<UserRecipe> UserRecipes { get; set; } = default!;
     public DbSet<UserRecipeStatus> UserRecipeStatuses { get; set; } = default!;

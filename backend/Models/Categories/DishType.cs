@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Models.Categories;
+namespace backend.Models.Categories;
 
 /// <summary>
 /// Type of a dish, like - soup, pizza, pasta, etc.

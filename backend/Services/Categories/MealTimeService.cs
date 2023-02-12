@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using ElProyecteGrande.Dtos.Categories.MealTime;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Interfaces.Services;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Recipes;
+using backend.Dtos.Categories.MealTime;
+using backend.Dtos.Recipes.Recipe;
+using backend.Interfaces.Services;
+using backend.Models.Categories;
+using backend.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
 
-namespace ElProyecteGrande.Services.Categories;
+namespace backend.Services.Categories;
 
 public class MealTimeService : ICategoryService<MealTimePublic, MealTimeWithoutId>
 {

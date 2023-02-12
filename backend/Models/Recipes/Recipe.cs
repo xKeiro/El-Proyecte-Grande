@@ -1,8 +1,8 @@
 ﻿using backend.Enums;
-using ElProyecteGrande.Models.Categories;
+using backend.Models.Categories;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models.Recipes;
+namespace backend.Models.Recipes;
 
 public class Recipe : BaseModel
 {
@@ -11,10 +11,14 @@ public class Recipe : BaseModel
     public required string Name { get; set; }
 
     [Required]
+    [StringLength(4000, MinimumLength = 2)]
     public required string Description { get; set; }
 
     [Required]
     public required PreparationDifficulty Difficulty { get; set; }
+    [Required]
+    [MinLength(1)]
+    public required ICollection<PreparationStep> PreparationSteps { get; set; }
 
     [Required]
     [MinLength(1)]

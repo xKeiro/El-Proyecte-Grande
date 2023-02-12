@@ -1,7 +1,7 @@
-﻿using ElProyecteGrande.Models.Recipes;
+﻿using backend.Models.Recipes;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Models.Users;
+namespace backend.Models.Users;
 
 public class UserRecipe : BaseModel
 {

@@ -1,21 +1,21 @@
 ﻿using AutoMapper;
-using ElProyecteGrande.Dtos.Categories.Cuisine;
-using ElProyecteGrande.Dtos.Categories.Diet;
-using ElProyecteGrande.Dtos.Categories.DishType;
-using ElProyecteGrande.Dtos.Categories.MealTime;
-using ElProyecteGrande.Dtos.Ingredient;
-using ElProyecteGrande.Dtos.Recipes.Recipe;
-using ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
-using ElProyecteGrande.Dtos.Recipes.RecipeReview;
-using ElProyecteGrande.Dtos.Users.User;
-using ElProyecteGrande.Dtos.Users.UserRecipe;
-using ElProyecteGrande.Dtos.Users.UserRecipeStatus;
-using ElProyecteGrande.Models;
-using ElProyecteGrande.Models.Categories;
-using ElProyecteGrande.Models.Recipes;
-using ElProyecteGrande.Models.Users;
+using backend.Dtos.Categories.Cuisine;
+using backend.Dtos.Categories.Diet;
+using backend.Dtos.Categories.DishType;
+using backend.Dtos.Categories.MealTime;
+using backend.Dtos.Ingredient;
+using backend.Dtos.Recipes.Recipe;
+using backend.Dtos.Recipes.RecipeIngredient;
+using backend.Dtos.Recipes.RecipeReview;
+using backend.Dtos.Users.User;
+using backend.Dtos.Users.UserRecipe;
+using backend.Dtos.Users.UserRecipeStatus;
+using backend.Models;
+using backend.Models.Categories;
+using backend.Models.Recipes;
+using backend.Models.Users;
 
-namespace ElProyecteGrande.Maps;
+namespace backend.Maps;
 
 public class MappingProfile : Profile
 {
@@ -48,8 +48,6 @@ public class MappingProfile : Profile
 
         _ = CreateMap<Recipe, RecipePublic>();
         _ = CreateMap<RecipePublic, Recipe>();
-        _ = CreateMap<Recipe, RecipeWithoutId>();
-        _ = CreateMap<RecipeWithoutId, Recipe>();
 
         _ = CreateMap<RecipeIngredient, RecipeIngredientPublic>();
         _ = CreateMap<RecipeIngredientPublic, RecipeIngredient>();

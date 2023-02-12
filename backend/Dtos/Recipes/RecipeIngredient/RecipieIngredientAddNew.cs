@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace ElProyecteGrande.Dtos.Recipes.RecipeIngredient;
+namespace backend.Dtos.Recipes.RecipeIngredient;
 
 public class RecipeIngredientAddNew
 {

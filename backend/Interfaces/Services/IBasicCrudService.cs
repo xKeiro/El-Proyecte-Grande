@@ -1,4 +1,4 @@
-﻿namespace ElProyecteGrande.Interfaces.Services;
+﻿namespace backend.Interfaces.Services;
 
 public interface IBasicCrudService<TResponseDto, TRequestDto>
     where TResponseDto : class

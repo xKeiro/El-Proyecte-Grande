@@ -1,8 +1,8 @@
-﻿using ElProyecteGrande.Models.Recipes;
+﻿using backend.Models.Recipes;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace ElProyecteGrande.Models.Categories;
+namespace backend.Models.Categories;
 
 public abstract class BaseCategory : BaseModel
 {
