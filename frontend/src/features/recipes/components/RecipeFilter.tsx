@@ -109,8 +109,8 @@ export const RecipeFilter = () => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
-      <div className="col-span-2">
+    <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto md:grid-cols-2">
+      <div className="md:col-span-2">
         <RecipeSearchBox />
       </div>
       <RecipeSingleCategorySelector
