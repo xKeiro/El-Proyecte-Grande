@@ -1,15 +1,13 @@
-import { useLocation } from 'react-router-dom';
-import RecipeHeader from '../../admin/components/RecipeHeader';
-import RecipeImage from '../../admin/components/RecipeImage';
-import RecipeDescription from '../../admin/components/RecipeDescription';
-import RecipeIngredients from '../../admin/components/RecipeIngredients';
-import RecipePreparation from '@/features/admin/components/RecipePreparation';
-import { RecipeButtons } from '@/features/admin/components/RecipeButtons';
-import { useState } from 'react';
-import { TRecipe } from '@/features/recipes';
-import { RecipesApi } from '../api/RecipesApi';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { RecipesApi } from '../api/RecipesApi';
+import { TRecipe } from '@/features/recipes';
+import { RecipeHeader } from '../../admin/components/RecipeHeader';
+import { RecipeImage } from '../../admin/components/RecipeImage';
+import { RecipeDescription } from '../../admin/components/RecipeDescription';
+import { RecipeIngredients } from '../../admin/components/RecipeIngredients';
+import { RecipePreparation } from '@/features/admin/components/RecipePreparation';
+import { RecipeButtons } from '@/features/admin/components/RecipeButtons';
 
 export const Recipe = () => {
   const [recipe, setRecipe] = useState<TRecipe | null>(null);

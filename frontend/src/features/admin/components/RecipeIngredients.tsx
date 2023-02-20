@@ -1,6 +1,6 @@
 import {TRecipeIngredient} from "@/features/recipes";
 
-const RecipeIngredients = (props : {ingredients : TRecipeIngredient[]}) => {
+export const RecipeIngredients = (props : {ingredients : TRecipeIngredient[]}) => {
     const longUnitOfMeasures = ["bunch", "piece"]
     return (
         <div className="recipe-info grid grid-cols-3">
@@ -20,5 +20,3 @@ const RecipeIngredients = (props : {ingredients : TRecipeIngredient[]}) => {
         </div>
     )
 }
-
-export default RecipeIngredients

@@ -1,6 +1,6 @@
 import {TRecipe} from "@/features/recipes";
 
-const RecipeHeader = (props : {recipe : TRecipe | null}) => {
+export const RecipeHeader = (props : {recipe : TRecipe | null}) => {
     const recipe = props.recipe
     if(!recipe){
         return null
@@ -25,5 +25,3 @@ const RecipeHeader = (props : {recipe : TRecipe | null}) => {
         </div>
     )
 }
-
-export default RecipeHeader

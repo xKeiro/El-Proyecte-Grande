@@ -1,5 +1,5 @@
 
-const RecipePreparation = () => {
+export const RecipePreparation = () => {
     return (
         <div className="card-body recipe-info bg-base-100">
             <ol className="list-decimal marker:font-bold">
@@ -13,5 +13,3 @@ const RecipePreparation = () => {
         </div>
     )
 }
-
-export default RecipePreparation

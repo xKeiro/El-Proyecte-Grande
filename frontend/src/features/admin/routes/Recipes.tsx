@@ -1,9 +1,9 @@
-import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe } from '@/features/recipes';
 
-const Recipes = () => {
+export const Recipes = () => {
   const [recipes, setRecipes] = useState<TRecipe[]>([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -23,5 +23,3 @@ const Recipes = () => {
     </div>
   );
 };
-
-export default Recipes;

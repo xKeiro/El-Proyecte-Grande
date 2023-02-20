@@ -1,9 +1,9 @@
-import { getUsers } from '../api/UsersHandler';
 import { useEffect, useState } from 'react';
-import { User } from '@/features/users';
 import { Link } from 'react-router-dom';
+import { getUsers } from '../api/UsersApi';
+import { User } from '@/features/users';
 
-const Users = () => {
+export const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
 
   useEffect(() => {
@@ -91,5 +91,3 @@ const Users = () => {
     </div>
   );
 };
-
-export default Users;
