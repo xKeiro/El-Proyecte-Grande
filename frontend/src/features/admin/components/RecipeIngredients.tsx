@@ -7,12 +7,11 @@ export const RecipeIngredients = (props : {ingredients : TRecipeIngredient[]}) =
             <ul className="list-disc mt-3 ml-5">
                 {
                     props.ingredients.map((ing : TRecipeIngredient) => (
-                        <li key={ing.id}>
-                            <b>
-                                {ing.amount}
-                                {longUnitOfMeasures.includes(ing.ingredient.unitOfMeasure) ? " " : ""}
-                                {ing.ingredient.unitOfMeasure}
-                            </b> <span className="text-info">{ing.ingredient.name}</span>
+                        <li className="font-bold" key={ing.id}>
+                            {ing.amount}
+                            {longUnitOfMeasures.includes(ing.ingredient.unitOfMeasure) ? " " : ""}
+                            {ing.ingredient.unitOfMeasure}
+                            <span className="text-primary pl-2">{ing.ingredient.name}</span>
                         </li>
                     ))
                 }
