@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchDislikedRecipes } from '../api/getDislikedRecipesByUser';
 import { Link } from 'react-router-dom';
 import { TRecipe } from '@/features/recipes';
 import { recipesSchema } from '@/features/recipes';
+import { UsersApi } from '../api/UsersApi';
 
 const DislikedRecipes = () => {
   const [dislikedRecipes, setDislikedRecipes] = useState<TRecipe[]>([]);
@@ -11,13 +11,16 @@ const DislikedRecipes = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetchDislikedRecipes(id || '');
-      const result = recipesSchema.safeParse(data);
-      if (result.success) {
-        setDislikedRecipes(data);
-      } else {
-        console.log(result.error.issues);
+      if(id){
+        const data = await UsersApi.getDislikedRecipes(parseInt(id));
+        const result = recipesSchema.safeParse(data);
+        if (result.success) {
+          setDislikedRecipes(data);
+        } else {
+          console.log(result.error.issues);
+        }
       }
+    
     };
     fetchData();
   }, [id]);
