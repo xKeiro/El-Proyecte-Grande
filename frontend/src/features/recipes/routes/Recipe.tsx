@@ -22,7 +22,7 @@ export const Recipe = () => {
   return (
     <div className="card shadow-xl">
       <div className="card card-side bg-base-100">
-        <RecipeImage />
+        <RecipeImage id={recipe.id} name={recipe.name} />
         <div className="card-body recipe-info">
           <RecipeHeader recipe={recipe} />
           <RecipeDescription description={recipe.description} />
