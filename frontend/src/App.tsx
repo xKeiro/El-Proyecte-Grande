@@ -4,6 +4,7 @@ import { AdminRoutes } from "@/features/admin";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { NavBar } from "./components";
 import { Footer } from "./components";
+import { AuthRoutes } from "./features/auth/routes";
 
 export const App = () =>{
   return (
@@ -12,6 +13,7 @@ export const App = () =>{
           <RecipesRoutes/>
           <UsersRoutes/>
           <AdminRoutes/>
+          <AuthRoutes/>
       <div className="h-20">
       </div>
       <Footer />

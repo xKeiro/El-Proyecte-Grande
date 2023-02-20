@@ -7,8 +7,6 @@ export const UsersRoutes = () => {
   return (
     <Routes>
       <Route path="/users/:id" element={<CurrentUser />} />
-      <Route path="/login" element={<UserLogin />} />
-      <Route path="/register" element={<Register />} />
     </Routes>
   );
 };

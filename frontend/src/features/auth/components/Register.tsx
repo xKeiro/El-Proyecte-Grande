@@ -1,8 +1,8 @@
-import React from 'react';
+
 
 const Register = () => {
     const handleRegister = () => {
-        window.location = '/';
+        window.location.href = '/';
     };
 
     return (
