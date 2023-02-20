@@ -1,10 +1,10 @@
-import React from 'react';
+
 import { useState } from 'react';
 
 const Login = () => {
   const [isShown, setIsSHown] = useState(false);
   const handleLogin = () => {
-    window.location = '/';
+    window.location.href = '/';
   };
 
   return (

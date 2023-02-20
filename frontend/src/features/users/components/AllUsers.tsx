@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios, * as others from 'axios';
-import { allUsers } from '../api/getUsers';
 import { Link } from 'react-router-dom';
+import { UsersApi } from '../api/UsersApi';
 
 
 const Users = () => {
@@ -10,22 +10,11 @@ const Users = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const data = await allUsers();
+            const data = await UsersApi.getAllusers();
             setUsers(data);
         };
         fetchUsers();
     }, []);
-
-    /*     const[usersData, setUsersData] = useState<any[]>([]);
-    
-        useEffect(()=>{
-            //fetch user data
-            fetchUserData();
-            async function fetchUserData(){
-                const res = await axios.get(`https://localhost:7161/api/users`);
-                setUsersData(res.data);
-            }
-        }, []) */
 
     return (
         <div className='flex items-center justify-center py-14'>
