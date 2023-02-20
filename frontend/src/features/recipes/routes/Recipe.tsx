@@ -30,7 +30,7 @@ export const Recipe = () => {
           <RecipeIngredients ingredients={recipe.recipeIngredients} />
         </div>
       </div>
-      <RecipePreparation />
+      <RecipePreparation preparationSteps={recipe.preparationSteps} />
       <RecipeButtons recipeId={recipe.id} />
     </div>
   );

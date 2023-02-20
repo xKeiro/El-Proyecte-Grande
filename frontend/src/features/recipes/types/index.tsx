@@ -8,6 +8,13 @@ export const recipeIngredientSchema = z.object({
     amount: z.number().positive()
 });
 
+export const preparationSchema = z.object({
+    step: z.number().int().positive(),
+    description: z.string().min(2).max(750),
+})
+
+export type TPreparation = z.infer<typeof preparationSchema>
+
 export const recipesSchema =z.array(z.object({
     id: z.number().int().positive(),
     name: z.string().min(2).max(120),
@@ -16,11 +23,11 @@ export const recipesSchema =z.array(z.object({
     cuisine: categorySchema,
     mealTimes: z.array(categorySchema),
     diets: z.array(categorySchema),
-    dishType: categorySchema
+    dishType: categorySchema,
+    preparationSteps: z.array(preparationSchema)
 }))
 
 export type TRecipeIngredient = z.infer<typeof recipeIngredientSchema>;
-
 
 export const recipeSchema = z.object({
     id: z.number().int().positive(),
@@ -30,7 +37,8 @@ export const recipeSchema = z.object({
     cuisine: categorySchema,
     mealTimes: z.array(categorySchema),
     diets: z.array(categorySchema),
-    dishType: categorySchema
+    dishType: categorySchema,
+    preparationSteps: z.array(preparationSchema)
 });
 
 export type TRecipe = z.infer<typeof recipeSchema>;
