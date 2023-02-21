@@ -4,6 +4,7 @@ import { Recipes } from '@/features/admin/routes/Recipes';
 import { Unauthorized } from "@/features/auth/routes/Unauthorized";
 import { EditRecipe } from "@/features/admin/routes/EditRecipe";
 import { AdminRecipe } from "@/features/admin/routes/AdminRecipe";
+import { RecipeProperties } from "@/features/admin/routes/RecipeProperties";
 
 export const AdminRoutes = () => {
     return (
@@ -13,6 +14,7 @@ export const AdminRoutes = () => {
                 <Route path="/admin/recipes" element={<Recipes />}></Route>
                 <Route path="/admin/recipes/:id" element={<AdminRecipe />}></Route>
                 <Route path="/admin/recipes/:id/edit" element={<EditRecipe />}></Route>
+                <Route path="/admin/recipe-properties" element={<RecipeProperties />}></Route>
                 <Route path="/unauthorized" element={<Unauthorized />}></Route>
             </Routes>
         </div>

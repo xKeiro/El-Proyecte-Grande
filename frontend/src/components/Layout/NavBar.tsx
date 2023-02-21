@@ -76,11 +76,20 @@ export const NavBar = () => {
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow-xl rounded-box w-52 bg-neutral"
             >
-              <li>
-                <Link to="/admin/recipes" className="text-xl">
-                  Recipes
-                </Link>
-              </li>
+              { isAdmin &&
+                  <li>
+                    <Link to="/admin/recipe-properties" className="text-xl">
+                      Recipe Properties
+                    </Link>
+                  </li>
+              }
+              { isAdmin &&
+                <li>
+                  <Link to="/admin/recipes" className="text-xl">
+                    Recipes
+                  </Link>
+                </li>
+              }
               {
                 isAdmin &&
                 <li>
