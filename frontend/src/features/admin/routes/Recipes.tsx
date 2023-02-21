@@ -22,7 +22,7 @@ export const Recipes = () => {
       <RecipeSearchBox />
       <div className="grid grid-cols-4 gap-5 text-center py-5">
         {recipes.map((recipe) => (
-          <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} state={recipe} className="text-neutral-content hover:underline">
+          <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} className="text-neutral-content hover:underline">
             {recipe.name}
           </Link>
       ))}
