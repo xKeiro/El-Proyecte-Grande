@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { RecipesApi } from '../api/RecipesApi';
 import { TRecipe } from '@/features/recipes';
-import { RecipeHeader } from '../../admin/components/RecipeHeader';
-import { RecipeImage } from '../../admin/components/RecipeImage';
-import { RecipeDescription } from '../../admin/components/RecipeDescription';
-import { RecipeIngredients } from '../../admin/components/RecipeIngredients';
-import { RecipePreparation } from '@/features/admin/components/RecipePreparation';
-import { RecipeButtons } from '@/features/admin/components/RecipeButtons';
+import { RecipeHeader } from '../components/RecipeHeader';
+import { RecipeImage } from '../components/RecipeImage';
+import { RecipeDescription } from '../components/RecipeDescription';
+import { RecipeIngredients } from '../components/RecipeIngredients';
+import { RecipePreparation } from '@/features/recipes/components/RecipePreparation';
+import { RecipeButtons } from '@/features/recipes/components/RecipeButtons';
 
 export const Recipe = () => {
   const [recipe, setRecipe] = useState<TRecipe | null>(null);
