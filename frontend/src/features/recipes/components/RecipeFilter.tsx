@@ -7,6 +7,8 @@ import { Ingredient } from '@/features/ingredients/';
 import { CategoryApi } from '@/features/categories/api/CategoryApi';
 import { CategoriesEnum } from '@/features/categories/';
 import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
+import { RecipesApi } from '../api/RecipesApi';
+
 
 export const RecipeFilter = () => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -20,6 +22,20 @@ export const RecipeFilter = () => {
   const [selectedMealTimes, setSelectedMealTimes] = useState<Category[]>([]);
   const [selectedDishTypes, setSelectedDishTypes] = useState<Category[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
+
+  const handleSubmit = async (event:any) => {
+    event.preventDefault();
+    const selectedCuisineIds = selectedCuisines.map(cuisine => cuisine.id);
+    const selectedDietIds = selectedDiets.map(diet => diet.id);
+    const selectedMealTimeIds = selectedMealTimes.map(mealTime => mealTime.id);
+    const selectedDishTypeIds= selectedDishTypes.map(dishType=>dishType.id)
+    const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
+
+    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds);
+
+    console.log(filteredRecipes)
+  };
+
 
   useEffect(() => {
     CategoryApi.getAll(CategoriesEnum.Cuisines).then((Cuisines: Category[]) => {
@@ -108,6 +124,7 @@ export const RecipeFilter = () => {
     setDishTypes(dishTypes.map((dishType) => dishType));
   };
 
+
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto md:grid-cols-2">
       <div className="md:col-span-2">
@@ -141,6 +158,7 @@ export const RecipeFilter = () => {
         handleCategorySelection={handleDishTypeSelection}
         handleCategorySelectionRemoval={handleDishTypeSelectionRemoval}
       />
+      <button type='submit' onClick={handleSubmit}>Submit</button>
     </div>
   );
 };
