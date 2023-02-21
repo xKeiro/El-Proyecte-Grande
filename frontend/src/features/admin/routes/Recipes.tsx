@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe } from '@/features/recipes';
-import {RecipeSearchBox} from "@/features/recipes/components/RecipeSearchBox";
+import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
 
 export const Recipes = () => {
   const [recipes, setRecipes] = useState<TRecipe[]>([]);
+
+  let isAdmin = true;
+
   useEffect(() => {
     const fetchData = async () => {
       const result = await RecipesApi.getAll();
@@ -13,13 +16,13 @@ export const Recipes = () => {
     };
     fetchData();
   }, []);
-
+  if (isAdmin)
   return (
     <div id="recipes-container">
       <RecipeSearchBox />
       <div className="grid grid-cols-4 gap-5 text-center py-5">
         {recipes.map((recipe) => (
-          <Link key={recipe.id} to={`/recipes/${recipe.id}`} state={recipe} className="text-neutral-content hover:underline">
+          <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} state={recipe} className="text-neutral-content hover:underline">
             {recipe.name}
           </Link>
       ))}
@@ -32,4 +35,5 @@ export const Recipes = () => {
       </div>
     </div>
   );
+  return (<Navigate to="/unauthorized" />)
 };
