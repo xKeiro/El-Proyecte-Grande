@@ -13,7 +13,7 @@ export const RecipeButtons = (props: { recipeId: number }) => {
   }
 
   return (
-    <div className="card-actions bg-base-100 justify-end">
+    <div className="card-actions bg-base-100 justify-end rounded-box">
       <button title="Edit recipe" className="btn btn-square btn-ghost">
         <svg
           xmlns="http://www.w3.org/2000/svg"
