@@ -8,7 +8,10 @@ import { CategoryApi } from '@/features/categories/api/CategoryApi';
 import { CategoriesEnum } from '@/features/categories/';
 import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
 import { RecipesApi } from '../api/RecipesApi';
+import { TRecipe } from '../types';
+import { FilteredRecipe } from '../routes/FilteredRecipe';
 
+export let filteredRecipes: TRecipe[] = [];
 
 export const RecipeFilter = () => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -23,6 +26,8 @@ export const RecipeFilter = () => {
   const [selectedDishTypes, setSelectedDishTypes] = useState<Category[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
 
+  const [filteredRecipes, setFilteredRecipes] = useState([]);
+
   const handleSubmit = async (event:any) => {
     event.preventDefault();
     const selectedCuisineIds = selectedCuisines.map(cuisine => cuisine.id);
@@ -32,7 +37,7 @@ export const RecipeFilter = () => {
     const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
 
     const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds);
-
+    setFilteredRecipes(filteredRecipes);
     console.log(filteredRecipes)
   };
 
@@ -158,7 +163,10 @@ export const RecipeFilter = () => {
         handleCategorySelection={handleDishTypeSelection}
         handleCategorySelectionRemoval={handleDishTypeSelectionRemoval}
       />
-      <button type='submit' onClick={handleSubmit}>Submit</button>
+      <div><button type='submit' onClick={handleSubmit}>Submit</button></div>
+      
+      <FilteredRecipe recipes = {filteredRecipes}/>
     </div>
+    
   );
 };

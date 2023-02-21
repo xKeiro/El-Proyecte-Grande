@@ -29,7 +29,6 @@ export abstract class RecipesApi {
   }
 
   public static async filterRecipes(cuisineIds: number[], dietIds: number[], mealTimeIds: number[], dishTypeIds: number[], ingredientIds: number[],) {
-    console.log(ingredientIds)
     const ingredientParams = ingredientIds.length > 0 ? ingredientIds.map(id => `IngredientIds=${id}`).join('&') : '';
     const cuisineParams = cuisineIds.length > 0 ? cuisineIds.map(id => `CuisineIds=${id}`).join('&') : '';
     const dietParams = dietIds.length > 0 ? dietIds.map(id => `DietIds=${id}`).join('&') : '';
