@@ -46,17 +46,18 @@ export const RecipeSingleCategorySelector: React.FC<props> = ({
           className="select drop-shadow-xl font-bold"
           onChange={handleCategoryChange}
         >
-          <option value="none" selected disabled>
+          <option value="none" disabled>
             Select
           </option>
           {categories.map((category) => (
-            <option value={category.id}>{category.name}</option>
+            <option key={category.id} value={category.id}>{category.name}</option>
           ))}
         </select>
       </div>
       <div className="flex flex-wrap gap-1 md:justify-center">
         {selectedCategories.map((selectedCategory) => (
           <span
+            key={selectedCategory.id}
             className="rounded-xl border bg-base-100 p-2 drop-shadow-xl hover:bg-error cursor-pointer"
             data-id={selectedCategory.id}
             onClick={handleCategoryRemoval}
