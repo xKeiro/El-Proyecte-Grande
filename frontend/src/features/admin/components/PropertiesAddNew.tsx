@@ -21,7 +21,7 @@ export const PropertiesAddNew = () => {
                     !isIngredient &&
                     <label className="input-group input-group-md">
                         <span>Name</span>
-                        <input type="text" placeholder="Type here" className="input input-bordered input-md" />
+                        <input type="text" placeholder="Type here" minLength={2} maxLength={20} className="input input-bordered input-md" />
                     </label>
                 }
                 {
@@ -29,11 +29,11 @@ export const PropertiesAddNew = () => {
                     <div className="flex flex-col gap-4">
                         <label className="input-group input-group-md">
                             <span>Name</span>
-                            <input type="text" placeholder="Type here" className="input input-bordered input-md" />
+                            <input type="text" placeholder="Type here" minLength={2} maxLength={60} className="input input-bordered input-md" />
                         </label>
                         <label className="input-group input-group-md">
                             <span>Unit of Measure</span>
-                            <input type="text" placeholder="Etc.: g, dl, pcs" className="input input-bordered input-md" />
+                            <input type="text" placeholder="Etc.: g, dl, pcs" minLength={1} maxLength={25} className="input input-bordered input-md" />
                         </label>
                         <label className="input-group input-group-md">
                             <span>Calorie</span>
@@ -42,6 +42,7 @@ export const PropertiesAddNew = () => {
                         <span className="label-text-alt">Cal = kcal / 1000</span>
                     </div>
                 }
+                <button className="btn btn-primary mt-5 w-1/4">Add</button>
             </div>
         </div>
     );
