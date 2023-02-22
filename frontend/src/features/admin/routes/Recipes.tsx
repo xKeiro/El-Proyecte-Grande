@@ -18,11 +18,11 @@ export const Recipes = () => {
   }, []);
   if (isAdmin)
   return (
-    <div id="recipes-container">
+    <div id="recipes-container" className="text-base-content">
       <RecipeSearchBox />
       <div className="grid grid-cols-4 gap-5 text-center py-5">
         {recipes.map((recipe) => (
-          <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} className="text-neutral-content hover:underline">
+          <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} className="hover:underline">
             {recipe.name}
           </Link>
       ))}
