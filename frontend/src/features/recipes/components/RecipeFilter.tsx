@@ -13,7 +13,7 @@ import { FilteredRecipe } from '../routes/FilteredRecipe';
 
 export let filteredRecipes: TRecipe[] = [];
 
-export const RecipeFilter = () => {
+export const RecipeFilter = (props) => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
   const [diets, setDiets] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
@@ -39,6 +39,7 @@ export const RecipeFilter = () => {
 
     const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchTerm);
     setFilteredRecipes(filteredRecipes);
+    props.onData(filteredRecipes)
     console.log(filteredRecipes)
   };
 
@@ -188,9 +189,8 @@ export const RecipeFilter = () => {
         handleCategorySelection={handleIngredientSelection}
         handleCategorySelectionRemoval={handleIngredientRemoval}
       />
-      <div><button type='submit' onClick={handleSubmit}>Submit</button></div>
+      <div><button type='submit' onClick={handleSubmit}>Submit</button></div>     
       
-      <FilteredRecipe recipes = {filteredRecipes}/>
     </div>
     
   );
