@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { RecipeSearchBox } from './RecipeSearchBox';
 import { RecipeSingleCategorySelector } from './RecipeSingleCategorySelector';
 import { Category } from '@/features/categories/';
-import { Ingredient } from '@/features/ingredients/';
+import { Ingredient, IngredientForSearch } from '@/features/ingredients/';
 import { CategoryApi } from '@/features/categories/api/CategoryApi';
 import { CategoriesEnum } from '@/features/categories/';
 import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
@@ -13,13 +13,13 @@ export const RecipeFilter = () => {
   const [diets, setDiets] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
   const [dishTypes, setDishTypes] = useState<Category[]>([]);
-  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [ingredients, setIngredients] = useState<IngredientForSearch[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCuisines, setSelectedCuisines] = useState<Category[]>([]);
   const [selectedDiets, setSelectedDiets] = useState<Category[]>([]);
   const [selectedMealTimes, setSelectedMealTimes] = useState<Category[]>([]);
   const [selectedDishTypes, setSelectedDishTypes] = useState<Category[]>([]);
-  const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
+  const [selectedIngredients, setSelectedIngredients] = useState<IngredientForSearch[]>([]);
 
   useEffect(() => {
     CategoryApi.getAll(CategoriesEnum.Cuisines).then((Cuisines: Category[]) => {
@@ -34,7 +34,7 @@ export const RecipeFilter = () => {
     CategoryApi.getAll(CategoriesEnum.DishTypes).then((DishTypes: Category[]) => {
       setDishTypes(DishTypes);
     });
-    IngredientsApi.getAll().then((Ingredients: Ingredient[]) => {
+    IngredientsApi.getAll().then((Ingredients: IngredientForSearch[]) => {
       setIngredients(Ingredients);
     });
   }, []);
@@ -70,6 +70,14 @@ export const RecipeFilter = () => {
       dishTypes.splice(indexToRemove, 1);
     }
     setSelectedDishTypes(selectedDishTypes.map((dishType) => dishType));
+  };
+  const handleIngredientSelection = (ingredient: IngredientForSearch) => {
+    selectedIngredients.push(ingredient);
+    const indexToRemove = ingredients.indexOf(ingredient);
+    if (indexToRemove > -1) {
+      ingredients.splice(indexToRemove, 1)
+    }
+    setSelectedIngredients(selectedIngredients.map((ingredient) => ingredient))
   };
   const handleCuisineSelectionRemoval = (cuisine: Category) => {
     cuisines.push(cuisine);
@@ -107,6 +115,15 @@ export const RecipeFilter = () => {
     }
     setDishTypes(dishTypes.map((dishType) => dishType));
   };
+  const handleIngredientRemoval = (ingredient: IngredientForSearch) => {
+    ingredients.push(ingredient);
+    ingredients.sort((a, b) => a.name.localeCompare(b.name));
+    const indexToRemove = selectedIngredients.indexOf(ingredient);
+    if (indexToRemove > -1) {
+      selectedIngredients.splice(indexToRemove, 1);
+    }
+    setIngredients(ingredients.map((ingredient) => ingredient));
+  };
 
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
@@ -140,6 +157,13 @@ export const RecipeFilter = () => {
         selectedCategories={selectedDishTypes}
         handleCategorySelection={handleDishTypeSelection}
         handleCategorySelectionRemoval={handleDishTypeSelectionRemoval}
+      />
+      <RecipeSingleCategorySelector
+        categories={ingredients}
+        categoryName={CategoriesEnum.Ingredients}
+        selectedCategories={selectedIngredients}
+        handleCategorySelection={handleIngredientSelection}
+        handleCategorySelectionRemoval={handleIngredientRemoval}
       />
     </div>
   );

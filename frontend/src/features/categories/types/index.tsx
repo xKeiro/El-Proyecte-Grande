@@ -13,5 +13,6 @@ export enum CategoriesEnum {
     Cuisines = 'Cuisines',
     MealTimes = 'MealTimes',
     Diets = 'Diets',
-    DishTypes = 'DishTypes'
+    DishTypes = 'DishTypes',
+    Ingredients = 'Ingredients'
 }

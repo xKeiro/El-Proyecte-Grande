@@ -1,5 +1,6 @@
 import { Category } from '@/features/categories';
 import { CategoriesEnum } from '@/features/categories';
+import { Ingredient } from '../../ingredients/types/index';
 
 type props = {
   categories: Category[];
@@ -42,13 +43,12 @@ export const RecipeSingleCategorySelector: React.FC<props> = ({
         </div>
         <select
           name={categoryName}
+          defaultValue={"default"}
           title={categoryName}
           className="select drop-shadow-xl font-bold"
           onChange={handleCategoryChange}
         >
-          <option value="none" disabled>
-            Select
-          </option>
+          <option value="default" disabled>Select</option>
           {categories.map((category) => (
             <option key={category.id} value={category.id}>{category.name}</option>
           ))}
