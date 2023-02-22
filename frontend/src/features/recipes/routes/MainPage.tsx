@@ -1,10 +1,10 @@
-import { RecipeFilter } from '../components/RecipeFilter';
+import { RecipeLeftSideSearch } from '../components/RecipeLeftSideSearch';
 
 export const MainPage = () => {
 
   return (
-  <div className='sm:container mx-auto'>
-      <RecipeFilter/>
+  <div>
+    <RecipeLeftSideSearch />
   </div>
   );
 };
