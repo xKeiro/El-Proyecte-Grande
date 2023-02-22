@@ -9,7 +9,6 @@ import { TRecipe } from "../types";
 export const FilteredRecipe = ({ recipes }: { recipes: TRecipe[] }) => {
 
     if (!recipes) return (<div>Loading...</div>);
-    console.log(recipes)
     return (
       <div>
         {recipes.map(recipe => (

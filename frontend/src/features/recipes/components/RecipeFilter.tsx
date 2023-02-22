@@ -27,6 +27,7 @@ export const RecipeFilter = () => {
   const [selectedIngredients, setSelectedIngredients] = useState<Ingredient[]>([]);
 
   const [filteredRecipes, setFilteredRecipes] = useState([]);
+ 
 
   const handleSubmit = async (event:any) => {
     event.preventDefault();
@@ -36,7 +37,7 @@ export const RecipeFilter = () => {
     const selectedDishTypeIds= selectedDishTypes.map(dishType=>dishType.id)
     const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
 
-    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds);
+    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchTerm);
     setFilteredRecipes(filteredRecipes);
     console.log(filteredRecipes)
   };
@@ -133,7 +134,7 @@ export const RecipeFilter = () => {
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto md:grid-cols-2">
       <div className="md:col-span-2">
-        <RecipeSearchBox />
+        <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
       <RecipeSingleCategorySelector
         categories={cuisines}
