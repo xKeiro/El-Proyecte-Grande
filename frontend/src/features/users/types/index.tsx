@@ -9,4 +9,4 @@ export const userSchema = z.object({
     isAdmin: z.boolean()
     })
 
-export type User = z.infer<typeof userSchema>
+export type TUser = z.infer<typeof userSchema>
