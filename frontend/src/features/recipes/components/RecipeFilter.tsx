@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
-
+import { RecipesApi } from '../api/RecipesApi';
+import { CategoryApi } from '@/features/categories/api/CategoryApi';
+import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
 import { RecipeSearchBox } from './RecipeSearchBox';
 import { RecipeSingleCategorySelector } from './RecipeSingleCategorySelector';
 import { Category } from '@/features/categories/';
-import { Ingredient, IngredientForSearch } from '@/features/ingredients/';
-import { CategoryApi } from '@/features/categories/api/CategoryApi';
+import { IngredientForSearch } from '@/features/ingredients/';
 import { CategoriesEnum } from '@/features/categories/';
-import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
-import { RecipesApi } from '../api/RecipesApi';
-import { TRecipe } from '../types';
-import { FilteredRecipe } from '../routes/FilteredRecipe';
 
-export let filteredRecipes: TRecipe[] = [];
-
-export const RecipeFilter = (props) => {
+export const RecipeFilter = (props : any) => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
   const [diets, setDiets] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
@@ -26,7 +21,6 @@ export const RecipeFilter = (props) => {
   const [selectedDishTypes, setSelectedDishTypes] = useState<Category[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientForSearch[]>([]);
 
-  const [filteredRecipes, setFilteredRecipes] = useState([]);
   const { sendData } = props;
  
 
@@ -39,10 +33,8 @@ export const RecipeFilter = (props) => {
     const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
 
     const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchTerm);
-    setFilteredRecipes(filteredRecipes);
     sendData(filteredRecipes)
   };
-
 
   useEffect(() => {
     CategoryApi.getAll(CategoriesEnum.Cuisines).then((Cuisines: Category[]) => {
@@ -148,7 +140,6 @@ export const RecipeFilter = (props) => {
     setIngredients(ingredients.map((ingredient) => ingredient));
   };
 
-
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
       <div className="md:col-span-1">
@@ -195,8 +186,6 @@ export const RecipeFilter = (props) => {
         handleCategorySelectionRemoval={handleIngredientRemoval}
       />
       <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>     
-      
     </div>
-    
   );
 };
