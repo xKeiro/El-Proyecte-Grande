@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { getUsers } from '../api/UsersApi';
 import { User } from '@/features/users';
 
 export const Users = () => {
   const [users, setUsers] = useState<User[]>([]);
+
+  let isAdmin = true;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,7 +15,7 @@ export const Users = () => {
     };
     fetchData();
   }, []);
-
+  if (isAdmin)
   return (
     <div className="overflow-x-auto mx-auto my-6">
       <table className="table w-full">
@@ -90,4 +92,5 @@ export const Users = () => {
       </table>
     </div>
   );
+  return (<Navigate to="/unauthorized" />);
 };

@@ -7,7 +7,6 @@ import { RecipeImage } from '../components/RecipeImage';
 import { RecipeDescription } from '../components/RecipeDescription';
 import { RecipeIngredients } from '../components/RecipeIngredients';
 import { RecipePreparation } from '@/features/recipes/components/RecipePreparation';
-import { RecipeButtons } from '@/features/recipes/components/RecipeButtons';
 
 export const Recipe = () => {
   const [recipe, setRecipe] = useState<TRecipe | null>(null);
@@ -31,7 +30,6 @@ export const Recipe = () => {
         </div>
       </div>
       <RecipePreparation preparationSteps={recipe.preparationSteps} />
-      <RecipeButtons recipeId={recipe.id} />
     </div>
   );
 };

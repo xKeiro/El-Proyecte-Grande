@@ -1,6 +1,6 @@
 import React from 'react';
 import { Fragment } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
@@ -46,6 +46,8 @@ const styles = {
 } as const;
 
 export const NavBar = () => {
+  let isAdmin = true;
+
   useEffect(() => {
     themeChange(false);
   }, []);
@@ -74,22 +76,34 @@ export const NavBar = () => {
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow-xl rounded-box w-52 bg-neutral"
             >
-              <li>
-                <Link to="/admin/recipes" className="text-xl">
-                  Recipes
-                </Link>
-              </li>
-              <li>
-                <Link to="/admin/users" className="text-xl">
-                  Users
-                </Link>
-              </li>
+              { isAdmin &&
+                  <li>
+                    <Link to="/admin/recipe-properties" className="text-xl">
+                      Recipe Properties
+                    </Link>
+                  </li>
+              }
+              { isAdmin &&
+                <li>
+                  <Link to="/admin/recipes" className="text-xl">
+                    Recipes
+                  </Link>
+                </li>
+              }
+              {
+                isAdmin &&
+                <li>
+                  <Link to="/admin/users" className="text-xl">
+                    Users
+                  </Link>
+                </li>
+              }
             </ul>
           </div>
         </div>
         <div className="navbar-center">
           <Link to="/">
-            <img src={logo} style={styles.logo} />
+            <img src={logo} alt="What can I cook logo" style={styles.logo} />
           </Link>
           <Link to="/" className="btn btn-ghost normal-case text-xl">
             What can I cook?

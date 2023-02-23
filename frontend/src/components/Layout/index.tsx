@@ -1,3 +1,4 @@
-import { Layout } from './Layout';
 
-export const LayoutRoutes 
+export const LayoutRoutes = () => {
+
+}
