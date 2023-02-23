@@ -1,3 +1,5 @@
+import React from "react";
+import {RequiredStar} from "@/components/Form/RequiredStar";
 
 
 const Register = () => {
@@ -13,39 +15,39 @@ const Register = () => {
                         <h1 className="text-5xl font-bold">Register</h1>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Username</span>
+                                <span className="label-text">Username<RequiredStar /></span>
                             </label>
-                            <input type="text" placeholder="username" className="input input-bordered" />
+                            <input type="text" placeholder="Username" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">First Name</span>
                             </label>
-                            <input type="text" placeholder="first name" className="input input-bordered" />
+                            <input type="text" placeholder="First name" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Last Name</span>
                             </label>
-                            <input type="text" placeholder="last name" className="input input-bordered" />
+                            <input type="text" placeholder="Last name" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Email</span>
+                                <span className="label-text">Email<RequiredStar /></span>
                             </label>
-                            <input type="text" placeholder="email" className="input input-bordered" />
+                            <input type="text" placeholder="Email" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Password</span>
+                                <span className="label-text">Password<RequiredStar /></span>
                             </label>
-                            <input type="password" placeholder="password" className="input input-bordered" />
+                            <input type="password" placeholder="Password" className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Confirm Password</span>
+                                <span className="label-text">Confirm Password<RequiredStar /></span>
                             </label>
-                            <input type="password" placeholder="password" className="input input-bordered" />
+                            <input type="password" placeholder="Password" className="input input-bordered" />
                         </div>
                         <div className="form-control mt-6">
                             <button className="btn btn-primary" onClick={handleRegister}>Register</button>

@@ -1,5 +1,5 @@
-
-import { useState } from 'react';
+import React, { useState } from 'react';
+import {RequiredStar} from "@/components/Form/RequiredStar";
 
 const Login = () => {
   const [isShown, setIsSHown] = useState(false);
@@ -15,15 +15,15 @@ const Login = () => {
             <h1 className="text-5xl font-bold">Login</h1>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Username</span>
+                <span className="label-text">Username<RequiredStar /></span>
               </label>
-              <input type="text" placeholder="username" className="input input-bordered" />
+              <input type="text" placeholder="Username" className="input input-bordered" />
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text">Password<RequiredStar /></span>
               </label>
-              <input type="password" placeholder="password" className="input input-bordered" />
+              <input type="password" placeholder="Password" className="input input-bordered" />
               <label className="label">
                 <a href="#" className="label-text-alt link link-hover">
                   Forgot password?
