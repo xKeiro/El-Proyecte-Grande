@@ -1,6 +1,5 @@
 import { Category } from '@/features/categories';
 import { CategoriesEnum } from '@/features/categories';
-import { Ingredient } from '../../ingredients/types/index';
 
 type props = {
   categoryShowedName: string;
@@ -25,7 +24,7 @@ export const RecipeSingleCategorySelector: React.FC<props> = ({
     );
     if (selectedCategory) {
       handleCategorySelection(selectedCategory);
-      e.target.value = 'none';
+      e.target.value = "default";
     }
   };
   const handleCategoryRemoval = (e: React.MouseEvent<HTMLSpanElement>) => {
