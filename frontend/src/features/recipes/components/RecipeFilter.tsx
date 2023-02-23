@@ -189,7 +189,7 @@ export const RecipeFilter = (props) => {
         handleCategorySelection={handleIngredientSelection}
         handleCategorySelectionRemoval={handleIngredientRemoval}
       />
-      <div><button type='submit' onClick={handleSubmit}>Submit</button></div>     
+      <div><button className="btn" type='submit' onClick={handleSubmit}>Submit</button></div>     
       
     </div>
     

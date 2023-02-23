@@ -8,18 +8,28 @@ import { AllRecipes } from './AllRecipes';
 
 export const MainPage = () => {
   const [filteredRecipes, setFilteredRecipes] = useState<TRecipe[]>([]);
-  console.log(filteredRecipes)
+  const [showFilteredRecipe, setShowFilteredRecipe] = useState(false);
 
   function handleData(data: TRecipe[]) {
     console.log("Received data:", data);
     setFilteredRecipes(data);
   }
+  const handleFilteredRecipes = (data) => {
+    setFilteredRecipes(data);
+    setShowFilteredRecipe(true);
+  };
+  const showAllRecipes = () => {
+    setShowFilteredRecipe(false);
+  };
 
   return (
-    <div>
-      <RecipeLeftSideSearch setFilteredRecipes={setFilteredRecipes} />
-      <FilteredRecipe recipes={filteredRecipes}  />
-
+    <div className="flex flex-wrap">
+      <div className="w-full md:w-1/2">
+        <RecipeLeftSideSearch setFilteredRecipes={handleFilteredRecipes} onButtonClick={showAllRecipes} />
+      </div>
+      <div className="w-full md:w-1/2">
+        {showFilteredRecipe ? <FilteredRecipe recipes={filteredRecipes} /> : <AllRecipes />}
+      </div>
     </div>
   );
 };

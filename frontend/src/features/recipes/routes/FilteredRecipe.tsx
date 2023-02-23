@@ -16,12 +16,11 @@ console.log(recipes)
         {recipes.map(recipe => (
           <div key={recipe.id}>
             <div >
-              <h1>HII!!</h1>
               <RecipeImage id={recipe.id} name={recipe.name} />
               <div className="card-body recipe-info">
                 <RecipeHeader recipe={recipe} />
                 <RecipeDescription description={recipe.description} />
-                <Link to={`/recipes/` + recipe.id}>More info...</Link>
+                <Link to={`/recipes/` + recipe.id}><u>More info...</u></Link>
               </div>
             </div>
 

@@ -1,15 +1,18 @@
 import { RecipeFilter } from './RecipeFilter';
 import { TRecipe } from '../types';
 import { AllRecipes } from '../routes/AllRecipes';
+import { FilteredRecipe } from '../routes/FilteredRecipe';
 
-export const RecipeLeftSideSearch = ({ setFilteredRecipes }) => {
-
+export const RecipeLeftSideSearch = ({ setFilteredRecipes}) => {
+  
   function handleData(data: TRecipe[]) {
     console.log("Received data:", data);
     setFilteredRecipes(data);
   }
   return (
-    <div className="drawer">
+    <div className="grid grid-cols-1 md:grid-cols-2">
+  <div className="order-2 md:order-1">
+  <div className="drawer">
       <input id="left-side-search" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
       {/* Page content here */}
@@ -25,8 +28,16 @@ export const RecipeLeftSideSearch = ({ setFilteredRecipes }) => {
             <RecipeFilter onData={handleData}/>
           </div>
         </ul>
+        
       </div>
+      
     </div>
+  </div>
+  <div className="order-1 md:order-2 text-right">
+
+  </div>
+</div>
+
   
     );
   
