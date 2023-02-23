@@ -24,15 +24,17 @@ export const RecipeFilter = (props : any) => {
   const { sendData } = props;
  
 
-  const handleSubmit = async (event:any) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
+    // event.preventDefault();
     const selectedCuisineIds = selectedCuisines.map(cuisine => cuisine.id);
     const selectedDietIds = selectedDiets.map(diet => diet.id);
     const selectedMealTimeIds = selectedMealTimes.map(mealTime => mealTime.id);
     const selectedDishTypeIds= selectedDishTypes.map(dishType=>dishType.id)
     const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
 
-    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchTerm);
+    const searchString = (document.getElementById("search-field") as HTMLInputElement).value;
+
+    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString);
     sendData(filteredRecipes)
   };
 
@@ -143,7 +145,7 @@ export const RecipeFilter = (props : any) => {
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
       <div className="md:col-span-1">
-        <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} handleRecipeSearch={handleSubmit} />
       </div>
       <RecipeSingleCategorySelector
         categories={cuisines}
