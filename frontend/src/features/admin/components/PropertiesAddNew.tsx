@@ -18,45 +18,53 @@ export const PropertiesAddNew = () => {
 
     const sendData = async () => {
         const inputFields = Array.from(document.querySelectorAll("input"));
+        let allGood = false;
         if (inputFields.every(inp => inp.value != "")) {
-            if (inputFields[0].value.length >= 2) {
-                if (+inputFields[2].value >= 0) {
-                    const newName = (document.getElementById("newName") as HTMLInputElement).value;
-                    let unitOfMeasure;
-                    let calorie;
-                    let res : any;
-
-                    if (isIngredient) {
-                        unitOfMeasure = (document.getElementById("unitOfMeasure") as HTMLInputElement).value;
-                        calorie = +(document.getElementById("calorie") as HTMLInputElement).value;
-
-                        res = await IngredientsApi.add(newName, unitOfMeasure, calorie);
-                    } else {
-                        res = await CategoryApi.add(category, newName);
-                    }
-
-                    if (typeof res == "object") {
-                        setResponseMsgColor("text-success");
-                        setResponseMsg("Successfully created!");
-                    }
-                    else {
-                        setResponseMsgColor("text-error");
-                        setResponseMsg(res);
-                    }
+            if (!isIngredient && inputFields[0].value.length >= 2) {
+                allGood = true;
+            }
+            else {
+                if (inputFields[0].value.length < 2) {
+                    setResponseMsgColor("text-error");
+                    setResponseMsg("Name must be min 2 characters long!");
                 }
-                else {
+                else if (isIngredient && +inputFields[2].value < 0) {
                     setResponseMsgColor("text-error");
                     setResponseMsg("Calorie can't be a negative number!");
                 }
-            }
-            else {
-                setResponseMsgColor("text-error");
-                setResponseMsg("Name must be min 2 characters long!");
+                else {
+                    allGood = true;
+                }
             }
         }
         else {
             setResponseMsgColor("text-error");
             setResponseMsg("All fields are required!");
+        }
+
+        if (allGood) {
+            const newName = (document.getElementById("newName") as HTMLInputElement).value;
+            let unitOfMeasure;
+            let calorie;
+            let res : any;
+
+            if (isIngredient) {
+                unitOfMeasure = (document.getElementById("unitOfMeasure") as HTMLInputElement).value;
+                calorie = +(document.getElementById("calorie") as HTMLInputElement).value;
+
+                res = await IngredientsApi.add(newName, unitOfMeasure, calorie);
+            } else {
+                res = await CategoryApi.add(category, newName);
+            }
+
+            if (typeof res == "object") {
+                setResponseMsgColor("text-success");
+                setResponseMsg("Successfully created!");
+            }
+            else {
+                setResponseMsgColor("text-error");
+                setResponseMsg(res);
+            }
         }
     }
 
