@@ -2,44 +2,33 @@ import { RecipeFilter } from './RecipeFilter';
 import { TRecipe } from '../types';
 import { AllRecipes } from '../routes/AllRecipes';
 import { FilteredRecipe } from '../routes/FilteredRecipe';
+import { useState } from 'react';
 
-export const RecipeLeftSideSearch = ({ setFilteredRecipes}) => {
-  
+export const RecipeLeftSideSearch = () => {
+
+  const [showFilteredRecipe, setShowFilteredRecipe] = useState(false);
+  const [filteredRecipes, setFilteredRecipes] = useState<TRecipe[]>([]);
+
   function handleData(data: TRecipe[]) {
-    console.log("Received data:", data);
     setFilteredRecipes(data);
+    setShowFilteredRecipe(true)
   }
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2">
-  <div className="order-2 md:order-1">
-  <div className="drawer">
-      <input id="left-side-search" type="checkbox" className="drawer-toggle" />
-      <div className="drawer-content">
-      {/* Page content here */}
-        <label htmlFor="left-side-search" className="btn drawer-button text-center text-xl w-70 h-16 bg-base-300 p-2 rounded-lg drop-shadow-xl">
-          <svg xmlns="http://www.w3.org/2000/svg" className='h-7 w-7 pr-2' viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          Search Options
-          </label>
-      </div> 
-      <div className="drawer-side">
-        <label htmlFor="left-side-search" className="drawer-overlay"></label>
-        <ul className="menu p-4 w-80 bg-base-100 text-base-content">
+
+    <div className="grid grid-cols-3 md:grid-cols-3">
+      <div className="order-2 md:order-1 px-4">
+        <ul className="menu p-4 w-80 bg-base-200 text-base-content w-2/3 rounded-xl">
           <div className='sm:container mx-auto'>
-            <RecipeFilter onData={handleData}/>
+            <RecipeFilter sendData={handleData} />
           </div>
         </ul>
-        
       </div>
-      
+      <div className="order-1 md:order-2 text-right col-span-2 justify-content-center">
+        {showFilteredRecipe ? <FilteredRecipe recipes={filteredRecipes} /> : <AllRecipes />}
+      </div>
     </div>
-  </div>
-  <div className="order-1 md:order-2 text-right">
+  );
 
-  </div>
-</div>
-
-  
-    );
-  
 
 };

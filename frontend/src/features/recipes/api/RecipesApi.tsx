@@ -36,7 +36,6 @@ export abstract class RecipesApi {
     const dishTypeParams = dishTypeIds.length > 0 ? dishTypeIds.map(id => `DishTypeIds=${id}`).join('&') : '';
     const nameParam = name.length > 0 ? `Name=${name}` : '';
     const apiUrl = `${API_URL}/Recipes?${nameParam}${ingredientParams}&${cuisineParams}&${mealTimeParams}&${dietParams}&${dishTypeParams}`;
-    console.log(apiUrl)
     const response = await axios.get(apiUrl);
     return response.data;
   }

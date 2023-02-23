@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { TRecipe } from "../types";
 import { RecipesApi } from "../api/RecipesApi";
 import { RecipeImage } from "../components/RecipeImage";
-import { RecipeHeader } from "../components/RecipeHeader";
-import { RecipeDescription } from "../components/RecipeDescription";
-import { RecipeIngredients } from "../components/RecipeIngredients";
-import { RecipePreparation } from "../components/RecipePreparation";
-import { RecipeButtons } from "../components/RecipeButtons";
+import { Link } from "react-router-dom";
 
 export const AllRecipes = () => {
     const [recipes, setRecipes] = useState<TRecipe[]>([]);
@@ -18,27 +14,25 @@ export const AllRecipes = () => {
         fetchData();
     }, []);
 
-    console.log(recipes)
     if (!recipes) return (<div>Loading...</div>);
     return (
-        
-            <div>
-                {recipes.map(recipe => (
-                    <div key={recipe.id}>
-                        <div >
-                            <h1>HII!!</h1>
-                            <RecipeImage id={recipe.id} name={recipe.name} />
-                            <div className="card-body recipe-info">
-                                <RecipeHeader recipe={recipe} />
-                                <RecipeDescription description={recipe.description} />
-                                <h3 >Ingredients</h3>
-                                <RecipeIngredients ingredients={recipe.recipeIngredients} />
-                            </div>
+        <div className="grid grid-cols-2 gap-4">
+            {recipes.map(recipe => (
+                <div key={recipe.id} className="card w-96 bg-base-200 shadow-xl">
+                    <figure className="px-10 pt-10 rounded-x">
+                        <RecipeImage id={recipe.id} name={recipe.name} size={{ width: 200, height: 250 }} />
+                    </figure>
+                    <div className="card-body items-center text-center">
+                        <h2 className="card-title">{recipe.name}</h2>
+                        <p>{recipe.description}</p>
+                        <div className="card-actions">
+                            <Link to={`/recipes/` + recipe.id}><u>More info...</u></Link>
                         </div>
-                        <RecipePreparation preparationSteps={recipe.preparationSteps} />
-                        <RecipeButtons recipeId={recipe.id} />
                     </div>
-                ))}
-            </div>
+                </div>
+
+            ))}
+
+        </div>
     );
 };

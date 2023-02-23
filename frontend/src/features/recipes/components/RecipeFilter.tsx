@@ -27,6 +27,7 @@ export const RecipeFilter = (props) => {
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientForSearch[]>([]);
 
   const [filteredRecipes, setFilteredRecipes] = useState([]);
+  const { sendData } = props;
  
 
   const handleSubmit = async (event:any) => {
@@ -39,8 +40,7 @@ export const RecipeFilter = (props) => {
 
     const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchTerm);
     setFilteredRecipes(filteredRecipes);
-    props.onData(filteredRecipes)
-    console.log(filteredRecipes)
+    sendData(filteredRecipes)
   };
 
 
@@ -156,6 +156,7 @@ export const RecipeFilter = (props) => {
       </div>
       <RecipeSingleCategorySelector
         categories={cuisines}
+        categoryShowedName="Cuisines"
         categoryName={CategoriesEnum.Cuisines}
         selectedCategories={selectedCuisines}
         handleCategorySelection={handleCuisineSelection}
@@ -163,6 +164,7 @@ export const RecipeFilter = (props) => {
       />
       <RecipeSingleCategorySelector
         categories={diets}
+        categoryShowedName="Diets"
         categoryName={CategoriesEnum.Diets}
         selectedCategories={selectedDiets}
         handleCategorySelection={handleDietSelection}
@@ -170,6 +172,7 @@ export const RecipeFilter = (props) => {
       />
       <RecipeSingleCategorySelector
         categories={mealTimes}
+        categoryShowedName="Meal Times"
         categoryName={CategoriesEnum.MealTimes}
         selectedCategories={selectedMealTimes}
         handleCategorySelection={handleMealTimeSelection}
@@ -177,6 +180,7 @@ export const RecipeFilter = (props) => {
       />
       <RecipeSingleCategorySelector
         categories={dishTypes}
+        categoryShowedName="Dish Types"
         categoryName={CategoriesEnum.DishTypes}
         selectedCategories={selectedDishTypes}
         handleCategorySelection={handleDishTypeSelection}
@@ -184,12 +188,13 @@ export const RecipeFilter = (props) => {
       />
       <RecipeSingleCategorySelector
         categories={ingredients}
+        categoryShowedName="Ingredients"
         categoryName={CategoriesEnum.Ingredients}
         selectedCategories={selectedIngredients}
         handleCategorySelection={handleIngredientSelection}
         handleCategorySelectionRemoval={handleIngredientRemoval}
       />
-      <div><button className="btn" type='submit' onClick={handleSubmit}>Submit</button></div>     
+      <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>     
       
     </div>
     

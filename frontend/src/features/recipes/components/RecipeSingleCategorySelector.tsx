@@ -3,6 +3,7 @@ import { CategoriesEnum } from '@/features/categories';
 import { Ingredient } from '../../ingredients/types/index';
 
 type props = {
+  categoryShowedName: string;
   categories: Category[];
   categoryName: CategoriesEnum;
   selectedCategories: Category[];
@@ -11,6 +12,7 @@ type props = {
 };
 
 export const RecipeSingleCategorySelector: React.FC<props> = ({
+  categoryShowedName,
   categories,
   categoryName,
   selectedCategories,
@@ -36,10 +38,10 @@ export const RecipeSingleCategorySelector: React.FC<props> = ({
   };
 
   return (
-    <div className="bg-primary w-72 grid grid-cols-1 gap-4 bg-base-200 rounded-lg drop-shadow-xl p-2 content-start items-start">
+    <div className="bg-primary w-72 grid grid-cols-1 gap-4 bg-base-300 rounded-lg drop-shadow-xl p-2 content-start items-start">
       <div className="grid grid-cols-2 content-start items-start">
         <div className="text-left text-xl pl-4 mt-2 transition ease-in-out duration-200 hover:animate-none hover:scale-105">
-          {categoryName}
+          {categoryShowedName}
         </div>
         <select
           name={categoryName}
