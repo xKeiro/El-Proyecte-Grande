@@ -86,13 +86,14 @@ export const PropertiesAddNew = () => {
                         </label>
                         <label className="input-group input-group-md">
                             <span>Unit of Measure<span className="text-error px-0 ml-2">*</span></span>
-                            <input id="unitOfMeasure" type="text" placeholder="Etc.: g, dl, pcs" minLength={1} maxLength={25} className="input input-bordered input-md" />
+                            <input id="unitOfMeasure" type="text" placeholder="Etc.: g, ml, pcs" minLength={1} maxLength={25} className="input input-bordered input-md" />
                         </label>
                         <label className="input-group input-group-md">
                             <span>Calorie<span className="text-error px-0 ml-2">*</span></span>
                             <input id="calorie" type="number" placeholder="Cal" min={0} className="input input-bordered input-md" />
                         </label>
-                        <span className="label-text-alt">Cal = kcal / 1000</span>
+                        <span className="label-text-alt">Cal = pcs, cloves / kcal </span>
+                        <span className="label-text-alt">Cal = 100g / kcal</span>
                     </div>
                 }
                 <button className="btn btn-primary mt-5 w-1/4" onClick={sendData}>Add</button>
