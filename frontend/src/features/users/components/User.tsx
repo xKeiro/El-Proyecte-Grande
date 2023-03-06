@@ -7,7 +7,7 @@ import { UsersApi } from '../api/UsersApi';
 import { TUser } from '../types';
 import { userSchema } from '../types';
 
-const User = () => {
+export const User = () => {
 
     const [user, setUser] = useState<TUser>();
     const { id } = useParams();
@@ -30,8 +30,6 @@ const User = () => {
 
     }, [id]);
 
-    
-
     return (
             <div className="min-h-screen flex  justify-center">
                 <div className="w-2/5 mx-auto p-4 flex flex-col">
@@ -51,6 +49,3 @@ const User = () => {
             </div>
     )
 }
-
-export default User;
-

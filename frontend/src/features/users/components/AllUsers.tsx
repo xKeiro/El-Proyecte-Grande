@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import axios, * as others from 'axios';
 import { Link } from 'react-router-dom';
 import { UsersApi } from '../api/UsersApi';
 
 
-const Users = () => {
+export const Users = () => {
 
     const [users, setUsers] = useState<any[]>([]);
 
@@ -40,7 +39,5 @@ const Users = () => {
                 </tbody>
             </table>
         </div>
-        </div>);
+    </div>);
 }
-
-export default Users;

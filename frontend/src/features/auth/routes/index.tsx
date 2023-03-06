@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
-import Login from '../components/Login';
-import Register from '../components/Register';
+import { Login } from './Login';
+import { Register } from './Register';
 
 export const AuthRoutes = () => {
     return (
