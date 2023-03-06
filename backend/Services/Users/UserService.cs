@@ -62,7 +62,7 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
     {
         var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
         return !await _context.Users.AnyAsync(u =>
-            u.Username == user.Username || u.EmailAddress.ToLower() == user.EmailAddress.ToLower());
+            u.Username == user.Username || u.EmailAddress == user.EmailAddress);
     }
 
     public async Task<bool> Delete(int id)
@@ -87,6 +87,12 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         _ = _context.Users.Remove(user);
         _ = await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<bool> FindForLogin(UserLogin user)
+    {
+        return await _context.Users.AnyAsync(u =>
+            u.Username == user.Username && u.Password == user.Password);
     }
 
     public async Task<List<RecipePublic>> LikedRecipes(int userId)
