@@ -89,10 +89,16 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         return true;
     }
 
-    public async Task<bool> FindForLogin(UserLogin user)
+    public async Task<UserPublic?> FindForLogin(UserLogin user)
     {
-        return await _context.Users.AnyAsync(u =>
-            u.Username == user.Username && u.Password == user.Password);
+        var resUser = await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == user.Username && u.Password == user.Password);
+        return resUser switch
+        {
+            null => null,
+            _ => _mapper.Map<User, UserPublic>(resUser)
+        };
     }
 
     public async Task<List<RecipePublic>> LikedRecipes(int userId)
