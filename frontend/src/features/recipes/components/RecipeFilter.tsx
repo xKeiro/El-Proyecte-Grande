@@ -7,6 +7,7 @@ import { RecipeSingleCategorySelector } from './RecipeSingleCategorySelector';
 import { Category } from '@/features/categories/';
 import { IngredientForSearch } from '@/features/ingredients/';
 import { CategoriesEnum } from '@/features/categories/';
+import { RecipeMaxNotOwnedIngredients } from './RecipeMaxNotOwnedIngredients';
 
 export const RecipeFilter = (props : any) => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -14,6 +15,7 @@ export const RecipeFilter = (props : any) => {
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
   const [dishTypes, setDishTypes] = useState<Category[]>([]);
   const [ingredients, setIngredients] = useState<IngredientForSearch[]>([]);
+  const [maxNotOwnedIngredients, setMaxNotOwnedIngredients] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCuisines, setSelectedCuisines] = useState<Category[]>([]);
   const [selectedDiets, setSelectedDiets] = useState<Category[]>([]);
@@ -34,7 +36,7 @@ export const RecipeFilter = (props : any) => {
 
     const searchString = (document.getElementById("search-field") as HTMLInputElement).value;
 
-    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString);
+    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, maxNotOwnedIngredients);
     sendData(filteredRecipes)
   };
 
@@ -141,6 +143,9 @@ export const RecipeFilter = (props : any) => {
     }
     setIngredients(ingredients.map((ingredient) => ingredient));
   };
+  const handleMaxNotOwnedIngredientsChange = (maxNotOwnedIngredients: number) => {
+    setMaxNotOwnedIngredients(maxNotOwnedIngredients);
+  };
 
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
@@ -186,6 +191,10 @@ export const RecipeFilter = (props : any) => {
         selectedCategories={selectedIngredients}
         handleCategorySelection={handleIngredientSelection}
         handleCategorySelectionRemoval={handleIngredientRemoval}
+      />
+      <RecipeMaxNotOwnedIngredients
+        maxNotOwnedIngredients={maxNotOwnedIngredients}
+        handleMaxNotOwnedIngredientsChange={handleMaxNotOwnedIngredientsChange}
       />
       <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>     
     </div>
