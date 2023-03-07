@@ -1,3 +1,6 @@
+using System.Configuration;
+using System.Net;
+using System.Text;
 using backend.Data;
 using backend.Dtos.Categories.Cuisine;
 using backend.Dtos.Categories.Diet;
@@ -16,12 +19,16 @@ using backend.Services.Categories;
 using backend.Services.Users;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(p => p.AddPolicy("corspolicy", build => build.WithOrigins("http://localhost:5173")
         .AllowAnyMethod()
-        .AllowAnyHeader()));
+        .AllowAnyHeader()
+        .AllowCredentials()
+        ));
 
 // Add services to the container.
 builder.Services.AddControllers().AddJsonOptions(options =>
@@ -40,6 +47,30 @@ builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ElProyecteGrandeContext")));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Authentication
+string? tokenKey = builder.Configuration.GetValue<string>("JwtTokenKey");
+
+if (string.IsNullOrEmpty(tokenKey)) throw new ConfigurationErrorsException("Missing JWT token key!");
+
+var key = Encoding.ASCII.GetBytes(tokenKey);
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(opt =>
+{
+    opt.RequireHttpsMetadata = false;
+    opt.SaveToken = true;
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
 
 // Add Services
 builder.Services.AddScoped<ICategoryService<MealTimePublic, MealTimeWithoutId>, MealTimeService>();
@@ -63,6 +94,8 @@ builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<Use
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IStatusMessageService<Recipe>, StatusMessageService<Recipe>>();
 
+builder.Services.AddSingleton<IJwtService>(new JwtService(tokenKey));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -74,8 +107,21 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
+    string? location = app.Configuration.GetValue<string>("Location");
+    if (string.IsNullOrEmpty(location)) throw new ConfigurationErrorsException("Missing location!");
+
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+    {
+        response.Redirect(location);
+    }
+});
+
 app.UseCors("corspolicy");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
