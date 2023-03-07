@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
+import { API_URL } from "@/config";
 
 const themes = [
   'light',
@@ -110,6 +111,7 @@ export const NavBar = () => {
           </Link>
         </div>
         <div className="navbar navbar-end">
+          <div>Hello placeholder</div>
           <div className="px-8">
             <span className="mr-2">Theme:</span>
             <select
@@ -129,8 +131,7 @@ export const NavBar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52"
-            >
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52">
               <li>
                 <Link to="/login" className="text-xl">
                   Login
@@ -139,6 +140,11 @@ export const NavBar = () => {
               <li>
                 <Link to="/register" className="text-xl">
                   Register
+                </Link>
+              </li>
+              <li>
+                <Link to={API_URL + "/Auth/Logout"} className="text-xl">
+                  Logout
                 </Link>
               </li>
             </ul>
