@@ -17,6 +17,7 @@ using backend.Services.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Text.Json.Serialization;
+using backend.Dtos.Recipes.PreparationStep;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,9 @@ builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageServi
 
 builder.Services.AddScoped<ICategoryService<DietPublic, DietWithoutId>, DietService>();
 builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Diet>>();
+
+builder.Services.AddScoped<IBasicCrudService<PreparationStepPublic, PreparationStepWithoutId>, PreparationStepService>();
+builder.Services.AddScoped<IStatusMessageService<PreparationStep>, StatusMessageService<PreparationStep>>();
 
 // builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
 // builder.Services.AddScoped<IStatusMessageService<UserRecipe>, StatusMessageService<UserRecipe>>();
