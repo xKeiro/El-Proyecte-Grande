@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Recipes.RecipeIngredient;
 using backend.Interfaces.Services;
@@ -216,18 +217,8 @@ public class RecipeService : IRecipeService
                     Ingredient = ingredient
                 });
         }
-        List<PreparationStep> preparationSteps = new();
-        foreach (var preparationStepId in recipeRequest.PreparationStepsId)
-        {
-            var preparationStep = _context.PreparationSteps.Find(preparationStepId);
-            switch (preparationStep)
-            {
-                case null:
-                    return null;
-            }
 
-            preparationSteps.Add(preparationStep);
-        }
+        var preparationSteps = _mapper.Map<ICollection<PreparationStepWithoutId>, ICollection<PreparationStep>>(recipeRequest.PreparationStepsWithoutIds);
 
         switch (recipeToUpdate)
         {
@@ -253,6 +244,7 @@ public class RecipeService : IRecipeService
                 recipeToUpdate.MealTimes = mealTimes;
                 recipeToUpdate.Diets = diets;
                 recipeToUpdate.DishType = dishType;
+                recipeToUpdate.PreparationSteps = preparationSteps;
                 return recipeToUpdate;
         }
     }
