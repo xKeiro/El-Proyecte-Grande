@@ -28,6 +28,7 @@ public class IngredientService : IBasicCrudService<IngredientPublic, IngredientW
     {
         var ingredients = await _context
             .Ingredients
+            .OrderBy (ingredient => ingredient.Name)
             .AsNoTracking()
             .ToListAsync();
         return _mapper.Map<List<Ingredient>, List<IngredientPublic>>(ingredients);
