@@ -46,7 +46,11 @@ const styles = {
   },
 } as const;
 
-export const NavBar = ({ username, isAdmin } : { username: string, isAdmin : boolean }) => {
+export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } :
+                           { username: string,
+                             isAdmin : boolean,
+                             setUsername : React.Dispatch<React.SetStateAction<string>>,
+                             setIsAdmin : React.Dispatch<React.SetStateAction<boolean>> }) => {
   useEffect(() => {
     themeChange(false);
   }, []);
@@ -54,6 +58,7 @@ export const NavBar = ({ username, isAdmin } : { username: string, isAdmin : boo
     <Fragment>
       <div className="navbar bg-neutral text-neutral-content mb-5">
         <div className="navbar-start">
+          { isAdmin &&
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
               <svg
@@ -73,32 +78,28 @@ export const NavBar = ({ username, isAdmin } : { username: string, isAdmin : boo
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow-xl rounded-box w-52 bg-neutral"
-            >
-              { isAdmin &&
-                  <li>
-                    <Link to="/admin/recipe-properties" className="text-xl">
-                      Recipe Properties
-                    </Link>
-                  </li>
-              }
-              { isAdmin &&
-                <li>
-                  <Link to="/admin/recipes" className="text-xl">
-                    Recipes
-                  </Link>
-                </li>
-              }
-              {
-                isAdmin &&
-                <li>
-                  <Link to="/admin/users" className="text-xl">
-                    Users
-                  </Link>
-                </li>
-              }
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow-xl rounded-box w-52 bg-neutral">
+              <li>
+                <Link to="/admin/recipe-properties" className="text-xl">
+                  Recipe Properties
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/recipes" className="text-xl">
+                  Recipes
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/users" className="text-xl">
+                  Users
+                </Link>
+              </li>
             </ul>
           </div>
+          }
+          {
+            <div className="ml-4">{username == "" ? "Not logged in" : "Hello " + username}</div>
+          }
         </div>
         <div className="navbar-center">
           <Link to="/">
@@ -109,7 +110,6 @@ export const NavBar = ({ username, isAdmin } : { username: string, isAdmin : boo
           </Link>
         </div>
         <div className="navbar navbar-end">
-          <div>Hello {username}</div>
           <div className="px-8">
             <span className="mr-2">Theme:</span>
             <select
@@ -130,15 +130,24 @@ export const NavBar = ({ username, isAdmin } : { username: string, isAdmin : boo
             <ul
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52">
-              <li>
-                <OptionLink text={"Login"} to={"/login"} isLogout={false} />
-              </li>
-              <li>
-                <OptionLink text={"Register"} to={"/register"} isLogout={false} />
-              </li>
-              <li>
-                <OptionLink text={"Logout"} to={"/"} isLogout={true} />
-              </li>
+              {
+                username == "" &&
+                <li>
+                  <OptionLink text={"Login"} to={"/login"} isLogout={false} />
+                </li>
+              }
+              {
+                username == "" &&
+                <li>
+                  <OptionLink text={"Register"} to={"/register"} isLogout={false} />
+                </li>
+              }
+              {
+                username != "" &&
+                <li>
+                  <OptionLink text={"Logout"} to={"/"} isLogout={true} setUsername={setUsername} setIsAdmin={setIsAdmin} />
+                </li>
+              }
             </ul>
           </div>
         </div>

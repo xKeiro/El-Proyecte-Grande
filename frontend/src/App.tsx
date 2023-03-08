@@ -13,7 +13,7 @@ export const App = () =>{
 
   return (
     <BrowserRouter>
-      <NavBar username={username} isAdmin={isAdmin} />
+      <NavBar username={username} isAdmin={isAdmin} setUsername={setUsername} setIsAdmin={setIsAdmin} />
           <RecipesRoutes/>
           <UsersRoutes/>
           <AdminRoutes/>
