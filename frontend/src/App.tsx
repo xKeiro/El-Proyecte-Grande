@@ -7,14 +7,16 @@ import { NavBar } from "./components";
 import { Footer } from "./components";
 
 export const App = () =>{
+    const username = sessionStorage.getItem("username");
+    const isAdmin = sessionStorage.getItem("isAdmin") == null ? false : sessionStorage.getItem("isAdmin") == "true";
 
   return (
     <BrowserRouter>
-      <NavBar />
+      <NavBar username={username} isAdmin={isAdmin} />
           <RecipesRoutes/>
           <UsersRoutes/>
-          <AdminRoutes/>
-          <AuthRoutes />
+          <AdminRoutes isAdmin={isAdmin} />
+          <AuthRoutes username={username} />
       <div className="h-20">
       </div>
       <Footer />

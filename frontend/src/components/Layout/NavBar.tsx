@@ -2,7 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 import { themeChange } from 'theme-change';
-import { OptionLink } from "@/components/Layout/OptionLink";
+import { OptionLink } from "@/features/auth/components/OptionLink";
 
 const themes = [
   'light',
@@ -44,10 +44,8 @@ const styles = {
   },
 } as const;
 
-export const NavBar = () => {
-  const username = sessionStorage.getItem("username");
+export const NavBar = ({ username, isAdmin } : { username : string | null, isAdmin : boolean }) => {
 
-  let isAdmin = true;
   useEffect(() => {
     themeChange(false);
   }, []);

@@ -4,11 +4,11 @@ import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe } from '@/features/recipes';
 import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
 
-export const Recipes = () => {
+export const Recipes = ({ isAdmin } : { isAdmin : boolean }) => {
   const [recipes, setRecipes] = useState<TRecipe[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  let isAdmin = true;
+    console.log(isAdmin);
 
   useEffect(() => {
     const fetchData = async () => {
