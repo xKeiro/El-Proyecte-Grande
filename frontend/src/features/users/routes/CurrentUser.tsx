@@ -1,7 +1,7 @@
 import { User } from '../components/User';
 
-export const CurrentUser = () => {
+export const CurrentUser = ({ isAdmin } : { isAdmin : boolean }) => {
     return (
-        <User/>
+        <User isAdmin={isAdmin}/>
     );
   };
