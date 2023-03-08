@@ -25,11 +25,11 @@ export const RecipeMaxNotOwnedIngredients: React.FC<props> = ({
         </div>
         <div>
           <div className="grid grid-cols-3 gap-1 content-start items-start align-center items-center text-center">
-            <button className='btn btn-ghost text-xl hover:btn-success' onClick={(event) => { handleClick(event, 1) }}>+</button>
+            <button className='btn btn-ghost text-xl hover:btn-error' onClick={(event) => { handleClick(event, -1) }}>-</button>
             <div className="tooltip" data-tip="The number of maximum not owned ingredients">
               <span>{maxNotOwnedIngredients}</span>
             </div>
-            <button className='btn btn-ghost text-xl hover:btn-error' onClick={(event) => { handleClick(event, -1) }}>-</button>
+            <button className='btn btn-ghost text-xl hover:btn-success' onClick={(event) => { handleClick(event, 1) }}>+</button>
           </div>
         </div>
       </div>
