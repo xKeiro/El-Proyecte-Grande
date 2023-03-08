@@ -2,20 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "@/config";
 
-export const OptionLink = ({text, to, isLogout, setUsername, setIsAdmin } :
-                               { text : string,
-                                   to : string,
-                                   isLogout : boolean,
-                                   setUsername? : React.Dispatch<React.SetStateAction<string>>,
-                                   setIsAdmin? : React.Dispatch<React.SetStateAction<boolean>> }) => {
+export const OptionLink = ({ text, to, isLogout } : { text : string, to : string, isLogout : boolean }) => {
     const logout = async () => {
         await fetch(API_URL + "/Auth/Logout", {
             method: "POST",
             headers: {"Content-type": "application/json"},
             credentials: "include",
         });
-        if (setUsername != undefined) setUsername("");
-        if (setIsAdmin != undefined) setIsAdmin(false);
+        sessionStorage.clear();
+        location.reload();
     }
 
     if (!isLogout) return (

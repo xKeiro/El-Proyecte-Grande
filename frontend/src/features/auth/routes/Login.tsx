@@ -4,10 +4,7 @@ import { API_URL } from "@/config";
 import { RequiredStar } from "@/components/Form/RequiredStar";
 
 
-export const Login = ({ setNavbarUsername, setIsAdmin } : {
-  setNavbarUsername : React.Dispatch<React.SetStateAction<string>>,
-  setIsAdmin : React.Dispatch<React.SetStateAction<boolean>>
-}) => {
+export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cred, setCred] = useState(true);
@@ -27,11 +24,11 @@ export const Login = ({ setNavbarUsername, setIsAdmin } : {
     });
     const result = await response.json();
 
-    setNavbarUsername(result.username);
-    setIsAdmin(result.isAdmin);
+    sessionStorage.setItem("username", result.username);
 
     if (result.hasOwnProperty("message")) setCred(false);
     else navigate("/");
+    location.reload();
   }
 
   return (

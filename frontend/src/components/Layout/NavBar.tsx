@@ -1,8 +1,6 @@
-import React from 'react';
-import { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
-import { useEffect } from 'react';
 import { themeChange } from 'theme-change';
 import { OptionLink } from "@/components/Layout/OptionLink";
 
@@ -46,11 +44,10 @@ const styles = {
   },
 } as const;
 
-export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } :
-                           { username: string,
-                             isAdmin : boolean,
-                             setUsername : React.Dispatch<React.SetStateAction<string>>,
-                             setIsAdmin : React.Dispatch<React.SetStateAction<boolean>> }) => {
+export const NavBar = () => {
+  const username = sessionStorage.getItem("username");
+
+  let isAdmin = true;
   useEffect(() => {
     themeChange(false);
   }, []);
@@ -98,7 +95,7 @@ export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } :
           </div>
           }
           {
-            <div className="ml-4">{username == "" ? "Not logged in" : "Hello " + username}</div>
+            <div className="ml-4">{username == null ? "Not logged in" : "Hello " + username}</div>
           }
         </div>
         <div className="navbar-center">
@@ -131,21 +128,21 @@ export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } :
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52">
               {
-                username == "" &&
+                username == null &&
                 <li>
                   <OptionLink text={"Login"} to={"/login"} isLogout={false} />
                 </li>
               }
               {
-                username == "" &&
+                username == null &&
                 <li>
                   <OptionLink text={"Register"} to={"/register"} isLogout={false} />
                 </li>
               }
               {
-                username != "" &&
+                username != null &&
                 <li>
-                  <OptionLink text={"Logout"} to={"/"} isLogout={true} setUsername={setUsername} setIsAdmin={setIsAdmin} />
+                  <OptionLink text={"Logout"} to={"/"} isLogout={true} />
                 </li>
               }
             </ul>
