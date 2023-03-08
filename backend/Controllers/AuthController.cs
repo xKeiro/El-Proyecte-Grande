@@ -49,30 +49,30 @@ namespace backend.Controllers
             UserPublic resUser = await _service.FindForLogin(user);
             if (resUser is null) return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid credentials!" });
 
-            //string jwt = _jwtService.Generate(resUser.Id);
             string jwt = _jwtService.Authenticate(resUser);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
-                HttpOnly = true
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
             });
 
-            Response.Cookies.Append("username", resUser.Username, new CookieOptions
-            {
-                HttpOnly = true
-            });
-
-            return StatusCode(StatusCodes.Status200OK);
+            return StatusCode(StatusCodes.Status200OK, resUser);
         }
 
         [Authorize]
-        [HttpGet]
+        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult Logout()
         {
-            Response.Cookies.Delete("jwt");
-            Response.Cookies.Delete("username");
+            Response.Cookies.Delete("jwt", new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
+            });
 
             return Ok("success");
         }

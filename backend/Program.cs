@@ -70,6 +70,14 @@ builder.Services.AddAuthentication(opt =>
         ValidateIssuer = false,
         ValidateAudience = false
     };
+    opt.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
+        {
+            context.Token = context.Request.Cookies["jwt"];
+            return Task.CompletedTask;
+        }
+    };
 });
 
 // Add Services
@@ -107,17 +115,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseStatusCodePages(async context =>
-{
-    var response = context.HttpContext.Response;
-    string? location = app.Configuration.GetValue<string>("Location");
-    if (string.IsNullOrEmpty(location)) throw new ConfigurationErrorsException("Missing location!");
+//app.UseStatusCodePages(async context =>
+//{
+//    var response = context.HttpContext.Response;
+//    string? location = app.Configuration.GetValue<string>("Location");
+//    if (string.IsNullOrEmpty(location))
+//        throw new ConfigurationErrorsException("Missing location!");
 
-    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-    {
-        response.Redirect(location);
-    }
-});
+//    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+//    {
+//        response.Redirect(location);
+//    }
+//});
 
 app.UseCors("corspolicy");
 
