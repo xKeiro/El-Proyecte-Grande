@@ -8,13 +8,16 @@ import { Category } from '@/features/categories/';
 import { IngredientForSearch } from '@/features/ingredients/';
 import { CategoriesEnum } from '@/features/categories/';
 import { RecipeMaxNotOwnedIngredients } from './RecipeMaxNotOwnedIngredients';
+import { PreparationDifficulty } from '../types';
+import { RecipeDifficultySelector } from './RecipeDifficultySelector';
 
-export const RecipeFilter = (props : any) => {
+export const RecipeFilter = (props: any) => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
   const [diets, setDiets] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
   const [dishTypes, setDishTypes] = useState<Category[]>([]);
   const [ingredients, setIngredients] = useState<IngredientForSearch[]>([]);
+  const [preparationMaxDifficulty, setPreparationDifficulty] = useState<PreparationDifficulty | null>(null);
   const [maxNotOwnedIngredients, setMaxNotOwnedIngredients] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCuisines, setSelectedCuisines] = useState<Category[]>([]);
@@ -24,19 +27,19 @@ export const RecipeFilter = (props : any) => {
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientForSearch[]>([]);
 
   const { sendData } = props;
- 
+
 
   const handleSubmit = async () => {
     // event.preventDefault();
     const selectedCuisineIds = selectedCuisines.map(cuisine => cuisine.id);
     const selectedDietIds = selectedDiets.map(diet => diet.id);
     const selectedMealTimeIds = selectedMealTimes.map(mealTime => mealTime.id);
-    const selectedDishTypeIds= selectedDishTypes.map(dishType=>dishType.id)
-    const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
+    const selectedDishTypeIds = selectedDishTypes.map(dishType => dishType.id)
+    const selectedIngredientIds = selectedIngredients.map(ingredient => ingredient.id)
 
     const searchString = (document.getElementById("search-field") as HTMLInputElement).value;
 
-    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, maxNotOwnedIngredients);
+    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, preparationMaxDifficulty, maxNotOwnedIngredients);
     sendData(filteredRecipes)
   };
 
@@ -143,9 +146,13 @@ export const RecipeFilter = (props : any) => {
     }
     setIngredients(ingredients.map((ingredient) => ingredient));
   };
+  const handlePreparationDifficultySelection = (preparationDifficulty: PreparationDifficulty) => {
+    setPreparationDifficulty(preparationDifficulty);
+  };
   const handleMaxNotOwnedIngredientsChange = (maxNotOwnedIngredients: number) => {
     setMaxNotOwnedIngredients(maxNotOwnedIngredients);
   };
+
 
   return (
     <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
@@ -184,6 +191,10 @@ export const RecipeFilter = (props : any) => {
         handleCategorySelection={handleDishTypeSelection}
         handleCategorySelectionRemoval={handleDishTypeSelectionRemoval}
       />
+        <RecipeDifficultySelector
+          preparationMaxDifficulty={preparationMaxDifficulty}
+          handlePreparationDifficultySelection={handlePreparationDifficultySelection}
+        />
       <RecipeSingleCategorySelector
         categories={ingredients}
         categoryShowedName="Ingredients"
@@ -196,7 +207,7 @@ export const RecipeFilter = (props : any) => {
         maxNotOwnedIngredients={maxNotOwnedIngredients}
         handleMaxNotOwnedIngredientsChange={handleMaxNotOwnedIngredientsChange}
       />
-      <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>     
+      <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>
     </div>
   );
 };

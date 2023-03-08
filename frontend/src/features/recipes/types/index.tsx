@@ -42,3 +42,9 @@ export const recipeSchema = z.object({
 });
 
 export type TRecipe = z.infer<typeof recipeSchema>;
+
+export enum PreparationDifficulty {
+    Easy = "Easy",
+    Medium = "Medium",
+    Hard = "Hard"
+}
