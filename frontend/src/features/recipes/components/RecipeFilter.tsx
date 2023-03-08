@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RecipesApi } from '../api/RecipesApi';
 import { CategoryApi } from '@/features/categories/api/CategoryApi';
 import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
@@ -41,6 +41,7 @@ export const RecipeFilter = (props: any) => {
 
     const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, preparationMaxDifficulty, maxNotOwnedIngredients);
     sendData(filteredRecipes)
+    scrollTo()
   };
 
   useEffect(() => {
@@ -59,6 +60,7 @@ export const RecipeFilter = (props: any) => {
     IngredientsApi.getAll().then((Ingredients: IngredientForSearch[]) => {
       setIngredients(Ingredients);
     });
+    handleSubmit();
   }, []);
 
   const handleCuisineSelection = (cuisine: Category) => {
@@ -155,8 +157,9 @@ export const RecipeFilter = (props: any) => {
 
 
   return (
-    <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
-      <div className="md:col-span-1">
+    <div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center auto-cols-fr text-xl mx-auto">
+      <div className="md:col-span-2 lg:col-span-3 w-full text-center">
         <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} handleRecipeSearch={handleSubmit} />
       </div>
       <RecipeSingleCategorySelector
@@ -203,11 +206,15 @@ export const RecipeFilter = (props: any) => {
         handleCategorySelection={handleIngredientSelection}
         handleCategorySelectionRemoval={handleIngredientRemoval}
       />
+      <div className='md:col-span-2 lg:col-span-3'>
       <RecipeMaxNotOwnedIngredients
         maxNotOwnedIngredients={maxNotOwnedIngredients}
         handleMaxNotOwnedIngredientsChange={handleMaxNotOwnedIngredientsChange}
       />
-      <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>
+      </div>
+      
+    </div>
+    <div className="mx-auto text-center my-5"><button className="btn btn-active btn-ghost hover:btn-warning text-xl" type='submit' onClick={handleSubmit}>Search</button></div>
     </div>
   );
 };
