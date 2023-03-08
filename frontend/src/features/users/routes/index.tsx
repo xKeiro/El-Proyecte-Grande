@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { CurrentUser } from './User';
+import { CurrentUser } from './CurrentUser';
 
 export const UsersRoutes = () => {
   return (
