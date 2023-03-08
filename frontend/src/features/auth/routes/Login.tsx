@@ -1,10 +1,10 @@
 import React, { SyntheticEvent, useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import { API_URL } from "@/config";
 import { RequiredStar } from "@/components/Form/RequiredStar";
 
 
-export const Login = () => {
+export const Login = ({ loggedInUsername } : { loggedInUsername : string | null }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cred, setCred] = useState(true);
@@ -25,13 +25,14 @@ export const Login = () => {
     const result = await response.json();
 
     sessionStorage.setItem("username", result.username);
+    sessionStorage.setItem("isAdmin", result.isAdmin);
 
     if (result.hasOwnProperty("message")) setCred(false);
     else navigate("/");
     location.reload();
   }
 
-  return (
+  if (loggedInUsername == null) return (
     <form onSubmit={submit}>
       <div className="sm:container mx-auto">
         <div className="hero-content flex-col lg:flex-row-reverse mx-auto">
@@ -67,4 +68,5 @@ export const Login = () => {
       </div>
     </form>
   );
+  return (<Navigate to="/" />)
 };

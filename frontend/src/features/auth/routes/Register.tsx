@@ -1,10 +1,11 @@
 import React from "react";
-import {RequiredStar} from "@/components/Form/RequiredStar";
+import { Navigate } from "react-router-dom";
+import { RequiredStar } from "@/components/Form/RequiredStar";
 import { API_URL } from "@/config";
 
 
-export const Register = () => {
-    return (
+export const Register = ({ username } : { username : string | null }) => {
+    if (username == null) return (
         <form action={API_URL + "/Auth/Register"} method="post">
             <div className='sm:container mx-auto'>
                 <div className="hero-content flex-col lg:flex-row-reverse mx-auto">
@@ -56,4 +57,5 @@ export const Register = () => {
             </div>
         </form>
     );
+    return (<Navigate to="/" />);
 }
