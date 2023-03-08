@@ -1,19 +1,23 @@
+import { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { RecipesRoutes } from "@/features/recipes/";
 import { UsersRoutes } from '@/features/users/';
 import { AdminRoutes } from "@/features/admin";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthRoutes } from "./features/auth/routes";
 import { NavBar } from "./components";
 import { Footer } from "./components";
-import { AuthRoutes } from "./features/auth/routes";
 
 export const App = () =>{
+    const [username, setUsername] = useState("");
+    const [isAdmin, setIsAdmin] = useState(false);
+
   return (
     <BrowserRouter>
-      <NavBar />
+      <NavBar username={username} isAdmin={isAdmin} />
           <RecipesRoutes/>
           <UsersRoutes/>
           <AdminRoutes/>
-          <AuthRoutes/>
+          <AuthRoutes setUsername={setUsername} setIsAdmin={setIsAdmin} />
       <div className="h-20">
       </div>
       <Footer />

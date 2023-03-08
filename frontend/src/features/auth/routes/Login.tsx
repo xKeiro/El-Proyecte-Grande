@@ -1,13 +1,17 @@
-import React, {SyntheticEvent, useState} from 'react';
+import React, { SyntheticEvent, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { API_URL } from "@/config";
-import {RequiredStar} from "@/components/Form/RequiredStar";
-import {Navigate} from "react-router-dom";
+import { RequiredStar } from "@/components/Form/RequiredStar";
 
 
-export const Login = () => {
+export const Login = ({ setNavbarUsername, setIsAdmin } : {
+  setNavbarUsername : React.Dispatch<React.SetStateAction<string>>,
+  setIsAdmin : React.Dispatch<React.SetStateAction<boolean>>
+}) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cred, setCred] = useState(true);
+  const navigate = useNavigate();
 
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -23,9 +27,11 @@ export const Login = () => {
     });
     const result = await response.json();
 
+    setNavbarUsername(result.username);
+    setIsAdmin(result.isAdmin);
+
     if (result.hasOwnProperty("message")) setCred(false);
-    // TODO
-    else return <Navigate to="/" />;
+    else navigate("/");
   }
 
   return (
