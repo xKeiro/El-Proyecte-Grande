@@ -8,7 +8,7 @@ import { RecipeDescription } from '../components/RecipeDescription';
 import { RecipeIngredients } from '../components/RecipeIngredients';
 import { RecipePreparation } from '@/features/recipes/components/RecipePreparation';
 
-export const Recipe = () => {
+export const Recipe = ({ username } : { username : string | null }) => {
   const [recipe, setRecipe] = useState<TRecipe | null>(null);
   const { id } = useParams<{ id: string }>();
   const idNumeric = parseInt(id!);
