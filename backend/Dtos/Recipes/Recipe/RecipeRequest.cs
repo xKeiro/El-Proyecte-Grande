@@ -17,7 +17,7 @@ public class RecipeRequest
     public required PreparationDifficulty Difficulty { get; set; }
     [Required]
     [MinLength(1)]
-    public required ICollection<int> PreparationStepsId { get; set; }
+    public required ICollection<PreparationStepWithoutId> PreparationStepsWithoutIds { get; set; }
 
     [Required]
     [MinLength(1)]
