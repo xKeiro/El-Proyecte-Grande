@@ -1,0 +1,47 @@
+import { useState } from "react";
+
+export const RecipeAddNewPreparationStep = (props: any) => {
+    const [preparationStepDescription, setPreparationStepDescription] = useState<string>("");
+    const [preparationStepCount, setPreparationStepCount] = useState<number>(0);
+    const [preparationStepList, setPreparationStepList] = useState<{ description: string, step: number;  }[]>([]);
+
+    const handleAddPreparationStep = () => {
+        const newPreparationStep = { description: preparationStepDescription, step: preparationStepCount };
+        setPreparationStepList([...preparationStepList, newPreparationStep]);
+        setPreparationStepDescription("");
+        setPreparationStepCount(0);
+        props.preparationStepsToPost([...preparationStepList, newPreparationStep]);
+
+    };
+    return (
+        <div className="form-control">
+            <label htmlFor="step">
+                <span className="mb-2 font-semibold">Step number: </span>
+            </label>
+            <input
+                type="number"
+                min="0"
+                className="input input-bordered mb-6"
+                placeholder="Add preparation step"
+                onChange={(event) => setPreparationStepCount(parseInt(event.target.value))} />
+            <label htmlFor="step-description">
+                <span className="mb-2 font-semibold">Step description: </span>
+            </label>
+            <textarea
+                id="step-description"
+                className="textarea textarea-bordered"
+                placeholder="Step description"
+                onChange={(event) => setPreparationStepDescription(event.target.value)}>
+            </textarea>
+            <div className="float-left">
+                <button
+                    title="Add ingredient to list"
+                    className="btn btn-square btn-ghost mr-2"
+                    onClick={handleAddPreparationStep}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </div>
+        </div>
+    )
+}
