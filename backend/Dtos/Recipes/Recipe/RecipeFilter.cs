@@ -5,7 +5,7 @@ namespace backend.Dtos.Recipes.Recipe;
 
 public class RecipeFilter
 {
-    [StringLength(120, MinimumLength = 2)]
+    [StringLength(120)]
     public required string? Name { get; set; } = null;
     [MinLength(1)]
     public IEnumerable<int>? IngredientIds { get; set; } = null;
