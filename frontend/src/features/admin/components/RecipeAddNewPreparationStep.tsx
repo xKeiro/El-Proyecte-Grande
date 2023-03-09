@@ -22,6 +22,20 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
 
     return (
         <div className="form-control">
+            {preparationStepList.length > 0 ? (
+                <div className="p-4"><span><b>Added steps:</b></span>
+                    <ul>
+                        {preparationStepList.map((preparationStep, index) => (
+                            <li key={index}
+                                className="pl-2 cursor-pointer"
+                            >
+                                {preparationStep.step}. {preparationStep.description}
+                            </li>
+                        ))}
+                    </ul>
+                </div>) : ("")
+            }
+
             <label htmlFor="step">
                 <span className="mb-2 font-semibold">Step number<span className="text-error px-0 ml-2">*</span></span>
             </label>

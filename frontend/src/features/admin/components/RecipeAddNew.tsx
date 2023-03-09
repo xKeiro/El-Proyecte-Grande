@@ -118,8 +118,8 @@ export const RecipeAddNew = () => {
   return (
     <div className='sm:container mx-auto'>
       <div className="hero-content flex-col lg:flex-row-reverse mx-auto">
-        <div className="card flex-shrink-0 w-full max-w-xl shadow-2xl bg-base-100">
-          <div className="card-body">
+        <div className="card flex-shrink-0 w-full max-w-xl">
+
             <h1 className="text-5xl font-bold mb-2">Add New Recipe</h1>
             <form onSubmit={handleSubmitRecipe}>
               <div className="form-control">
@@ -171,14 +171,14 @@ export const RecipeAddNew = () => {
 
               <div className="form-control">
                 <h3 className="text-3xl font-bold mb-2">Preparation steps</h3>
-                <button className="btn w-2/4 mb-2" onClick={togglePreparationStep}>Add new preparation step<span className="text-error px-0 ml-2">*</span></button>
+                <button className="btn w-full md:w-2/4 mb-2 md:mb-0 md:ml-2" onClick={togglePreparationStep}>Add new preparation step<span className="text-error px-0 ml-2">*</span></button>
                 {showAddPreparationStep ? <RecipeAddNewPreparationStep handlePreparationStepsToPost={handlePreparationStepsToPost} /> : null}
               </div>
 
 
               <div className="form-control">
                 <h3 className="text-3xl font-bold mb-2 mt-6">Ingredients</h3>
-                <button className="btn w-2/4 mb-2" onClick={toggleChooseIngredient}>Choose ingredient<span className="text-error px-0 ml-2">*</span></button>
+                <button className="btn w-full md:w-2/4 mb-2 md:mb-0 md:ml-2" onClick={toggleChooseIngredient}>Choose ingredient<span className="text-error px-0 ml-2">*</span></button>
                 {showChooseIngredient ? <AddRecipeChooseIngredient handleIngredientsToPost={handleIngredientsToPost} /> : null}
               </div>
 
@@ -268,12 +268,11 @@ export const RecipeAddNew = () => {
                   <input type="file" className="mb-2 file-input file-input-bordered w-full mb-2" title="Add image" />
               </div>
               <div className="flex justify-center">
-                <button type="submit" className="btn btn-primary mt-2">Add Recipe</button>
+                <button type="submit" className="btn btn-active btn-primary mt-2">Add Recipe</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-    </div>
   );
 }

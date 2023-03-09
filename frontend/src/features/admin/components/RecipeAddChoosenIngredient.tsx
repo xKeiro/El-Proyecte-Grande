@@ -13,7 +13,7 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
     const [ingredientAmount, setIngredientAmount] = useState<number>(0);
-    //const [ingredientList, setIngredientList] = useState<{ ingredient: Ingredient, amount: number }[]>([]);
+    const [ingredientList, setIngredientList] = useState<{ ingredient: Ingredient, amount: number }[]>([]);
     const [ingredientListToPost, setIngredientListToPost] = useState<RecipeIngredientToPost[]>([]);
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
         if (selectedIngredient != null) {
             const newIngredient = { ingredient: selectedIngredient, amount: ingredientAmount };
             const newIngredientToPost: RecipeIngredientToPost = { ingredientId: selectedIngredient.id, amount: ingredientAmount };
-            //setIngredientList([...ingredientList, newIngredient]);
+            setIngredientList([...ingredientList, newIngredient]);
             setIngredientListToPost([...ingredientListToPost, newIngredientToPost]);
             setSelectedIngredient(null);
             setIngredientAmount(0);
@@ -36,6 +36,19 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
 
     return (
         <div className="form-control">
+            {ingredientList.length > 0 ? (
+                <div className="p-4">
+                    <span><b>Added ingredients:</b></span>
+                    <ul>
+                        {ingredientList.map((ingredient, index) => (
+                            <li key={index} className="pl-2">
+                                {ingredient.amount}{ingredient.ingredient.unitOfMeasure} {ingredient.ingredient.name}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            ) : ("")}
+
             <label htmlFor="recipeIngredientsAddNew" className="mb-2 font-semibold">
                 <span className="mb-2 font-semibold">Select ingredient<span className="text-error px-0 ml-2">*</span></span>
             </label>
