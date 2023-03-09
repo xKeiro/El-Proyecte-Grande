@@ -8,8 +8,6 @@ export const Recipes = ({ isAdmin } : { isAdmin : boolean }) => {
   const [recipesWithPagination, setRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
-  let isAdmin = true;
-
   useEffect(() => {
     const fetchData = async () => {
       handleSearch();
