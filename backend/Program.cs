@@ -102,7 +102,7 @@ builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<Use
 builder.Services.AddScoped<IRecipeService, RecipeService>();
 builder.Services.AddScoped<IStatusMessageService<Recipe>, StatusMessageService<Recipe>>();
 
-builder.Services.AddSingleton<IAuthService>(new AuthService(tokenKey));
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

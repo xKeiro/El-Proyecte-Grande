@@ -36,6 +36,7 @@ namespace backend.Controllers
 
             if (!await _userService.IsUnique(user)) return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
 
+            _authService.HashPw(user);
             await _userService.Add(user);
             return StatusCode(StatusCodes.Status201Created, user);
         }
@@ -46,9 +47,10 @@ namespace backend.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login(UserLogin user)
         {
-            UserPublic resUser = await _userService.FindForLogin(user);
-            if (resUser is null) return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid credentials!" });
 
+            UserPublic? resUser = await _authService.Authenticate(user);
+            if (resUser is null) return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid credentials!" });
+            
             string jwt = _authService.GenerateJwt(resUser);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions

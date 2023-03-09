@@ -1,5 +1,5 @@
 ﻿using backend.Dtos.Recipes.Recipe;
-using backend.Dtos.Users.User;
+using backend.Models.Users;
 
 namespace backend.Interfaces.Services;
 
@@ -9,7 +9,7 @@ public interface IUserService<TResponseDto, TRequestDto> :
     where TRequestDto : class
 {
     Task<bool> Delete(int id);
-    Task<UserPublic> FindForLogin(UserLogin user);
+    Task<User> FindByUsername(string username);
     Task<List<RecipePublic>> LikedRecipes(int userId);
     Task<List<RecipePublic>> SavedRecipes(int userId);
     Task<List<RecipePublic>> DislikedRecipes(int userId);
