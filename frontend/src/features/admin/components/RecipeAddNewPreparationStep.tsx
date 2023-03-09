@@ -20,6 +20,13 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
         handlePreparationStepsToPost([...preparationStepList, newPreparationStep]);
     };
 
+    const handleDeletePreparationStep = (index: number) => {
+        const updatedPreparationStepList = [...preparationStepList];
+        updatedPreparationStepList.splice(index, 1);
+        setPreparationStepList(updatedPreparationStepList);
+        handlePreparationStepsToPost(updatedPreparationStepList);
+    };
+
     return (
         <div className="form-control">
             {preparationStepList.length > 0 ? (
@@ -28,6 +35,7 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
                         {preparationStepList.map((preparationStep, index) => (
                             <li key={index}
                                 className="pl-2 cursor-pointer"
+                                onClick={() => handleDeletePreparationStep(index)}
                             >
                                 {preparationStep.step}. {preparationStep.description}
                             </li>

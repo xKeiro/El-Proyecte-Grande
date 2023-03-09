@@ -34,6 +34,18 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
         }
     };
 
+    const handleDeleteRecipeIngredient = (index: number) => {
+        const updatedIngredientList = [...ingredientList];
+        updatedIngredientList.splice(index, 1);
+        setIngredientList(updatedIngredientList);
+    
+        const updatedIngredientListToPost = [...ingredientListToPost];
+        updatedIngredientListToPost.splice(index, 1);
+        
+        setIngredientListToPost(updatedIngredientListToPost);    
+        handleIngredientsToPost(updatedIngredientListToPost);
+    }
+
     return (
         <div className="form-control">
             {ingredientList.length > 0 ? (
@@ -41,7 +53,8 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
                     <span><b>Added ingredients:</b></span>
                     <ul>
                         {ingredientList.map((ingredient, index) => (
-                            <li key={index} className="pl-2">
+                            <li key={index} className="pl-2 cursor-pointer"
+                                onClick={() => handleDeleteRecipeIngredient(index)}>
                                 {ingredient.amount}{ingredient.ingredient.unitOfMeasure} {ingredient.ingredient.name}
                             </li>
                         ))}
