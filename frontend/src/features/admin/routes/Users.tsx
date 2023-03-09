@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { getUsers } from '../api/UsersApi';
-import { User } from '@/features/users';
+import { TUser } from '@/features/users';
 
-export const Users = () => {
-  const [users, setUsers] = useState<User[]>([]);
-
-  let isAdmin = true;
+export const Users = ({ isAdmin } : { isAdmin : boolean }) => {
+  const [users, setUsers] = useState<TUser[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

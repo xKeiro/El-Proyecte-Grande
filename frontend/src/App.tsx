@@ -1,19 +1,23 @@
+import { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { RecipesRoutes } from "@/features/recipes/";
 import { UsersRoutes } from '@/features/users/';
 import { AdminRoutes } from "@/features/admin";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthRoutes } from "./features/auth/routes";
 import { NavBar } from "./components";
 import { Footer } from "./components";
-import { AuthRoutes } from "./features/auth/routes";
 
 export const App = () =>{
+    const [username, setUsername] = useState(sessionStorage.getItem("username"));
+    const [isAdmin, setIsAdmin] = useState(sessionStorage.getItem("isAdmin") == null ? false : sessionStorage.getItem("isAdmin") == "true");
+
   return (
     <BrowserRouter>
-      <NavBar />
-          <RecipesRoutes/>
-          <UsersRoutes/>
-          <AdminRoutes/>
-          <AuthRoutes/>
+      <NavBar username={username} isAdmin={isAdmin} setUsername={setUsername} setIsAdmin={setIsAdmin} />
+          <RecipesRoutes username={username}/>
+          <UsersRoutes isAdmin={isAdmin}/>
+          <AdminRoutes isAdmin={isAdmin} />
+          <AuthRoutes username={username} setUsername={setUsername} setIsAdmin={setIsAdmin} />
       <div className="h-20">
       </div>
       <Footer />

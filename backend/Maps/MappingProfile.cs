@@ -79,5 +79,7 @@ public class MappingProfile : Profile
         _ = CreateMap<PreparationStep, PreparationStepPublic>();
         _ = CreateMap<PreparationStepWithoutId, PreparationStep>();
         _ = CreateMap<PreparationStep, PreparationStepWithoutId>();
+
+        _ = CreateMap<UserRegister, UserWithoutId>();
     }
 }

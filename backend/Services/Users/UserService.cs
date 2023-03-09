@@ -62,7 +62,7 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
     {
         var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
         return !await _context.Users.AnyAsync(u =>
-            u.Username == user.Username || u.EmailAddress.ToLower() == user.EmailAddress.ToLower());
+            u.Username == user.Username || u.EmailAddress == user.EmailAddress);
     }
 
     public async Task<bool> Delete(int id)
@@ -87,6 +87,27 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         _ = _context.Users.Remove(user);
         _ = await _context.SaveChangesAsync();
         return true;
+    }
+
+    // Need to change to return DTO
+    public async Task<User?> FindByUsername(string username)
+    {
+        var resUser = await _context.Users
+            .AsNoTracking()
+            .FirstOrDefaultAsync(u => u.Username == username);
+        return resUser;
+    }
+
+    public async Task<bool> IsUniqueUsername(UserWithoutId userWithoutId)
+    {
+        var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
+        return !await _context.Users.AnyAsync(u => u.Username == user.Username);
+    }
+
+    public async Task<bool> IsUniqueEmail(UserWithoutId userWithoutId)
+    {
+        var user = _mapper.Map<UserWithoutId, User>(userWithoutId);
+        return !await _context.Users.AnyAsync(u => u.EmailAddress == user.EmailAddress);
     }
 
     public async Task<List<RecipePublic>> LikedRecipes(int userId)

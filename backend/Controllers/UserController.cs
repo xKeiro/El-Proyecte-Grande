@@ -3,10 +3,12 @@ using backend.Dtos.Users.User;
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class UsersController : ControllerBase
@@ -82,6 +84,7 @@ public class UsersController : ControllerBase
         }
     }
 
+    // Probably will need to add User too
     [HttpGet("{id}/liked")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -92,6 +95,7 @@ public class UsersController : ControllerBase
         return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
+    // Probably will need to add User too
     [HttpGet("{id}/saved")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -102,6 +106,7 @@ public class UsersController : ControllerBase
         return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
+    // Probably will need to add User too
     [HttpGet("{id}/disliked")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]

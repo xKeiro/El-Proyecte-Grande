@@ -7,7 +7,7 @@ namespace backend.Models.Recipes;
 public class Recipe : BaseModel
 {
     [Required(ErrorMessage = "Name is required")]
-    [StringLength(120, MinimumLength = 2)]
+    [StringLength(120)]
     public required string Name { get; set; }
 
     [Required]
