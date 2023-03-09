@@ -6,7 +6,7 @@ import { CategoryApi } from "@/features/categories/api/CategoryApi";
 import { Category } from "@/features/categories";
 import { RecipeAddNewPreparationStep } from "./RecipeAddNewPreparationStep";
 import { AddRecipeChooseIngredient } from "./RecipeAddChoosenIngredient";
-import { Difficulty, PreparationStep, RecipeIngredientToPost } from "@/features/recipes";
+import { PreparationDifficulty, PreparationStep, RecipeIngredientToPost } from "@/features/recipes";
 
 export const RecipeAddNew = () => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -16,7 +16,7 @@ export const RecipeAddNew = () => {
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [recipeDescription, setRecipeDescription] = useState<string>('');
-  const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.Easy);
+  const [difficulty, setDifficulty] = useState<PreparationDifficulty>(PreparationDifficulty.Easy);
 
   const [cuisineId, setCuisineId] = useState<number>(0);
   const [mealTimeIds, setMealTimeIds] = useState<number[]>([]);
@@ -159,13 +159,13 @@ export const RecipeAddNew = () => {
                   name="difficulty"
                   className="select select-bordered mb-6"
                   value={difficulty}
-                  onChange={(event) => setDifficulty(event.target.value as Difficulty)}
+                  onChange={(event) => setDifficulty(event.target.value as PreparationDifficulty)}
                   required
                 >
                   <option value="">Select difficulty</option>
-                  <option value={Difficulty.Easy}>Easy</option>
-                  <option value={Difficulty.Medium}>Medium</option>
-                  <option value={Difficulty.Hard}>Hard</option>
+                  <option value={PreparationDifficulty.Easy}>Easy</option>
+                  <option value={PreparationDifficulty.Medium}>Medium</option>
+                  <option value={PreparationDifficulty.Hard}>Hard</option>
                 </select>
               </div>
 

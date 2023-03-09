@@ -2,10 +2,10 @@ import { ingredientSchema } from '@/features/ingredients';
 import { categorySchema } from '@/features/categories';
 import * as z from 'zod';
 
-export enum Difficulty {
-    Easy = 'Easy',
-    Medium = 'Medium',
-    Hard = 'Hard',
+export enum PreparationDifficulty {
+    Easy = "Easy",
+    Medium = "Medium",
+    Hard = "Hard"
 }
 
 export const recipeIngredientSchema = z.object({
@@ -31,7 +31,7 @@ export const recipeSchema = z.object({
     id: z.number().int().positive(),
     name: z.string().min(2).max(120),
     description: z.string(),
-    difficulty: z.nativeEnum(Difficulty),
+    difficulty: z.nativeEnum(PreparationDifficulty),
     recipeIngredients: z.array(recipeIngredientSchema),
     cuisine: categorySchema,
     mealTimes: z.array(categorySchema),
