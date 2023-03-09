@@ -1,5 +1,5 @@
-import React, {SyntheticEvent, useState} from "react";
-import {Navigate, useNavigate} from "react-router-dom";
+import React, { SyntheticEvent, useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
 import { RequiredStar } from "@/components/Form/RequiredStar";
 import { API_URL } from "@/config";
 
@@ -10,8 +10,7 @@ export const Register = ({ loggedInUsername } : { loggedInUsername : string | nu
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [emailAddress, setEmailAddress] = useState("");
-    const [usernameMsg, setUsernameMsg] = useState("");
-    const [emailMsg, setEmailMsg] = useState("");
+    const [errorMsg, setErrorMsg] = useState("");
     const [hideErrorMsg, setHideErrorMsg] = useState(true);
     // const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -29,34 +28,47 @@ export const Register = ({ loggedInUsername } : { loggedInUsername : string | nu
     //     return true;
     // }
 
+    const validateEmailAddress = () => {
+        const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+        return emailRegex.test(emailAddress);
+    }
+
     const submit = async (e: SyntheticEvent) => {
         e.preventDefault();
 
         // const validPw = validatePw();
+        if (username.length >= 2 && password != "" && validateEmailAddress()) {
+            const response = await fetch(API_URL + "/Auth/Register", {
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({
+                    username,
+                    password,
+                    firstName,
+                    lastName,
+                    emailAddress
+                })
+            });
+            const result = await response.json();
 
-        const response = await fetch(API_URL + "/Auth/Register", {
-            method: "POST",
-            headers: {"Content-type": "application/json"},
-            body: JSON.stringify({
-                username,
-                password,
-                firstName,
-                lastName,
-                emailAddress
-            })
-        });
-        const result = await response.json();
-
-        if (!response.ok) {
-            setHideErrorMsg(false);
-            setUsernameMsg(result.usernameMsg);
-            setEmailMsg(result.emailMsg);
+            if (!response.ok) {
+                console.log(result);
+                setHideErrorMsg(false);
+                if (result.usernameMsg != "ok") setErrorMsg(result.usernameMsg);
+                else setErrorMsg(result.emailMsg);
+            }
+            else navigate("/login");
         }
-        else navigate("/login");
+        else {
+            setHideErrorMsg(false);
+            if (username == "" || password == "" || emailAddress == "") setErrorMsg("A required field is empty!");
+            else if (username.length < 2) setErrorMsg("Username is too short!");
+            else setErrorMsg("Invalid email address pattern!");
+        }
     }
 
     if (loggedInUsername == null) return (
-        <form onSubmit={submit}>
+        <form>
             <div className='sm:container mx-auto'>
                 <div className="hero-content flex-col lg:flex-row-reverse mx-auto">
                     <div className="card flex-shrink-0 w-full max-w-xl shadow-2xl bg-base-100">
@@ -105,11 +117,10 @@ export const Register = ({ loggedInUsername } : { loggedInUsername : string | nu
                             {/*           className="input input-bordered" onChange={e => setConfirmPassword(e.target.value)} required />*/}
                             {/*</div>*/}
                             <div className="form-control mt-6">
-                                <button type="submit" className="btn btn-primary">Register</button>
+                                <button className="btn btn-primary" onClick={submit}>Register</button>
                             </div>
-                            <div id="cred-alert" className="grid grid-cols-1 mt-4 alert alert-error shadow-lg justify-center text-lg font-bold" hidden={hideErrorMsg}>
-                                <span hidden={usernameMsg == "ok"}>{usernameMsg}</span>
-                                <span hidden={emailMsg == "ok"}>{emailMsg}</span>
+                            <div id="error-box" className="mt-4 alert alert-error shadow-lg justify-center text-lg font-bold" hidden={hideErrorMsg}>
+                                <span>{errorMsg}</span>
                             </div>
                         </div>
                     </div>
