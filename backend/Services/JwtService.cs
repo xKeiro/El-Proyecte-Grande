@@ -53,7 +53,8 @@ namespace backend.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new (ClaimTypes.Name, user.Username)
+                    new (ClaimTypes.Name, user.Username),
+                    new (ClaimTypes.Role, user.IsAdmin ? "Admin" : "User")
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(
