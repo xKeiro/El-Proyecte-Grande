@@ -6,12 +6,7 @@ import { CategoryApi } from "@/features/categories/api/CategoryApi";
 import { Category } from "@/features/categories";
 import { RecipeAddNewPreparationStep } from "./RecipeAddNewPreparationStep";
 import { AddRecipeChooseIngredient } from "./RecipeAddChoosenIngredient";
-
-enum Difficulty {
-  Easy = 'Easy',
-  Medium = 'Medium',
-  Hard = 'Hard',
-}
+import { Difficulty, RecipeIngredientToPost } from "@/features/recipes";
 
 export const RecipeAddNew = () => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -59,7 +54,7 @@ export const RecipeAddNew = () => {
     setShowAddPreparationStep(!showAddPreparationStep);
   };
 
-  const handleIngredientToPost = (recipeIngredientsAddNew: any) => {
+  const handleIngredientsToPost = (recipeIngredientsAddNew: RecipeIngredientToPost) => {
     setChildDataIngredientToPost(recipeIngredientsAddNew)
   }
 
@@ -185,7 +180,7 @@ export const RecipeAddNew = () => {
               <div className="form-control">
                 <h3 className="text-3xl font-bold mb-2 mt-6">Ingredients</h3>
                 <button className="btn w-2/4 mb-2" onClick={toggleChooseIngredient}>Choose ingredient<span className="text-error px-0 ml-2">*</span></button>
-                {showChooseIngredient ? <AddRecipeChooseIngredient ingredientToPost={handleIngredientToPost} /> : null}
+                {showChooseIngredient ? <AddRecipeChooseIngredient handleIngredientsToPost={handleIngredientsToPost} /> : null}
               </div>
 
               <div>
