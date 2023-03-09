@@ -15,9 +15,9 @@ namespace backend.Controllers
         private readonly IUserService<UserPublic, UserWithoutId> _service;
         private readonly IMapper _mapper;
         private readonly IStatusMessageService<User> _statusMessage;
-        private readonly IJwtService _jwtService;
+        private readonly IAuthService _jwtService;
 
-        public AuthController(IUserService<UserPublic, UserWithoutId> service, IMapper mapper, IStatusMessageService<User> statusMessage, IJwtService jwtService)
+        public AuthController(IUserService<UserPublic, UserWithoutId> service, IMapper mapper, IStatusMessageService<User> statusMessage, IAuthService jwtService)
         {
             _service = service;
             _mapper = mapper;
@@ -49,7 +49,7 @@ namespace backend.Controllers
             UserPublic resUser = await _service.FindForLogin(user);
             if (resUser is null) return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid credentials!" });
 
-            string jwt = _jwtService.Authenticate(resUser);
+            string jwt = _jwtService.GenerateJwt(resUser);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
