@@ -1,17 +1,19 @@
 import axios from 'axios';
 import { API_URL } from '@/config';
-import { recipesSchema, recipeSchema } from '@/features/recipes';
+import { recipesSchemaWithPagination, recipeSchema, TRecipe } from '@/features/recipes';
 import { PreparationDifficulty } from '@/features/recipes';
+import { TRecipesWithPagination } from '@/features/recipes';
 
 export abstract class RecipesApi {
-  public static async getAll() {
+  public static async getAll() : Promise<TRecipesWithPagination | null> {
     const res = await axios.get(`${API_URL}/Recipes`);
-    const result = recipesSchema.safeParse(res.data);
+    const result = recipesSchemaWithPagination.safeParse(res.data);
 
     if (result.success) {
       return res.data;
     } else {
       console.log(result.error.issues);
+      return null;
     }
   }
 
@@ -29,7 +31,7 @@ export abstract class RecipesApi {
     await axios.delete(`${API_URL}/Recipes/${id}`);
   }
 
-  public static async filterRecipes(cuisineIds: number[], dietIds: number[], mealTimeIds: number[], dishTypeIds: number[], ingredientIds: number[], name: string, preparationMaxDifficulty: PreparationDifficulty | null  ,maxNumberOfNotOwnedIngredients: number) {
+  public static async filterRecipes(cuisineIds: number[], dietIds: number[], mealTimeIds: number[], dishTypeIds: number[], ingredientIds: number[], name: string, preparationMaxDifficulty: PreparationDifficulty | null  ,maxNumberOfNotOwnedIngredients: number): Promise<TRecipesWithPagination | null> {
     const ingredientParams = ingredientIds.length > 0 ? "&" + ingredientIds.map(id => `IngredientIds=${id}`).join('&') : '';
     const cuisineParams = cuisineIds.length > 0 ? "&" + cuisineIds.map(id => `CuisineIds=${id}`).join('&') : '';
     const dietParams = dietIds.length > 0 ? "&" + dietIds.map(id => `DietIds=${id}`).join('&') : '';
@@ -41,7 +43,13 @@ export abstract class RecipesApi {
     const apiUrl = `${API_URL}/Recipes?${nameParam}${ingredientParams}${cuisineParams}${mealTimeParams}${dietParams}${dishTypeParams}${preparationMaxDifficultyParam}${maxNumberOfNotOwnedIngredientsParam}`;
     console.log(apiUrl)
     const response = await axios.get(apiUrl);
-    return response.data;
+    const result = recipesSchemaWithPagination.safeParse(response.data);
+    if (result.success) {
+      return response.data;
+    } else {
+      console.log(result.error.issues);
+      return null
+    }
   }
 
 }

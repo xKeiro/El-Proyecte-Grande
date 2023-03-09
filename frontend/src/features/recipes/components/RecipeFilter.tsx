@@ -8,10 +8,16 @@ import { Category } from '@/features/categories/';
 import { IngredientForSearch } from '@/features/ingredients/';
 import { CategoriesEnum } from '@/features/categories/';
 import { RecipeMaxNotOwnedIngredients } from './RecipeMaxNotOwnedIngredients';
-import { PreparationDifficulty } from '../types';
+import { PreparationDifficulty, TRecipe, TRecipesWithPagination } from '../types';
 import { RecipeDifficultySelector } from './RecipeDifficultySelector';
 
-export const RecipeFilter = (props: any) => {
+type props = {
+  handleFilteringResult: (recipesWithPagination: TRecipesWithPagination | null) => void;
+};
+
+export const RecipeFilter: React.FC<props> = ({
+  handleFilteringResult,
+}) => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
   const [diets, setDiets] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
@@ -26,8 +32,6 @@ export const RecipeFilter = (props: any) => {
   const [selectedDishTypes, setSelectedDishTypes] = useState<Category[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientForSearch[]>([]);
 
-  const { sendData } = props;
-
 
   const handleSubmit = async () => {
     // event.preventDefault();
@@ -39,8 +43,8 @@ export const RecipeFilter = (props: any) => {
 
     const searchString = (document.getElementById("search-field") as HTMLInputElement).value;
 
-    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, preparationMaxDifficulty, maxNotOwnedIngredients);
-    sendData(filteredRecipes)
+    const filteredRecipesWithPagination = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, preparationMaxDifficulty, maxNotOwnedIngredients);
+    handleFilteringResult(filteredRecipesWithPagination)
     scrollTo()
   };
 

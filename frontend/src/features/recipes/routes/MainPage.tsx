@@ -1,16 +1,34 @@
 import { createElement, useEffect, useRef, useState } from 'react';
 import { RecipeFilter } from '../components/RecipeFilter';
-import { TRecipe } from '../types';
+import { TRecipe, TRecipesWithPagination } from '../types';
 import { FilteredRecipe } from '../components/FilteredRecipe';
+import ReactDOM from 'react-dom';
 
 export const MainPage = () => {
-  const [filteredRecipes, setFilteredRecipes] = useState<TRecipe[]>([]);
+  const [filteredRecipesWithPagination, setFilteredRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
+  const [nextPageUrl, setNextPageUrl] = useState<string>('');
   const [showToTopButton, setShowToTopButton] = useState(false);
   const [scrollToRecipe, setScrollToRecipe] = useState<HTMLDivElement | null>(null);
   const firstTime = useRef<Boolean>(true);
 
-  function handleData(data: TRecipe[]) {
-    setFilteredRecipes(data);
+  function handleFilteringResult(recipesWithPagination: TRecipesWithPagination | null) {
+    console.log(recipesWithPagination)
+    if (recipesWithPagination) {
+      setFilteredRecipesWithPagination(recipesWithPagination);
+    }
+    else {
+      console.log("szia")
+      const errorElement = (
+        <div className="toast toast-center">
+          <div className="alert alert-error">
+            <div>
+              <span>There was a problem!.</span>
+            </div>
+          </div>
+        </div>
+      )
+      ReactDOM.render(errorElement, document.body);
+    }
   }
   function scrollTo(element: HTMLDivElement | null) {
     if (firstTime.current) {
@@ -37,17 +55,17 @@ export const MainPage = () => {
   }, []);
   useEffect(() => {
     scrollTo(scrollToRecipe);
-  }, [filteredRecipes]);
+  }, [filteredRecipesWithPagination]);
 
   return (
     <div>
       <div className="grid grid-cols-1 pb-6">
         <div className='sm:container mx-auto'>
-          <RecipeFilter sendData={handleData} />
+          <RecipeFilter handleFilteringResult={handleFilteringResult} />
         </div>
         <div className="text-right justify-content-center">
-          {filteredRecipes.length > 0
-            ? <div ref={(element) => setScrollToRecipe(element)}><FilteredRecipe recipes={filteredRecipes} /></div>
+          {filteredRecipesWithPagination !== null
+            ? <div ref={(element) => setScrollToRecipe(element)}><FilteredRecipe recipes={filteredRecipesWithPagination.recipes} /></div>
             : <div className="text-center">Loading the recipes...</div>}
         </div>
       </div>

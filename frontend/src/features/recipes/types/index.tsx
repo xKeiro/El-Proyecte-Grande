@@ -1,6 +1,6 @@
 import { ingredientSchema } from '@/features/ingredients';
 import { categorySchema } from '@/features/categories';
-import * as z from 'zod'; 
+import * as z from 'zod';
 
 export const recipeIngredientSchema = z.object({
     id: z.number().int().positive(),
@@ -15,7 +15,7 @@ export const preparationSchema = z.object({
 
 export type TPreparation = z.infer<typeof preparationSchema>
 
-export const recipesSchema =z.array(z.object({
+export const recipesSchema = z.array(z.object({
     id: z.number().int().positive(),
     name: z.string().min(2).max(120),
     description: z.string(),
@@ -40,6 +40,13 @@ export const recipeSchema = z.object({
     dishType: categorySchema,
     preparationSteps: z.array(preparationSchema)
 });
+
+export const recipesSchemaWithPagination = z.object({
+    recipes: z.array(recipeSchema),
+    nextPage: z.number().int().positive().nullable()
+})
+
+export type TRecipesWithPagination = z.infer<typeof recipesSchemaWithPagination>;
 
 export type TRecipe = z.infer<typeof recipeSchema>;
 
