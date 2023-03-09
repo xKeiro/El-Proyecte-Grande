@@ -48,5 +48,7 @@ export type TRecipeIngredient = z.infer<typeof recipeIngredientSchema>;
 
 export type RecipeIngredientToPost = z.infer<typeof recipeIngredientToPost>;
 
+export type PreparationStep = z.infer<typeof preparationSchema>;
+
 
 
