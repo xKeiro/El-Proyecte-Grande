@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { RecipesApi } from '@/features/recipes/api/RecipesApi';
-import { TRecipe, TRecipesWithPagination } from '@/features/recipes';
+import { TRecipe, TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
 import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
 
 export const Recipes = () => {
@@ -12,15 +12,26 @@ export const Recipes = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await RecipesApi.getAll();
-      setRecipesWithPagination(result);
+      handleSearch();
     };
     fetchData();
   }, []);
 
-  const handleSearch = async (name : string = "") => {
-      const recipesList = await RecipesApi.filterRecipes([], [], [], [], [], name, null, 0);
-      setRecipesWithPagination(recipesList);
+  const handleSearch = async (searchString : string = "") => {
+    const filter: TRecipesFilter = {
+      cuisineIds: [],
+      dietIds: [],
+      ingredientIds: [],
+      mealTimeIds: [],
+      dishTypeIds: [],
+      searchString: searchString,
+      preparationMaxDifficulty: null,
+      maxNotOwnedIngredients: 0,
+      page: 1,
+      recipesPerPage: 50
+    }
+    const recipesList = await RecipesApi.filterRecipes(filter);
+    setRecipesWithPagination(recipesList);
   }
 
   if (isAdmin)

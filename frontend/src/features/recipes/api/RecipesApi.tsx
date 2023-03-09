@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '@/config';
-import { recipesSchemaWithPagination, recipeSchema, TRecipe } from '@/features/recipes';
+import { recipesSchemaWithPagination, recipeSchema, TRecipe, TRecipesFilter } from '@/features/recipes';
 import { PreparationDifficulty } from '@/features/recipes';
 import { TRecipesWithPagination } from '@/features/recipes';
 
@@ -31,17 +31,34 @@ export abstract class RecipesApi {
     await axios.delete(`${API_URL}/Recipes/${id}`);
   }
 
-  public static async filterRecipes(cuisineIds: number[], dietIds: number[], mealTimeIds: number[], dishTypeIds: number[], ingredientIds: number[], name: string, preparationMaxDifficulty: PreparationDifficulty | null  ,maxNumberOfNotOwnedIngredients: number): Promise<TRecipesWithPagination | null> {
-    const ingredientParams = ingredientIds.length > 0 ? "&" + ingredientIds.map(id => `IngredientIds=${id}`).join('&') : '';
-    const cuisineParams = cuisineIds.length > 0 ? "&" + cuisineIds.map(id => `CuisineIds=${id}`).join('&') : '';
-    const dietParams = dietIds.length > 0 ? "&" + dietIds.map(id => `DietIds=${id}`).join('&') : '';
-    const mealTimeParams = mealTimeIds.length > 0 ? "&" + mealTimeIds.map(id => `MealTimeIds=${id}`).join('&') : '';
-    const dishTypeParams = dishTypeIds.length > 0 ? "&" + dishTypeIds.map(id => `DishTypeIds=${id}`).join('&') : '';
-    const nameParam = name.length > 0 ? `&Name=${name}` : '';
-    const preparationMaxDifficultyParam = preparationMaxDifficulty ? `&MaxDifficulty=${preparationMaxDifficulty}` : '';
-    const maxNumberOfNotOwnedIngredientsParam = maxNumberOfNotOwnedIngredients > 0 ? `&MaxNumberOfNotOwnedIngredients=${maxNumberOfNotOwnedIngredients}` : '';
-    const apiUrl = `${API_URL}/Recipes?${nameParam}${ingredientParams}${cuisineParams}${mealTimeParams}${dietParams}${dishTypeParams}${preparationMaxDifficultyParam}${maxNumberOfNotOwnedIngredientsParam}`;
-    console.log(apiUrl)
+  public static constructRecipesFilterUrl(filter: TRecipesFilter): string {
+    const ingredientParams = filter.ingredientIds.length > 0 ? "&" + filter.ingredientIds.map(id => `IngredientIds=${id}`).join('&') : '';
+    const cuisineParams = filter.cuisineIds.length > 0 ? "&" + filter.cuisineIds.map(id => `CuisineIds=${id}`).join('&') : '';
+    const dietParams = filter.dietIds.length > 0 ? "&" + filter.dietIds.map(id => `DietIds=${id}`).join('&') : '';
+    const mealTimeParams = filter.mealTimeIds.length > 0 ? "&" + filter.mealTimeIds.map(id => `MealTimeIds=${id}`).join('&') : '';
+    const dishTypeParams = filter.dishTypeIds.length > 0 ? "&" + filter.dishTypeIds.map(id => `DishTypeIds=${id}`).join('&') : '';
+    const nameParam = filter.searchString.length > 0 ? `&Name=${filter.searchString}` : '';
+    const preparationMaxDifficultyParam = filter.preparationMaxDifficulty ? `&MaxDifficulty=${filter.preparationMaxDifficulty}` : '';
+    const maxNumberOfNotOwnedIngredientsParam = filter.maxNotOwnedIngredients > 0 ? `&MaxNumberOfNotOwnedIngredients=${filter.maxNotOwnedIngredients}` : '';
+    const recipesPerPageParam = `&RecipesPerPage=${filter.recipesPerPage}`
+    console.log(filter)
+    console.log(recipesPerPageParam)
+    return `${API_URL}/Recipes/Page/${filter.page}?${nameParam}${ingredientParams}${cuisineParams}${mealTimeParams}${dietParams}${dishTypeParams}${preparationMaxDifficultyParam}${maxNumberOfNotOwnedIngredientsParam}${recipesPerPageParam}`;
+  }
+
+  public static async filterRecipes(filter:TRecipesFilter): Promise<TRecipesWithPagination | null> {
+    const apiUrl = RecipesApi.constructRecipesFilterUrl(filter);
+    const response = await axios.get(apiUrl);
+    const result = recipesSchemaWithPagination.safeParse(response.data);
+    if (result.success) {
+      return response.data;
+    } else {
+      console.log(result.error.issues);
+      return null
+    }
+  }
+
+  public static async filterRecipesByUrl(apiUrl:string): Promise<TRecipesWithPagination | null> {
     const response = await axios.get(apiUrl);
     const result = recipesSchemaWithPagination.safeParse(response.data);
     if (result.success) {

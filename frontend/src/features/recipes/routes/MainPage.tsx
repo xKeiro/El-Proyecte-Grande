@@ -1,23 +1,25 @@
 import { createElement, useEffect, useRef, useState } from 'react';
 import { RecipeFilter } from '../components/RecipeFilter';
-import { TRecipe, TRecipesWithPagination } from '../types';
+import { TRecipe, TRecipesFilter, TRecipesWithPagination } from '../types';
 import { FilteredRecipe } from '../components/FilteredRecipe';
 import ReactDOM from 'react-dom';
+import InfiniteScroll from 'react-infinite-scroller';
+import { RecipesApi } from '../api/RecipesApi';
 
 export const MainPage = () => {
   const [filteredRecipesWithPagination, setFilteredRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
-  const [nextPageUrl, setNextPageUrl] = useState<string>('');
+  const [currentFilter, setCurrentFilter] = useState<TRecipesFilter | null>(null);
   const [showToTopButton, setShowToTopButton] = useState(false);
   const [scrollToRecipe, setScrollToRecipe] = useState<HTMLDivElement | null>(null);
   const firstTime = useRef<Boolean>(true);
 
-  function handleFilteringResult(recipesWithPagination: TRecipesWithPagination | null) {
-    console.log(recipesWithPagination)
+  async function handleFilteringResult(filter: TRecipesFilter) {
+    const recipesWithPagination = (await RecipesApi.filterRecipes(filter));
     if (recipesWithPagination) {
       setFilteredRecipesWithPagination(recipesWithPagination);
+      setCurrentFilter(filter)
     }
     else {
-      console.log("szia")
       const errorElement = (
         <div className="toast toast-center">
           <div className="alert alert-error">
@@ -30,6 +32,31 @@ export const MainPage = () => {
       ReactDOM.render(errorElement, document.body);
     }
   }
+  async function loadMoreRecipes() {
+    if (currentFilter === null) return; 
+    const nextFilter = currentFilter;
+    nextFilter.page = currentFilter.page + 1;
+    const recipesWithPagination = (await RecipesApi.filterRecipes(nextFilter));
+    if (recipesWithPagination) {
+      recipesWithPagination.recipes = filteredRecipesWithPagination!.recipes.concat(recipesWithPagination.recipes);
+      setFilteredRecipesWithPagination(recipesWithPagination);
+      setCurrentFilter(nextFilter);
+    }
+    else {
+      const errorElement = (
+        <div className="toast toast-center">
+          <div className="alert alert-error">
+            <div>
+              <span>There was a problem!.</span>
+            </div>
+          </div>
+        </div>
+      )
+      ReactDOM.render(errorElement, document.body);
+    }
+
+  }
+
   function scrollTo(element: HTMLDivElement | null) {
     if (firstTime.current) {
       firstTime.current = false;
@@ -65,7 +92,17 @@ export const MainPage = () => {
         </div>
         <div className="text-right justify-content-center">
           {filteredRecipesWithPagination !== null
-            ? <div ref={(element) => setScrollToRecipe(element)}><FilteredRecipe recipes={filteredRecipesWithPagination.recipes} /></div>
+            ? <div ref={(element) => setScrollToRecipe(element)}>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={loadMoreRecipes}
+                hasMore={filteredRecipesWithPagination.nextPage != null}
+                loader={<div className="loader" key={0}>Loading ...</div>}
+              >
+                <FilteredRecipe recipes={filteredRecipesWithPagination.recipes} />
+              </InfiniteScroll>
+
+            </div>
             : <div className="text-center">Loading the recipes...</div>}
         </div>
       </div>

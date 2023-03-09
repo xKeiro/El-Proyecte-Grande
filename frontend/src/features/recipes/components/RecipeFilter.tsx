@@ -8,11 +8,11 @@ import { Category } from '@/features/categories/';
 import { IngredientForSearch } from '@/features/ingredients/';
 import { CategoriesEnum } from '@/features/categories/';
 import { RecipeMaxNotOwnedIngredients } from './RecipeMaxNotOwnedIngredients';
-import { PreparationDifficulty, TRecipe, TRecipesWithPagination } from '../types';
+import { PreparationDifficulty, TRecipe, TRecipesFilter, TRecipesWithPagination } from '../types';
 import { RecipeDifficultySelector } from './RecipeDifficultySelector';
 
 type props = {
-  handleFilteringResult: (recipesWithPagination: TRecipesWithPagination | null) => void;
+  handleFilteringResult: (filter: TRecipesFilter) => void;
 };
 
 export const RecipeFilter: React.FC<props> = ({
@@ -42,10 +42,19 @@ export const RecipeFilter: React.FC<props> = ({
     const selectedIngredientIds = selectedIngredients.map(ingredient => ingredient.id)
 
     const searchString = (document.getElementById("search-field") as HTMLInputElement).value;
-
-    const filteredRecipesWithPagination = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString, preparationMaxDifficulty, maxNotOwnedIngredients);
-    handleFilteringResult(filteredRecipesWithPagination)
-    scrollTo()
+    const filter: TRecipesFilter = {
+      cuisineIds: selectedCuisineIds,
+      dietIds: selectedDietIds,
+      mealTimeIds: selectedMealTimeIds,
+      dishTypeIds: selectedDishTypeIds,
+      ingredientIds: selectedIngredientIds,
+      searchString: searchString,
+      preparationMaxDifficulty: preparationMaxDifficulty,
+      maxNotOwnedIngredients: maxNotOwnedIngredients,
+      page: 1,
+      recipesPerPage: 5,
+    }
+    handleFilteringResult(filter)
   };
 
   useEffect(() => {
