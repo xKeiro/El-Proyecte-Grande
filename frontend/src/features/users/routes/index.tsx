@@ -1,12 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import { CurrentUser } from './User';
-import { UserLogin } from '../../auth/routes/UserLogin';
-import Register from '../../auth/components/Register';
+import { CurrentUser } from './CurrentUser';
 
-export const UsersRoutes = () => {
+export const UsersRoutes = ({ isAdmin } : { isAdmin : boolean }) => {
   return (
     <Routes>
-      <Route path="/users/:id" element={<CurrentUser />} />
+      <Route path="/users/:id" element={<CurrentUser isAdmin={isAdmin} />} />
     </Routes>
   );
 };

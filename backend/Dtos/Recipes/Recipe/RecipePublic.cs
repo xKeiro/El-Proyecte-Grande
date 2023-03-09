@@ -14,7 +14,7 @@ public class RecipePublic
     public int Id { get; set; }
 
     [Required(ErrorMessage = "Name is required")]
-    [StringLength(120, MinimumLength = 2)]
+    [StringLength(120)]
     public required string Name { get; set; }
 
     [Required]

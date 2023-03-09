@@ -1,13 +1,20 @@
-import {TRecipe} from "@/features/recipes";
+import { TRecipe } from "@/features/recipes";
+import { RecipeUserButtons } from "@/features/recipes/components/RecipeUserButtons";
 
-export const RecipeHeader = (props : {recipe : TRecipe | null}) => {
-    const recipe = props.recipe
+export const RecipeHeader = ({ recipe, username } : {recipe : TRecipe | null, username : string | null }) => {
     if(!recipe){
         return null
     }
     return (
         <div className="recipe-header mb-5">
-            <div className="recipe-name font-bold text-2xl mb-2 mb-5 italic">{recipe.name}</div>
+            <div className="recipe-name font-bold text-2xl mb-2 mb-5 italic flex flex-row gap-2">
+                <span>{recipe.name}</span>
+                -
+                <span className="text-primary">{recipe.difficulty}</span>
+                {
+                    username != null && <RecipeUserButtons />
+                }
+            </div>
             <div className="badges">
                 <div className="badge badge-accent font-bold italic">{recipe.cuisine.name}</div>
                 <div className="badge badge-accent font-bold italic ml-2">{recipe.dishType.name}</div>

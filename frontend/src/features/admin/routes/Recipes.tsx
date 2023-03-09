@@ -4,7 +4,7 @@ import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe, TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
 import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
 
-export const Recipes = () => {
+export const Recipes = ({ isAdmin } : { isAdmin : boolean }) => {
   const [recipesWithPagination, setRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
 
