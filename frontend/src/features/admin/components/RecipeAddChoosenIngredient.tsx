@@ -43,7 +43,8 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
                 id="recipeIngredientsAddNew"
                 name="recipeIngredientsAddNew"
                 className="select select-bordered mb-6"
-                value={selectedIngredient?.id ?? ""}
+                //value={selectedIngredient?.id ?? ""}
+                required
                 onChange={(event) => {
                     const ingredientId = parseInt(event.target.value);
                     const selected = ingredients.find(i => i.id === ingredientId);
@@ -64,8 +65,9 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
                     min="0"
                     className="input input-bordered"
                     placeholder="Add ingredient amount"
-                    value={ingredientAmount}
+                    //value={ingredientAmount}
                     onChange={(event) => setIngredientAmount(Number(event.target.value))}
+                    required
                 />
             </div>
             <div className="float-left">

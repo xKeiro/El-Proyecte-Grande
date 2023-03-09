@@ -30,6 +30,7 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
                 min="0"
                 className="input input-bordered mb-6"
                 placeholder="Add preparation step"
+                //value={preparationStepCount}
                 onChange={(event) => setPreparationStepCount(parseInt(event.target.value))}
                 required />
             <label htmlFor="step-description">
@@ -40,6 +41,7 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
                 className="textarea textarea-bordered"
                 placeholder="Step description"
                 onChange={(event) => setPreparationStepDescription(event.target.value)}
+                //value={preparationStepDescription}
                 required>
             </textarea>
             <div className="float-left">
