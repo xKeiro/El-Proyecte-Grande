@@ -22,14 +22,15 @@ public class RecipesController : ControllerBase
     }
 
     [HttpGet]
+    [HttpGet("Page/{page}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IEnumerable<RecipePublic>>> GetFilteredRecipes([FromQuery] RecipeFilter filter)
+    public async Task<ActionResult<RecipesPublicWithNextPage>> GetFilteredRecipes([FromQuery] RecipeFilter filter, int page = 1)
     {
         try
         {
-            var recipesPublic = await _service.GetFiltered(filter);
-            return StatusCode(StatusCodes.Status200OK, recipesPublic);
+            var recipesPublicWithNextPage = await _service.GetFiltered(filter, page);
+            return StatusCode(StatusCodes.Status200OK, recipesPublicWithNextPage);
         }
         catch
         {

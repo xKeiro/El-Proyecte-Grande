@@ -4,7 +4,7 @@ namespace backend.Interfaces.Services;
 
 public interface IRecipeService
 {
-    Task<List<RecipePublic>> GetFiltered(RecipeFilter filter);
+    Task<RecipesPublicWithNextPage> GetFiltered(RecipeFilter filter, int currentPage);
     Task<RecipePublic?> Add(RecipeRequest recipeRequest);
     Task<RecipePublic?> Find(int id);
     Task<RecipePublic?> Update(int id, RecipeRequest recipeRequest);

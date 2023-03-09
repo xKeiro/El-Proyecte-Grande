@@ -18,8 +18,9 @@ public class RecipeService : IRecipeService
         _mapper = mapper;
     }
 
-    public async Task<List<RecipePublic>> GetFiltered(RecipeFilter filter)
+    public async Task<RecipesPublicWithNextPage> GetFiltered(RecipeFilter filter, int currentPage)
     {
+        const int PAGESIZE = 5;
         var recipesQuery = _context.Recipes
             .Where(recipe => filter.Name == null || recipe.Name.ToLower().Contains(filter.Name.ToLower()))
             .Where(recipe => filter.DietIds == null ||
@@ -31,8 +32,23 @@ public class RecipeService : IRecipeService
             .Where(recipe => filter.DishTypeIds == null ||
                 filter.DishTypeIds.Contains(recipe.DishType.Id));
         var recipes = await FilterIngredients(filter, recipesQuery);
-        var newRecipes = recipes.Where(recipe => filter.MaxDifficulty == null || ((int)filter.MaxDifficulty) >= ((int)recipe.Difficulty)).ToList();
-        return _mapper.Map<List<Recipe>, List<RecipePublic>>(newRecipes);
+        var filteredRecipesQuery = recipes.Where(recipe => filter.MaxDifficulty == null || ((int)filter.MaxDifficulty) >= ((int)recipe.Difficulty));
+        var recipeCount = filteredRecipesQuery.Count();
+        var filteredRecipes = filteredRecipesQuery
+            .Skip((currentPage - 1) * PAGESIZE)
+            .Take(PAGESIZE)
+            .ToList();
+        int? nextPage = null;
+        if (currentPage * PAGESIZE < recipeCount)
+        {
+            nextPage = currentPage + 1;
+        }
+
+        return new RecipesPublicWithNextPage()
+        {
+            NextPage = nextPage,
+            Recipes = _mapper.Map<List<Recipe>, List<RecipePublic>>(filteredRecipes)
+        };
     }
 
     private static async Task<List<Recipe>> FilterIngredients(RecipeFilter filter, IQueryable<Recipe> recipesQuery)
