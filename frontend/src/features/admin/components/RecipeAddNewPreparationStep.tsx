@@ -1,18 +1,25 @@
+import { PreparationStep } from "@/features/recipes";
 import { useState } from "react";
 
-export const RecipeAddNewPreparationStep = (props: any) => {
+type props = {
+    handlePreparationStepsToPost: (preparationStepsWithoutIds: PreparationStep[]) => void;
+}
+
+export const RecipeAddNewPreparationStep: React.FC<props> = ({
+    handlePreparationStepsToPost
+}) => {
     const [preparationStepDescription, setPreparationStepDescription] = useState<string>("");
     const [preparationStepCount, setPreparationStepCount] = useState<number>(0);
-    const [preparationStepList, setPreparationStepList] = useState<{ description: string, step: number;  }[]>([]);
+    const [preparationStepList, setPreparationStepList] = useState<PreparationStep[]>([]);
 
     const handleAddPreparationStep = () => {
         const newPreparationStep = { description: preparationStepDescription, step: preparationStepCount };
         setPreparationStepList([...preparationStepList, newPreparationStep]);
         setPreparationStepDescription("");
         setPreparationStepCount(0);
-        props.preparationStepsToPost([...preparationStepList, newPreparationStep]);
-
+        handlePreparationStepsToPost([...preparationStepList, newPreparationStep]);
     };
+
     return (
         <div className="form-control">
             <label htmlFor="step">
@@ -23,8 +30,8 @@ export const RecipeAddNewPreparationStep = (props: any) => {
                 min="0"
                 className="input input-bordered mb-6"
                 placeholder="Add preparation step"
-                onChange={(event) => setPreparationStepCount(parseInt(event.target.value))} 
-                required/>
+                onChange={(event) => setPreparationStepCount(parseInt(event.target.value))}
+                required />
             <label htmlFor="step-description">
                 <span className="mb-2 font-semibold">Step description<span className="text-error px-0 ml-2">*</span></span>
             </label>

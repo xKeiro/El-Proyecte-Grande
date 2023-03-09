@@ -6,7 +6,7 @@ import { CategoryApi } from "@/features/categories/api/CategoryApi";
 import { Category } from "@/features/categories";
 import { RecipeAddNewPreparationStep } from "./RecipeAddNewPreparationStep";
 import { AddRecipeChooseIngredient } from "./RecipeAddChoosenIngredient";
-import { Difficulty, RecipeIngredientToPost } from "@/features/recipes";
+import { Difficulty, PreparationStep, RecipeIngredientToPost } from "@/features/recipes";
 
 export const RecipeAddNew = () => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -26,8 +26,8 @@ export const RecipeAddNew = () => {
   const [showChooseIngredient, setShowChooseIngredient] = useState(false);
   const [showAddPreparationStep, setShowAddPreparationStep] = useState(false);
 
-  const [recipeIngredientsAddNew, setChildDataIngredientToPost] = useState<{ ingredientId: number, amount: number }>()
-  const [preparationStepsWithoutIds, setPreparationSteps] = useState<{ description: string, step: number }>();
+  const [recipeIngredientsAddNew, setChildDataIngredientToPost] = useState<RecipeIngredientToPost[]>()
+  const [preparationStepsWithoutIds, setPreparationSteps] = useState<PreparationStep[]>();
 
   useEffect(() => {
     CategoryApi.getAll(CategoriesEnum.Cuisines).then((Cuisines: Category[]) => {
@@ -54,15 +54,15 @@ export const RecipeAddNew = () => {
     setShowAddPreparationStep(!showAddPreparationStep);
   };
 
-  const handleIngredientsToPost = (recipeIngredientsAddNew: RecipeIngredientToPost) => {
+  const handleIngredientsToPost = (recipeIngredientsAddNew: RecipeIngredientToPost[]) => {
     setChildDataIngredientToPost(recipeIngredientsAddNew)
   }
 
-  const handlePreparationStepsToPost = (preparationStepsWithoutIds: any) => {
+  const handlePreparationStepsToPost = (preparationStepsWithoutIds: PreparationStep[]) => {
     setPreparationSteps(preparationStepsWithoutIds)
   }
 
-  const handleMealTimeIds = (event: any) => {
+  const handleMealTimeIds = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const options = event.target.selectedOptions;
     const values: number[] = [];
     for (let i = 0; i < options.length; i++) {
@@ -79,7 +79,7 @@ export const RecipeAddNew = () => {
     });
   };
 
-  const handleDietIds = (event: any) => {
+  const handleDietIds = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const options = event.target.selectedOptions;
     const values: number[] = [];
     for (let i = 0; i < options.length; i++) {
@@ -96,8 +96,7 @@ export const RecipeAddNew = () => {
     });
   }
 
-  //Submit recipe
-  const handleSubmit = async (event: any) => {
+  const handleSubmitRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const recipe = {
       name: recipeName,
@@ -122,7 +121,7 @@ export const RecipeAddNew = () => {
         <div className="card flex-shrink-0 w-full max-w-xl shadow-2xl bg-base-100">
           <div className="card-body">
             <h1 className="text-5xl font-bold mb-2">Add New Recipe</h1>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmitRecipe}>
               <div className="form-control">
                 <label className="mb-2 font-semibold">
                   <span className="mb-2 font-semibold">Recipe title<span className="text-error px-0 ml-2">*</span></span>
@@ -173,7 +172,7 @@ export const RecipeAddNew = () => {
               <div className="form-control">
                 <h3 className="text-3xl font-bold mb-2">Preparation steps</h3>
                 <button className="btn w-2/4 mb-2" onClick={togglePreparationStep}>Add new preparation step<span className="text-error px-0 ml-2">*</span></button>
-                {showAddPreparationStep ? <RecipeAddNewPreparationStep preparationStepsToPost={handlePreparationStepsToPost} /> : null}
+                {showAddPreparationStep ? <RecipeAddNewPreparationStep handlePreparationStepsToPost={handlePreparationStepsToPost} /> : null}
               </div>
 
 
