@@ -28,7 +28,7 @@ export const AddRecipeChooseIngredient = (props: any) => {
     return (
         <div className="form-control">
             <label htmlFor="recipeIngredientsAddNew" className="mb-2 font-semibold">
-                <span className="mb-2 font-semibold">Select ingredient: </span>
+                <span className="mb-2 font-semibold">Select ingredient<span className="text-error px-0 ml-2">*</span></span>
             </label>
             <select
                 id="recipeIngredientsAddNew"
@@ -40,6 +40,7 @@ export const AddRecipeChooseIngredient = (props: any) => {
                     const selected = ingredients.find(i => i.id === ingredientId);
                     setSelectedIngredient(selected ?? null);
                 }}
+                required
             >
                 <option value="">Select ingredient</option>
                 {ingredients.map((ingredient) => (
@@ -48,21 +49,22 @@ export const AddRecipeChooseIngredient = (props: any) => {
             </select>
             <div className="form-control">
                 <label className="mb-2 font-semibold">
-                    <span className="mb-2 font-semibold">Ingredient amount: </span>
+                    <span className="mb-2 font-semibold">Ingredient amount<span className="text-error px-0 ml-2">*</span></span>
                 </label>
                 <input
                     type="number"
                     min="0"
-                    className="input input-bordered mb-6"
+                    className="input input-bordered"
                     placeholder="Add ingredient amount"
                     value={ingredientAmount}
                     onChange={(event) => setIngredientAmount(Number(event.target.value))}
+                    required
                 />
             </div>
             <div className="float-left">
                 <button
                     title="Add ingredient to list"
-                    className="btn btn-square btn-ghost mr-2"
+                    className="btn btn-square btn-success mr-2 mt-2"
                     onClick={handleAddIngredient}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>

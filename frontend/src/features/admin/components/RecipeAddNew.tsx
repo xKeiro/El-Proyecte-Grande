@@ -130,7 +130,7 @@ export const RecipeAddNew = () => {
             <form onSubmit={handleSubmit}>
               <div className="form-control">
                 <label className="mb-2 font-semibold">
-                  <span className="mb-2 font-semibold">Recipe title: </span>
+                  <span className="mb-2 font-semibold">Recipe title<span className="text-error px-0 ml-2">*</span></span>
                 </label>
                 <input
                   type="text"
@@ -138,11 +138,12 @@ export const RecipeAddNew = () => {
                   className="input input-bordered mb-6"
                   placeholder="Recipe title" value={recipeName}
                   onChange={(event) => setRecipeName(event.target.value)}
+                  required
                 />
               </div>
               <div className="form-control">
                 <label htmlFor="description" className="mb-2 font-semibold">
-                  <span className="mb-2 font-semibold">Recipe description: </span>
+                  <span className="mb-2 font-semibold">Recipe description<span className="text-error px-0 ml-2">*</span></span>
                 </label>
                 <textarea
                   className="textarea textarea-bordered mb-6"
@@ -151,12 +152,13 @@ export const RecipeAddNew = () => {
                   placeholder="Recipe description"
                   value={recipeDescription}
                   onChange={(event) => setRecipeDescription(event.target.value)}
+                  required
                 />
               </div>
 
               <div className="form-control">
                 <label htmlFor="difficulty" className="mb-2 font-semibold">
-                  <span className="mb-2 font-semibold">Difficulty: </span>
+                  <span className="mb-2 font-semibold">Difficulty<span className="text-error px-0 ml-2">*</span></span>
                 </label>
                 <select
                   id="difficulty"
@@ -175,14 +177,14 @@ export const RecipeAddNew = () => {
 
               <div className="form-control">
                 <h3 className="text-3xl font-bold mb-2">Preparation steps</h3>
-                <button className="btn w-2/4 mb-2" onClick={togglePreparationStep}>Add new preparation step</button>
+                <button className="btn w-2/4 mb-2" onClick={togglePreparationStep}>Add new preparation step<span className="text-error px-0 ml-2">*</span></button>
                 {showAddPreparationStep ? <RecipeAddNewPreparationStep preparationStepsToPost={handlePreparationStepsToPost} /> : null}
               </div>
 
 
               <div className="form-control">
                 <h3 className="text-3xl font-bold mb-2 mt-6">Ingredients</h3>
-                <button className="btn w-2/4 mb-2" onClick={toggleChooseIngredient}>Choose ingredient</button>
+                <button className="btn w-2/4 mb-2" onClick={toggleChooseIngredient}>Choose ingredient<span className="text-error px-0 ml-2">*</span></button>
                 {showChooseIngredient ? <AddRecipeChooseIngredient ingredientToPost={handleIngredientToPost} /> : null}
               </div>
 
@@ -190,7 +192,7 @@ export const RecipeAddNew = () => {
                 <h3 className="text-3xl font-bold mb-2 mt-6">Categories</h3>
                 <div className="form-control">
                   <label htmlFor="cuisineId" className="mb-2 font-semibold">
-                    <span className="mb-2 font-semibold">Cuisine: </span>
+                    <span className="mb-2 font-semibold">Cuisine<span className="text-error px-0 ml-2">*</span></span>
                   </label>
                   <select
                     id="cuisineId"
@@ -198,6 +200,7 @@ export const RecipeAddNew = () => {
                     className="select select-bordered mb-6"
                     value={cuisineId}
                     onChange={(event) => setCuisineId(parseInt(event.target.value))}
+                    required
                   >
                     <option value="">Select cuisine</option>
                     {cuisines.map((cuisine) => (
@@ -208,7 +211,7 @@ export const RecipeAddNew = () => {
 
                 <div className="form-control">
                   <label htmlFor="dietIds" className="mb-2 font-semibold">
-                    <span className="mb-2 font-semibold">Dish types: </span>
+                    <span className="mb-2 font-semibold">Dish types<span className="text-error px-0 ml-2">*</span></span>
                   </label>
                   <select
                     id="dishTypeIds"
@@ -229,7 +232,7 @@ export const RecipeAddNew = () => {
 
               <div className="form-control">
                 <label htmlFor="mealTimeIds" className="mb-2 font-semibold">
-                  <span className="mb-2 font-semibold">Meal time: </span>
+                  <span className="mb-2 font-semibold">Meal time<span className="text-error px-0 ml-2">*</span></span>
                 </label>
                 <select
                   multiple
@@ -248,7 +251,7 @@ export const RecipeAddNew = () => {
               </div>
               <div className="form-control">
                 <label htmlFor="dietIds" className="mb-2 font-semibold">
-                  <span className="mb-2 font-semibold">Diets: </span>
+                  <span className="mb-2 font-semibold">Diets<span className="text-error px-0 ml-2">*</span></span>
                 </label>
                 <select
                   multiple
