@@ -4,10 +4,10 @@ namespace backend.Dtos.Users.User
 {
     public class UserRegister : UserLogin
     {
-        [StringLength(100, MinimumLength = 2)]
+        [StringLength(100)]
         public string? FirstName { get; set; }
 
-        [StringLength(100, MinimumLength = 2)]
+        [StringLength(100)]
         public string? LastName { get; set; }
 
         [Required]
