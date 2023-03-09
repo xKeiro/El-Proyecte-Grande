@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { API_URL } from '@/config';
-import { recipesSchemaWithPagination, recipeSchema, TRecipe, TRecipesFilter } from '@/features/recipes';
-import { PreparationDifficulty } from '@/features/recipes';
+import { recipesSchemaWithPagination, recipeSchema, TRecipesFilter } from '@/features/recipes';
 import { TRecipesWithPagination } from '@/features/recipes';
 
 export abstract class RecipesApi {
   public static async getAll() : Promise<TRecipesWithPagination | null> {
-    const res = await axios.get(`${API_URL}/Recipes`);
+    const res = await axios.get(`${API_URL}/Recipes`, { withCredentials : true });
     const result = recipesSchemaWithPagination.safeParse(res.data);
 
     if (result.success) {
@@ -18,7 +17,7 @@ export abstract class RecipesApi {
   }
 
   public static async get(id: number) {
-    const res = await axios.get(`${API_URL}/Recipes/${id}`);
+    const res = await axios.get(`${API_URL}/Recipes/${id}`, { withCredentials : true });
     const result = recipeSchema.safeParse(res.data);
     if (result.success) {
       return res.data;
@@ -28,7 +27,7 @@ export abstract class RecipesApi {
   }
 
   public static async deleteById(id: number) {
-    await axios.delete(`${API_URL}/Recipes/${id}`);
+    await axios.delete(`${API_URL}/Recipes/${id}`, { withCredentials : true });
   }
 
   public static constructRecipesFilterUrl(filter: TRecipesFilter): string {
@@ -48,7 +47,7 @@ export abstract class RecipesApi {
 
   public static async filterRecipes(filter:TRecipesFilter): Promise<TRecipesWithPagination | null> {
     const apiUrl = RecipesApi.constructRecipesFilterUrl(filter);
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(apiUrl, { withCredentials : true });
     const result = recipesSchemaWithPagination.safeParse(response.data);
     if (result.success) {
       return response.data;
@@ -59,7 +58,7 @@ export abstract class RecipesApi {
   }
 
   public static async filterRecipesByUrl(apiUrl:string): Promise<TRecipesWithPagination | null> {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(apiUrl, { withCredentials : true });
     const result = recipesSchemaWithPagination.safeParse(response.data);
     if (result.success) {
       return response.data;
