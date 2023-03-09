@@ -40,8 +40,6 @@ export abstract class RecipesApi {
     const preparationMaxDifficultyParam = filter.preparationMaxDifficulty ? `&MaxDifficulty=${filter.preparationMaxDifficulty}` : '';
     const maxNumberOfNotOwnedIngredientsParam = filter.maxNotOwnedIngredients > 0 ? `&MaxNumberOfNotOwnedIngredients=${filter.maxNotOwnedIngredients}` : '';
     const recipesPerPageParam = `&RecipesPerPage=${filter.recipesPerPage}`
-    console.log(filter)
-    console.log(recipesPerPageParam)
     return `${API_URL}/Recipes/Page/${filter.page}?${nameParam}${ingredientParams}${cuisineParams}${mealTimeParams}${dietParams}${dishTypeParams}${preparationMaxDifficultyParam}${maxNumberOfNotOwnedIngredientsParam}${recipesPerPageParam}`;
   }
 
