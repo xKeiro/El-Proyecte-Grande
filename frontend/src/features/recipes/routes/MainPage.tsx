@@ -4,15 +4,13 @@ import { TRecipe } from '../types';
 import { FilteredRecipe } from '../components/FilteredRecipe';
 
 export const MainPage = () => {
-
-  const [showFilteredRecipe, setShowFilteredRecipe] = useState(false);
   const [filteredRecipes, setFilteredRecipes] = useState<TRecipe[]>([]);
   const [showToTopButton, setShowToTopButton] = useState(false);
+  const [scrollToRecipe, setScrollToRecipe] = useState<HTMLDivElement | null>(null);
   const firstTime = useRef<Boolean>(true);
 
   function handleData(data: TRecipe[]) {
     setFilteredRecipes(data);
-    setShowFilteredRecipe(true);
   }
   function scrollTo(element: HTMLDivElement | null) {
     if (firstTime.current) {
@@ -37,6 +35,9 @@ export const MainPage = () => {
       }
     });
   }, []);
+  useEffect(() => {
+    scrollTo(scrollToRecipe);
+  }, [filteredRecipes]);
 
   return (
     <div>
@@ -45,12 +46,12 @@ export const MainPage = () => {
           <RecipeFilter sendData={handleData} />
         </div>
         <div className="text-right justify-content-center">
-          {showFilteredRecipe
-            ? <div ref={(element) => scrollTo(element)}><FilteredRecipe recipes={filteredRecipes} /></div>
+          {filteredRecipes.length > 0
+            ? <div ref={(element) => setScrollToRecipe(element)}><FilteredRecipe recipes={filteredRecipes} /></div>
             : <div className="text-center">Loading the recipes...</div>}
         </div>
       </div>
-      {showToTopButton && (<button className='btn btn-circle fixed right-11 bottom-20 w-16 h-16 text-2xl text-base-content outline-base-content glass' type='button' title='Jump back to the top of the page' onClick={scrollToTop}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V6M5 12l7-7 7 7"/></svg></button>)}
+      {showToTopButton && (<button className='btn btn-circle fixed right-11 bottom-20 w-16 h-16 text-2xl text-base-content outline-base-content glass' type='button' title='Jump back to the top of the page' onClick={scrollToTop}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg></button>)}
     </div>
   );
 };
