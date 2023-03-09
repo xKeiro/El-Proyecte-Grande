@@ -34,7 +34,17 @@ namespace backend.Controllers
         {
             var user = _mapper.Map<UserRegister, UserWithoutId>(newUser);
 
-            if (!await _userService.IsUnique(user)) return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+            if (!await _userService.IsUnique(user))
+            {
+                bool usernameIsUnique = await _userService.IsUniqueUsername(user);
+                bool emaileIsUnique = await _userService.IsUniqueEmail(user);
+                return StatusCode(StatusCodes.Status409Conflict,
+                    new
+                    {
+                        usernameMsg = !usernameIsUnique ? "This Username is already taken!" : "ok",
+                        emailMsg = !emaileIsUnique ? "This Email address is already taken!" : "ok"
+                    });
+            }
 
             _authService.HashPw(user);
             await _userService.Add(user);

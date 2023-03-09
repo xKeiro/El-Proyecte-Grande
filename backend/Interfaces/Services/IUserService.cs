@@ -1,4 +1,5 @@
 ﻿using backend.Dtos.Recipes.Recipe;
+using backend.Dtos.Users.User;
 using backend.Models.Users;
 
 namespace backend.Interfaces.Services;
@@ -10,6 +11,8 @@ public interface IUserService<TResponseDto, TRequestDto> :
 {
     Task<bool> Delete(int id);
     Task<User> FindByUsername(string username);
+    Task<bool> IsUniqueUsername(UserWithoutId userWithoutId);
+    Task<bool> IsUniqueEmail(UserWithoutId userWithoutId);
     Task<List<RecipePublic>> LikedRecipes(int userId);
     Task<List<RecipePublic>> SavedRecipes(int userId);
     Task<List<RecipePublic>> DislikedRecipes(int userId);
