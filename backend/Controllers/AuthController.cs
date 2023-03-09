@@ -12,17 +12,17 @@ namespace backend.Controllers
     [ApiController]
     public class AuthController : Controller
     {
-        private readonly IUserService<UserPublic, UserWithoutId> _service;
+        private readonly IUserService<UserPublic, UserWithoutId> _userService;
         private readonly IMapper _mapper;
         private readonly IStatusMessageService<User> _statusMessage;
-        private readonly IAuthService _jwtService;
+        private readonly IAuthService _authService;
 
-        public AuthController(IUserService<UserPublic, UserWithoutId> service, IMapper mapper, IStatusMessageService<User> statusMessage, IAuthService jwtService)
+        public AuthController(IUserService<UserPublic, UserWithoutId> userService, IMapper mapper, IStatusMessageService<User> statusMessage, IAuthService authService)
         {
-            _service = service;
+            _userService = userService;
             _mapper = mapper;
             _statusMessage = statusMessage;
-            _jwtService = jwtService;
+            _authService = authService;
         }
 
         [AllowAnonymous]
@@ -34,9 +34,9 @@ namespace backend.Controllers
         {
             var user = _mapper.Map<UserRegister, UserWithoutId>(newUser);
 
-            if (!await _service.IsUnique(user)) return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
+            if (!await _userService.IsUnique(user)) return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
 
-            await _service.Add(user);
+            await _userService.Add(user);
             return StatusCode(StatusCodes.Status201Created, user);
         }
 
@@ -46,10 +46,10 @@ namespace backend.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Login(UserLogin user)
         {
-            UserPublic resUser = await _service.FindForLogin(user);
+            UserPublic resUser = await _userService.FindForLogin(user);
             if (resUser is null) return StatusCode(StatusCodes.Status400BadRequest, new { message = "Invalid credentials!" });
 
-            string jwt = _jwtService.GenerateJwt(resUser);
+            string jwt = _authService.GenerateJwt(resUser);
 
             Response.Cookies.Append("jwt", jwt, new CookieOptions
             {
