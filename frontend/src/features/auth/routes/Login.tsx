@@ -1,10 +1,14 @@
 import React, { SyntheticEvent, useState } from 'react';
-import {Navigate, useNavigate} from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { API_URL } from "@/config";
 import { RequiredStar } from "@/components/Form/RequiredStar";
 
 
-export const Login = ({ loggedInUsername } : { loggedInUsername : string | null }) => {
+export const Login = ({ loggedInUsername, setLoggedInUsername, setIsAdmin } : {
+  loggedInUsername : string | null,
+  setLoggedInUsername : React.Dispatch<React.SetStateAction<string | null>>,
+  setIsAdmin : React.Dispatch<React.SetStateAction<boolean>> }) => {
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [cred, setCred] = useState(true);
@@ -26,10 +30,11 @@ export const Login = ({ loggedInUsername } : { loggedInUsername : string | null 
 
     sessionStorage.setItem("username", result.username);
     sessionStorage.setItem("isAdmin", result.isAdmin);
+    setLoggedInUsername(result.username);
+    setIsAdmin(result.isAdmin);
 
     if (result.hasOwnProperty("message")) setCred(false);
     else navigate("/");
-    location.reload();
   }
 
   if (loggedInUsername == null) return (

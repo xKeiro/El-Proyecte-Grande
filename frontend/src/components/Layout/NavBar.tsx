@@ -44,7 +44,11 @@ const styles = {
   },
 } as const;
 
-export const NavBar = ({ username, isAdmin } : { username : string | null, isAdmin : boolean }) => {
+export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } : {
+  username : string | null,
+  isAdmin : boolean,
+  setUsername : React.Dispatch<React.SetStateAction<string | null>>,
+  setIsAdmin : React.Dispatch<React.SetStateAction<boolean>> }) => {
 
   useEffect(() => {
     themeChange(false);
@@ -140,7 +144,7 @@ export const NavBar = ({ username, isAdmin } : { username : string | null, isAdm
               {
                 username != null &&
                 <li>
-                  <OptionLink text={"Logout"} to={"/"} isLogout={true} />
+                  <OptionLink text={"Logout"} to={"/"} isLogout={true} setUsername={setUsername} setIsAdmin={setIsAdmin} />
                 </li>
               }
             </ul>
