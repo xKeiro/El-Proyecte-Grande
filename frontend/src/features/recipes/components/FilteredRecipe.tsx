@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 export const FilteredRecipe = ({ recipes }: { recipes: TRecipe[] }) => {
   if (!recipes) return (<div>Loading...</div>);
+  if (recipes.length === 0) return (<div className="text-center text-xl">No recipes found, please adjust your filters!</div>);
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 justify-center">
       {recipes.map(recipe => (
