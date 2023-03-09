@@ -20,7 +20,6 @@ public class RecipeService : IRecipeService
 
     public async Task<RecipesPublicWithNextPage> GetFiltered(RecipeFilter filter, int currentPage)
     {
-        const int PAGESIZE = 5;
         var recipesQuery = _context.Recipes
             .Where(recipe => filter.Name == null || recipe.Name.ToLower().Contains(filter.Name.ToLower()))
             .Where(recipe => filter.DietIds == null ||
@@ -35,11 +34,11 @@ public class RecipeService : IRecipeService
         var filteredRecipesQuery = recipes.Where(recipe => filter.MaxDifficulty == null || ((int)filter.MaxDifficulty) >= ((int)recipe.Difficulty));
         var recipeCount = filteredRecipesQuery.Count();
         var filteredRecipes = filteredRecipesQuery
-            .Skip((currentPage - 1) * PAGESIZE)
-            .Take(PAGESIZE)
+            .Skip((currentPage - 1) * filter.RecipesPerPage)
+            .Take(filter.RecipesPerPage)
             .ToList();
         int? nextPage = null;
-        if (currentPage * PAGESIZE < recipeCount)
+        if (currentPage * filter.RecipesPerPage < recipeCount)
         {
             nextPage = currentPage + 1;
         }
