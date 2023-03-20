@@ -151,6 +151,16 @@ public class RecipeService : IRecipeService
         return true;
     }
 
+    public async Task<RecipePublic?> GetLastRecipe()
+    {
+        var recipe = await _context.Recipes.OrderByDescending(recipe => recipe.Id).FirstOrDefaultAsync();
+        return recipe switch
+        {
+            null => null,
+            _ => _mapper.Map<Recipe, RecipePublic>(recipe)
+        };
+    }
+
     public async Task<bool> IsUnique(RecipeRequest recipeRequest)
     {
         return await IsNameUnique(recipeRequest.Name);
