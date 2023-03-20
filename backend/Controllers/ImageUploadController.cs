@@ -44,6 +44,16 @@ namespace backend.Controllers
                 return StatusCode(500, $"Some Error Occcured while uploading File {ex.Message}");
             }
         }
+
+        [HttpGet("{id}")] public async Task<IActionResult> ShowImage(string id)
+        {
+            // Construct the path to the image file based on the ID.
+            string imagePath = $"/DRIVERS/CODECOOL/ADVANCE/0_TW/El-Proyecte-Grande/backend/UploadedImages/{id}.jpg";
+            // Read the image data from the file.
+            byte[] imageData = await System.IO.File.ReadAllBytesAsync(imagePath);
+            // Return the image data as a file stream result.
+            return File(imageData, "image/jpeg");
+        }
     }
 }
 
