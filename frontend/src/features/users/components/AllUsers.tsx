@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import axios, * as others from 'axios';
 import { Link } from 'react-router-dom';
 import { UsersApi } from '../api/UsersApi';
 
-
-const Users = () => {
+export const AllUsers = () => {
 
     const [users, setUsers] = useState<any[]>([]);
 
@@ -30,17 +28,13 @@ const Users = () => {
                 <tbody>
                     {users.map(user =>
                         <tr className="hover" key={user.id}>
-
                             <td><Link to={`/users/` + user.id}>{user.username}</Link></td>
                             <td>{user.emailAddress}</td>
                             <td>{user.isAdmin ? "Admin":"-"}</td>
-
                         </tr>
                     )}
                 </tbody>
             </table>
         </div>
-        </div>);
+    </div>);
 }
-
-export default Users;

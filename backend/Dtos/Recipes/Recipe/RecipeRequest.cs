@@ -8,7 +8,7 @@ namespace backend.Dtos.Recipes.Recipe;
 public class RecipeRequest
 {
     [Required(ErrorMessage = "Name is required")]
-    [StringLength(120, MinimumLength = 2)]
+    [StringLength(120)]
     public required string Name { get; set; }
 
     [Required]

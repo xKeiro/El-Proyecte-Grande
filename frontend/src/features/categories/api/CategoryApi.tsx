@@ -4,7 +4,7 @@ import {categoriesSchema, CategoriesEnum, categorySchema} from '../types';
 
 export abstract class CategoryApi {
   public static async getAll(category: CategoriesEnum) {
-    const res = await axios.get(`${API_URL}/${category}`);
+    const res = await axios.get(`${API_URL}/${category}`, { withCredentials : true });
     const result = categoriesSchema.safeParse(res.data);
 
     if (result.success) {
@@ -15,14 +15,14 @@ export abstract class CategoryApi {
   }
 
   public static async deleteById(id: number, category: CategoriesEnum) {
-    await axios.delete(`${API_URL}/${category}/${id}`);
+    await axios.delete(`${API_URL}/${category}/${id}`, { withCredentials : true });
   }
 
   public static async add(category: CategoriesEnum, name : string) {
     let errorMsg = "";
     const resp = await axios.post(`${API_URL}/${category}`, {
       name: name,
-    }).catch((error) => {
+    }, { withCredentials : true }).catch((error) => {
       errorMsg = error.response.data.message;
     });
     if (errorMsg) return errorMsg;

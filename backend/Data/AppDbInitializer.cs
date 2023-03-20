@@ -667,9 +667,9 @@ public static class AppDbInitializer
 
         var user1 = new User
         {
-            Username = "FoodLover123",
+            Username = "admin",
             EmailAddress = "ilovefood@example.com",
-            Password = "12345678",
+            Password = "$2a$11$IpTT61LzEIrJIN9dQEh6zOh1IFImqenrEaRQXjmY9ik.9Qml4BNCu",
             IsAdmin = true
         };
         var user2 = new User
@@ -678,14 +678,14 @@ public static class AppDbInitializer
             FirstName = "Jane",
             LastName = "Doe",
             EmailAddress = "jane@example.com",
-            Password = "87654321",
+            Password = "$2a$11$jld104TQALnP5/biG8hRJ.k2HPKUmyoX/VTFBVFfkqWpZI11sZ5JC",
             IsAdmin = false
         };
         var user3 = new User
         {
             Username = "MichaelSmith",
             EmailAddress = "smith@example.com",
-            Password = "pw1234567",
+            Password = "$2a$11$jld104TQALnP5/biG8hRJ.k2HPKUmyoX/VTFBVFfkqWpZI11sZ5JC",
             IsAdmin = false
         };
         context.Users.AddRange(user1, user2, user3);

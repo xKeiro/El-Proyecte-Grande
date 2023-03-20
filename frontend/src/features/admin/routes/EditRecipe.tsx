@@ -10,6 +10,7 @@ export const EditRecipe = () => {
     const idNumeric = parseInt(id!);
 
     let isAdmin = true;
+export const EditRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
 
     useEffect(() => {
         RecipesApi.get(idNumeric).then((recipe: TRecipe) => {
