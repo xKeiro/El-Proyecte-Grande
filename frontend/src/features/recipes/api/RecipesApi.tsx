@@ -2,6 +2,7 @@ import axios from 'axios';
 import { API_URL } from '@/config';
 import { recipesSchemaWithPagination, recipeSchema, TRecipesFilter } from '@/features/recipes';
 import { TRecipesWithPagination } from '@/features/recipes';
+import {TRecipe} from '@/features/recipes';
 
 export abstract class RecipesApi {
   public static async getAll() : Promise<TRecipesWithPagination | null> {
@@ -13,6 +14,17 @@ export abstract class RecipesApi {
     } else {
       console.log(result.error.issues);
       return null;
+    }
+  }
+
+  public static async getLastRecipe(){
+    const res = await axios.get(`${API_URL}/Recipes/Last`, { withCredentials: true });
+    const result = recipeSchema.safeParse(res.data);
+    console.log(result)
+    if (result.success) {
+      return res.data;
+    } else {
+      console.log(result.error.issues);
     }
   }
 

@@ -7,6 +7,7 @@ import { Category } from "@/features/categories";
 import { RecipeAddNewPreparationStep } from "./RecipeAddNewPreparationStep";
 import { AddRecipeChooseIngredient } from "./RecipeAddChoosenIngredient";
 import { PreparationDifficulty, PreparationStep, RecipeIngredientToPost } from "@/features/recipes";
+import { RecipesApi } from "@/features/recipes/api/RecipesApi";
 
 export const RecipeAddNew = () => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
@@ -28,6 +29,9 @@ export const RecipeAddNew = () => {
 
   const [recipeIngredientsAddNew, setChildDataIngredientToPost] = useState<RecipeIngredientToPost[]>()
   const [preparationStepsWithoutIds, setPreparationSteps] = useState<PreparationStep[]>();
+
+  const [recipeImage, setRecipeImage] = useState<File | null>(null);
+  const [imageId, setImageId] = useState<number>(0);
 
   useEffect(() => {
     CategoryApi.getAll(CategoriesEnum.Cuisines).then((Cuisines: Category[]) => {
@@ -95,9 +99,43 @@ export const RecipeAddNew = () => {
       return newDietIds;
     });
   }
+  
+
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files != null) {
+      const originalFile = event.target.files[0];
+      const newFileName = `${imageId.toString()}.${originalFile.name.split('.').pop()}`;
+      const newFile = new File([originalFile], newFileName, { type:  originalFile.type });
+      setRecipeImage(newFile);
+    }
+  };
+
+  useEffect(() => {
+    const fetchLastRecipe = async () => {
+      console.log("teszt")
+        const lastRecipe = await RecipesApi.getLastRecipe();
+        console.log(lastRecipe);
+        if (lastRecipe != null) {
+            setImageId(lastRecipe.id+1);
+        }
+    };
+    fetchLastRecipe();
+}, [imageId]);
+  
+  useEffect(() => {
+    if (recipeImage != null) {
+      console.log(recipeImage);
+      const formData = new FormData();
+      formData.append("image", recipeImage);
+      axios.post(`${API_URL}/ImageUpload`, formData);
+    }
+  }, [recipeImage]);  
+
 
   const handleSubmitRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const recipe = {
       name: recipeName,
       description: recipeDescription,
@@ -109,6 +147,7 @@ export const RecipeAddNew = () => {
       dietIds,
       dishTypeId
     };
+
     const response = await axios.post(`${API_URL}/recipes`, recipe, { withCredentials : true });
     console.log(response.data);
     console.log(mealTimeIds)
@@ -265,7 +304,7 @@ export const RecipeAddNew = () => {
 
               <div className="form-contolr">
                 <h3 className="text-3xl font-bold mb-2">Upload Image</h3>
-                  <input type="file" className="mb-2 file-input file-input-bordered w-full mb-2" title="Add image" />
+                  <input type="file" className="mb-2 file-input file-input-bordered w-full mb-2" title="Add image" onChange={handleImageUpload} />
               </div>
               <div className="flex justify-center">
                 <button type="submit" className="btn btn-active btn-primary mt-2">Add Recipe</button>
