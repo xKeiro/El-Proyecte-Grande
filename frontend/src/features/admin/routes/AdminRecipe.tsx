@@ -9,12 +9,10 @@ import { RecipeIngredients } from '@/features/recipes/components/RecipeIngredien
 import { RecipePreparation } from '@/features/recipes/components/RecipePreparation';
 import { RecipeButtons } from '@/features/admin/components/RecipeButtons';
 
-export const AdminRecipe = () => {
+export const AdminRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
     const [recipe, setRecipe] = useState<TRecipe | null>(null);
     const { id } = useParams<{ id: string }>();
     const idNumeric = parseInt(id!);
-
-    let isAdmin = true;
 
     useEffect(() => {
         RecipesApi.get(idNumeric).then((recipe: TRecipe) => {

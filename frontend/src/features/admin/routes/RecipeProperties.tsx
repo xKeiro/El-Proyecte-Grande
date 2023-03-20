@@ -7,12 +7,10 @@ import {PropertiesTable} from "@/features/admin/components/PropertiesTable";
 import {PropertiesAddNew} from "@/features/admin/components/PropertiesAddNew";
 import {Ingredient} from "@/features/ingredients";
 
-export const RecipeProperties = () => {
+export const RecipeProperties = ({ isAdmin } : { isAdmin : boolean }) => {
     const [categories, setCategories] = useState<Category[]>([]);
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [isTable, setIsTable] = useState<boolean>(true);
-
-    let isAdmin = true;
 
     useEffect(() => {
         const fetchData = async () => {

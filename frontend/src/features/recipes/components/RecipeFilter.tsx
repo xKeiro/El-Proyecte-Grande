@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RecipesApi } from '../api/RecipesApi';
 import { CategoryApi } from '@/features/categories/api/CategoryApi';
 import { IngredientsApi } from '@/features/ingredients/api/IngredientsApi';
@@ -7,13 +7,24 @@ import { RecipeSingleCategorySelector } from './RecipeSingleCategorySelector';
 import { Category } from '@/features/categories/';
 import { IngredientForSearch } from '@/features/ingredients/';
 import { CategoriesEnum } from '@/features/categories/';
+import { RecipeMaxNotOwnedIngredients } from './RecipeMaxNotOwnedIngredients';
+import { PreparationDifficulty, TRecipe, TRecipesFilter, TRecipesWithPagination } from '../types';
+import { RecipeDifficultySelector } from './RecipeDifficultySelector';
 
-export const RecipeFilter = (props : any) => {
+type props = {
+  handleFilteringResult: (filter: TRecipesFilter) => void;
+};
+
+export const RecipeFilter: React.FC<props> = ({
+  handleFilteringResult,
+}) => {
   const [cuisines, setCuisines] = useState<Category[]>([]);
   const [diets, setDiets] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
   const [dishTypes, setDishTypes] = useState<Category[]>([]);
   const [ingredients, setIngredients] = useState<IngredientForSearch[]>([]);
+  const [preparationMaxDifficulty, setPreparationDifficulty] = useState<PreparationDifficulty | null>(null);
+  const [maxNotOwnedIngredients, setMaxNotOwnedIngredients] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCuisines, setSelectedCuisines] = useState<Category[]>([]);
   const [selectedDiets, setSelectedDiets] = useState<Category[]>([]);
@@ -21,21 +32,29 @@ export const RecipeFilter = (props : any) => {
   const [selectedDishTypes, setSelectedDishTypes] = useState<Category[]>([]);
   const [selectedIngredients, setSelectedIngredients] = useState<IngredientForSearch[]>([]);
 
-  const { sendData } = props;
- 
 
   const handleSubmit = async () => {
     // event.preventDefault();
     const selectedCuisineIds = selectedCuisines.map(cuisine => cuisine.id);
     const selectedDietIds = selectedDiets.map(diet => diet.id);
     const selectedMealTimeIds = selectedMealTimes.map(mealTime => mealTime.id);
-    const selectedDishTypeIds= selectedDishTypes.map(dishType=>dishType.id)
-    const selectedIngredientIds = selectedIngredients.map(ingredient=>ingredient.id)
+    const selectedDishTypeIds = selectedDishTypes.map(dishType => dishType.id)
+    const selectedIngredientIds = selectedIngredients.map(ingredient => ingredient.id)
 
     const searchString = (document.getElementById("search-field") as HTMLInputElement).value;
-
-    const filteredRecipes = await RecipesApi.filterRecipes(selectedCuisineIds, selectedDietIds, selectedMealTimeIds, selectedDishTypeIds, selectedIngredientIds, searchString);
-    sendData(filteredRecipes)
+    const filter: TRecipesFilter = {
+      cuisineIds: selectedCuisineIds,
+      dietIds: selectedDietIds,
+      mealTimeIds: selectedMealTimeIds,
+      dishTypeIds: selectedDishTypeIds,
+      ingredientIds: selectedIngredientIds,
+      searchString: searchString,
+      preparationMaxDifficulty: preparationMaxDifficulty,
+      maxNotOwnedIngredients: maxNotOwnedIngredients,
+      page: 1,
+      recipesPerPage: 5,
+    }
+    handleFilteringResult(filter)
   };
 
   useEffect(() => {
@@ -54,6 +73,7 @@ export const RecipeFilter = (props : any) => {
     IngredientsApi.getAll().then((Ingredients: IngredientForSearch[]) => {
       setIngredients(Ingredients);
     });
+    handleSubmit();
   }, []);
 
   const handleCuisineSelection = (cuisine: Category) => {
@@ -141,10 +161,18 @@ export const RecipeFilter = (props : any) => {
     }
     setIngredients(ingredients.map((ingredient) => ingredient));
   };
+  const handlePreparationDifficultySelection = (preparationDifficulty: PreparationDifficulty) => {
+    setPreparationDifficulty(preparationDifficulty);
+  };
+  const handleMaxNotOwnedIngredientsChange = (maxNotOwnedIngredients: number) => {
+    setMaxNotOwnedIngredients(maxNotOwnedIngredients);
+  };
+
 
   return (
-    <div className="grid grid-cols-1 gap-4 justify-items-center w-7/12 auto-cols-fr text-xl mx-auto">
-      <div className="md:col-span-1">
+    <div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center auto-cols-fr text-xl mx-auto">
+      <div className="md:col-span-2 lg:col-span-3 w-full text-center">
         <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} handleRecipeSearch={handleSubmit} />
       </div>
       <RecipeSingleCategorySelector
@@ -179,6 +207,10 @@ export const RecipeFilter = (props : any) => {
         handleCategorySelection={handleDishTypeSelection}
         handleCategorySelectionRemoval={handleDishTypeSelectionRemoval}
       />
+        <RecipeDifficultySelector
+          preparationMaxDifficulty={preparationMaxDifficulty}
+          handlePreparationDifficultySelection={handlePreparationDifficultySelection}
+        />
       <RecipeSingleCategorySelector
         categories={ingredients}
         categoryShowedName="Ingredients"
@@ -187,7 +219,15 @@ export const RecipeFilter = (props : any) => {
         handleCategorySelection={handleIngredientSelection}
         handleCategorySelectionRemoval={handleIngredientRemoval}
       />
-      <div><button className="btn btn-active btn-ghost" type='submit' onClick={handleSubmit}>Search</button></div>     
+      <div className='md:col-span-2 lg:col-span-3'>
+      <RecipeMaxNotOwnedIngredients
+        maxNotOwnedIngredients={maxNotOwnedIngredients}
+        handleMaxNotOwnedIngredientsChange={handleMaxNotOwnedIngredientsChange}
+      />
+      </div>
+      
+    </div>
+    <div className="mx-auto text-center my-5"><button className="btn btn-active btn-ghost hover:btn-warning text-xl" type='submit' onClick={handleSubmit}>Search</button></div>
     </div>
   );
 };

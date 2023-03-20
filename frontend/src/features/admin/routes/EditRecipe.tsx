@@ -1,7 +1,6 @@
 import { Navigate } from 'react-router-dom';
 
-export const EditRecipe = () => {
-    let isAdmin = true;
+export const EditRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
 
     if (isAdmin)
         return (

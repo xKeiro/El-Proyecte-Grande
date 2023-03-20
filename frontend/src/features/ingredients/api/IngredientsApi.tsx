@@ -4,7 +4,7 @@ import {ingredientSchema, ingredientsSchema} from '../types';
 
 export abstract class IngredientsApi {
   public static async getAll() {
-    const res = await axios.get(`${API_URL}/Ingredients`);
+    const res = await axios.get(`${API_URL}/Ingredients`, { withCredentials : true });
     const result = ingredientsSchema.safeParse(res.data);
 
     if (result.success) {
@@ -15,7 +15,7 @@ export abstract class IngredientsApi {
   }
 
   public static async deleteById(id: number) {
-    await axios.delete(`${API_URL}/Ingredients/${id}`);
+    await axios.delete(`${API_URL}/Ingredients/${id}`, { withCredentials : true });
   }
 
   public static async add(name : string, unitOfMeasure : string, calorie : number) {
@@ -24,7 +24,7 @@ export abstract class IngredientsApi {
       name: name,
       unitOfMeasure: unitOfMeasure,
       calorie: calorie
-    }).catch((error) => {
+    }, { withCredentials : true }).catch((error) => {
       errorMsg = error.response.data.message;
     });
     if (errorMsg) return errorMsg;

@@ -5,7 +5,7 @@ namespace backend.Dtos.Recipes.Recipe;
 
 public class RecipeFilter
 {
-    [StringLength(120, MinimumLength = 2)]
+    [StringLength(120)]
     public required string? Name { get; set; } = null;
     [MinLength(1)]
     public IEnumerable<int>? IngredientIds { get; set; } = null;
@@ -18,5 +18,6 @@ public class RecipeFilter
     [MinLength(1)]
     public IEnumerable<int>? DishTypeIds { get; set; } = null;
     public PreparationDifficulty? MaxDifficulty { get; set; } = null;
-    public int? MaxNumberOfNotOwnedIngredients { get; set; } = null;
+    public int MaxNumberOfNotOwnedIngredients { get; set; } = 0;
+    public int RecipesPerPage { get; set; } = 5;
 }

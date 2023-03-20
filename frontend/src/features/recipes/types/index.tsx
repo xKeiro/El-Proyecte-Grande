@@ -24,9 +24,43 @@ export const recipeIngredientToPost = z.object({
     amount: z.number().positive()
 });
 
+export const recipeSchema = z.object({
+    id: z.number().int().positive(),
+    name: z.string().min(2).max(120),
+    description: z.string(),
+    difficulty: z.nativeEnum(PreparationDifficulty),
+    recipeIngredients: z.array(recipeIngredientSchema),
+    cuisine: categorySchema,
+    mealTimes: z.array(categorySchema),
+    diets: z.array(categorySchema),
+    dishType: categorySchema,
+    preparationSteps: z.array(preparationSchema)
+});
+
+export const recipesSchema = z.array(recipeSchema)
 
 export type TPreparation = z.infer<typeof preparationSchema>
 
+
+export const recipesSchemaWithPagination = z.object({
+    recipes: z.array(recipeSchema),
+    nextPage: z.number().int().positive().nullable()
+})
+
+export type TRecipesFilter = {
+    cuisineIds: number[], 
+    dietIds : number[], 
+    mealTimeIds : number[], 
+    dishTypeIds: number[], 
+    ingredientIds: number[], 
+    searchString: string, 
+    preparationMaxDifficulty: PreparationDifficulty | null, 
+    maxNotOwnedIngredients: number,
+    page: number
+    recipesPerPage: number
+}
+
+export type TRecipesWithPagination = z.infer<typeof recipesSchemaWithPagination>;
 export const recipeSchema = z.object({
     id: z.number().int().positive(),
     name: z.string().min(2).max(120),

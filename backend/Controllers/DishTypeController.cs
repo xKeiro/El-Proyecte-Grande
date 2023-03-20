@@ -3,10 +3,12 @@ using backend.Dtos.Recipes.Recipe;
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Categories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class DishTypesController : ControllerBase
@@ -22,6 +24,7 @@ public class DishTypesController : ControllerBase
         _statusMessage = statusMessage;
     }
 
+    [AllowAnonymous]
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -61,6 +64,7 @@ public class DishTypesController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -113,6 +117,7 @@ public class DishTypesController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}/recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]

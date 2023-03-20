@@ -2,10 +2,12 @@
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Recipes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RecipesController : ControllerBase
@@ -21,15 +23,17 @@ public class RecipesController : ControllerBase
         _statusMessage = statusMessage;
     }
 
+    [AllowAnonymous]
     [HttpGet]
+    [HttpGet("Page/{page}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
-    public async Task<ActionResult<IEnumerable<RecipePublic>>> GetFilteredRecipes([FromQuery] RecipeFilter filter)
+    public async Task<ActionResult<RecipesPublicWithNextPage>> GetFilteredRecipes([FromQuery] RecipeFilter filter, int page = 1)
     {
         try
         {
-            var recipesPublic = await _service.GetFiltered(filter);
-            return StatusCode(StatusCodes.Status200OK, recipesPublic);
+            var recipesPublicWithNextPage = await _service.GetFiltered(filter, page);
+            return StatusCode(StatusCodes.Status200OK, recipesPublicWithNextPage);
         }
         catch
         {
@@ -63,6 +67,7 @@ public class RecipesController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]

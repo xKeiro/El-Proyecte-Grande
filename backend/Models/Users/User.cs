@@ -11,10 +11,10 @@ public class User : BaseModel
     [StringLength(50, MinimumLength = 2)]
     public required string Username { get; set; }
 
-    [StringLength(100, MinimumLength = 2)]
+    [StringLength(100)]
     public string? FirstName { get; set; }
 
-    [StringLength(100, MinimumLength = 2)]
+    [StringLength(100)]
     public string? LastName { get; set; }
 
     [Required]

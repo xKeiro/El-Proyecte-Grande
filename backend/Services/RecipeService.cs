@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.Recipe;
-using backend.Dtos.Recipes.RecipeIngredient;
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Categories;
@@ -20,7 +19,7 @@ public class RecipeService : IRecipeService
         _mapper = mapper;
     }
 
-    public async Task<List<RecipePublic>> GetFiltered(RecipeFilter filter)
+    public async Task<RecipesPublicWithNextPage> GetFiltered(RecipeFilter filter, int currentPage)
     {
         var recipesQuery = _context.Recipes
             .Where(recipe => filter.Name == null || recipe.Name.ToLower().Contains(filter.Name.ToLower()))
@@ -33,7 +32,23 @@ public class RecipeService : IRecipeService
             .Where(recipe => filter.DishTypeIds == null ||
                 filter.DishTypeIds.Contains(recipe.DishType.Id));
         var recipes = await FilterIngredients(filter, recipesQuery);
-        return _mapper.Map<List<Recipe>, List<RecipePublic>>(recipes);
+        var filteredRecipesQuery = recipes.Where(recipe => filter.MaxDifficulty == null || ((int)filter.MaxDifficulty) >= ((int)recipe.Difficulty));
+        var recipeCount = filteredRecipesQuery.Count();
+        var filteredRecipes = filteredRecipesQuery
+            .Skip((currentPage - 1) * filter.RecipesPerPage)
+            .Take(filter.RecipesPerPage)
+            .ToList();
+        int? nextPage = null;
+        if (currentPage * filter.RecipesPerPage < recipeCount)
+        {
+            nextPage = currentPage + 1;
+        }
+
+        return new RecipesPublicWithNextPage()
+        {
+            NextPage = nextPage,
+            Recipes = _mapper.Map<List<Recipe>, List<RecipePublic>>(filteredRecipes)
+        };
     }
 
     private static async Task<List<Recipe>> FilterIngredients(RecipeFilter filter, IQueryable<Recipe> recipesQuery)
@@ -41,7 +56,7 @@ public class RecipeService : IRecipeService
         List<Recipe> recipes = new();
         if (filter.IngredientIds == null)
         {
-            recipes = filter.MaxNumberOfNotOwnedIngredients == null
+            recipes = filter.MaxNumberOfNotOwnedIngredients == 0
                 ? await recipesQuery
                     .AsNoTracking()
                     .ToListAsync()
@@ -52,33 +67,21 @@ public class RecipeService : IRecipeService
         }
         else
         {
-            if (filter.MaxNumberOfNotOwnedIngredients == null)
+            foreach (var recipe in recipesQuery)
             {
-                recipes = await recipesQuery
-                    .Where(recipe => recipe.RecipeIngredients
-                        .Any(recipeIngredient => filter.IngredientIds
-                        .Any(ingredientId => ingredientId == recipeIngredient.Ingredient.Id)))
-                    .AsNoTracking()
-                    .ToListAsync();
-            }
-            else
-            {
-                foreach (var recipe in recipesQuery)
+                var matchingIngredientCount = 0;
+                foreach (var recipeIngredient in recipe.RecipeIngredients)
                 {
-                    var matchingIngredientCount = 0;
-                    foreach (var recipeIngredient in recipe.RecipeIngredients)
+                    var ingredientId = recipeIngredient.Ingredient.Id;
+                    if (filter.IngredientIds.Contains(ingredientId))
                     {
-                        var ingredientId = recipeIngredient.Ingredient.Id;
-                        if (filter.IngredientIds.Contains(ingredientId))
-                        {
-                            matchingIngredientCount++;
-                        }
+                        matchingIngredientCount++;
                     }
+                }
 
-                    if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
-                    {
-                        recipes.Add(recipe);
-                    }
+                if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
+                {
+                    recipes.Add(recipe);
                 }
             }
         }
