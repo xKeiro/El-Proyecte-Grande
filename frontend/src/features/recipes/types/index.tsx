@@ -61,22 +61,8 @@ export type TRecipesFilter = {
 }
 
 export type TRecipesWithPagination = z.infer<typeof recipesSchemaWithPagination>;
-export const recipeSchema = z.object({
-    id: z.number().int().positive(),
-    name: z.string().min(2).max(120),
-    description: z.string(),
-    difficulty: z.nativeEnum(PreparationDifficulty),
-    recipeIngredients: z.array(recipeIngredientSchema),
-    cuisine: categorySchema,
-    mealTimes: z.array(categorySchema),
-    diets: z.array(categorySchema),
-    dishType: categorySchema,
-    preparationSteps: z.array(preparationSchema)
-});
 
 export type TRecipe = z.infer<typeof recipeSchema>;
-
-export const recipesSchema = z.array(recipeSchema);
 
 export type TRecipeIngredient = z.infer<typeof recipeIngredientSchema>;
 

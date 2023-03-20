@@ -109,7 +109,7 @@ export const RecipeAddNew = () => {
       dietIds,
       dishTypeId
     };
-    const response = await axios.post(`${API_URL}/recipes`, recipe);
+    const response = await axios.post(`${API_URL}/recipes`, recipe, { withCredentials : true });
     console.log(response.data);
     console.log(mealTimeIds)
     window.location.href = '/admin/recipes';

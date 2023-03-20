@@ -16,7 +16,7 @@ export const AdminRoutes = ({ isAdmin } : { isAdmin : boolean }) => {
                 <Route path="/admin/recipes/:id" element={<AdminRecipe isAdmin={isAdmin} />}></Route>
                 <Route path="/admin/recipes/:id/edit" element={<EditRecipe isAdmin={isAdmin} />}></Route>
                 <Route path="/admin/recipe-properties" element={<RecipeProperties isAdmin={isAdmin} />}></Route>
-                <Route path="/admin/recipes/add" element={<AddRecipe isAdmin={isAdmin} />}></Route>
+                <Route path="/admin/recipes/add" element={<AddRecipe isAdmin={isAdmin}/>}></Route>
                 <Route path="/unauthorized" element={<Unauthorized />}></Route>
             </Routes>
         </div>
