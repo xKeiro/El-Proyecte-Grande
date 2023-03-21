@@ -49,5 +49,8 @@ public class ElProyecteGrandeContext : DbContext
 
         _ = modelBuilder.Entity<Recipe>().HasMany(e => e.PreparationSteps).WithOne()
             .OnDelete(DeleteBehavior.ClientCascade);
+
+        _ = modelBuilder.Entity<Recipe>().HasMany(e => e.RecipeIngredients).WithOne()
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }
