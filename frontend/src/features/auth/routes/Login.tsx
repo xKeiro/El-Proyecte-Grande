@@ -30,7 +30,7 @@ export const Login = ({ loggedInUsername, setLoggedInUsername, setIsAdmin } : {
       });
       const result = await response.json();
 
-      if (result.hasOwnProperty("message")) {
+      if (!response.ok) {
         setHideErrorMsg(false);
         setErrorMsg("Invalid credentials!");
       }
