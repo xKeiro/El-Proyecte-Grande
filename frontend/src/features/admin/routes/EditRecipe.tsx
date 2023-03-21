@@ -4,13 +4,12 @@ import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe } from '@/features/recipes';
 
 
-export const EditRecipe = () => {
+export const EditRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
     const [recipe, setRecipe] = useState<TRecipe | null>(null);
     const { id } = useParams<{ id: string }>();
     const idNumeric = parseInt(id!);
-
-    let isAdmin = true;
-export const EditRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
+    console.log(recipe);
+    
 
     useEffect(() => {
         RecipesApi.get(idNumeric).then((recipe: TRecipe) => {
@@ -35,9 +34,15 @@ export const EditRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
 
                         <div className="bg-primary grid grid-cols-1 bg-base-300 rounded-lg drop-shadow-xl text-xl h-16 items-center">
                             <span className='text-center md:text-center'>Difficulty</span>
-                            {/* drpodown */}
                         </div>
-                        <input type="text" placeholder={ recipe?.name } className="input input-bordered input-lg col-2 col-span-2  h-16" />
+                        <div className="col-2 col-span-2">
+                            <select defaultValue={"default"} className="select w-full max-w-xs h-16 px-8 p-2 shadow bg-base-100 rounded-box w-52 items-center">
+                                <option disabled value="default">Original: { recipe?.difficulty }</option>
+                                <option value="Easy">Easy</option>
+                                <option value="Medium">Medium</option>
+                                <option value="Hard">Hard</option>
+                            </select>
+                        </div>
 
                         <div className="bg-primary grid grid-cols-1 bg-base-300 rounded-lg drop-shadow-xl text-xl h-16 items-center">
                             <span className='text-center md:text-center'>Preparation Steps</span>
