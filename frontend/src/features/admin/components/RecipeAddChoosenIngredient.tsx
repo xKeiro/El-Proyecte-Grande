@@ -2,6 +2,7 @@ import { IngredientsApi } from "@/features/ingredients/api/IngredientsApi";
 import { useEffect, useState } from "react";
 import { Ingredient } from "@/features/ingredients";
 import { RecipeIngredientToPost } from "@/features/recipes";
+import { RequiredStar } from "@/components/Form/RequiredStar";
 
 type props = {
     handleIngredientsToPost: (recipeIngredientsAddNew: RecipeIngredientToPost[]) => void;
@@ -23,37 +24,48 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
     }, []);
 
     const handleAddIngredient = () => {
-        if (selectedIngredient != null) {
-            const newIngredient = { ingredient: selectedIngredient, amount: ingredientAmount };
-            const newIngredientToPost: RecipeIngredientToPost = { ingredientId: selectedIngredient.id, amount: ingredientAmount };
-            setIngredientList([...ingredientList, newIngredient]);
-            setIngredientListToPost([...ingredientListToPost, newIngredientToPost]);
-            setSelectedIngredient(null);
-            setIngredientAmount(0);
-            handleIngredientsToPost([...ingredientListToPost, newIngredientToPost])
+        if(ingredientAmount !=0){
+            if (selectedIngredient != null) {
+                const ingredientExists = ingredientList.some(ingredient => ingredient.ingredient.id === selectedIngredient.id);
+                if (!ingredientExists) {
+                    const newIngredient = { ingredient: selectedIngredient, amount: ingredientAmount };
+                    const newIngredientToPost: RecipeIngredientToPost = { ingredientId: selectedIngredient.id, amount: ingredientAmount };
+                    setIngredientList([...ingredientList, newIngredient]);
+                    setIngredientListToPost([...ingredientListToPost, newIngredientToPost]);
+                    setSelectedIngredient(null);
+                    setIngredientAmount(0);
+                    handleIngredientsToPost([...ingredientListToPost, newIngredientToPost]);
+                }
+                else {
+                    alert("You have already added that ingredient")
+                }
+            }
+
         }
+
     };
 
     const handleDeleteRecipeIngredient = (index: number) => {
         const updatedIngredientList = [...ingredientList];
         updatedIngredientList.splice(index, 1);
         setIngredientList(updatedIngredientList);
-    
+
         const updatedIngredientListToPost = [...ingredientListToPost];
         updatedIngredientListToPost.splice(index, 1);
-        
-        setIngredientListToPost(updatedIngredientListToPost);    
+
+        setIngredientListToPost(updatedIngredientListToPost);
         handleIngredientsToPost(updatedIngredientListToPost);
     }
 
     return (
         <div className="form-control">
             {ingredientList.length > 0 ? (
-                <div className="p-4">
+                <div className="p-4 bg-base-200 rounded">
                     <span><b>Added ingredients:</b></span>
                     <ul>
                         {ingredientList.map((ingredient, index) => (
                             <li key={index} className="pl-2 cursor-pointer"
+                                title="Delete this ingredient"
                                 onClick={() => handleDeleteRecipeIngredient(index)}>
                                 {ingredient.amount}{ingredient.ingredient.unitOfMeasure} {ingredient.ingredient.name}
                             </li>
@@ -63,14 +75,14 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
             ) : ("")}
 
             <label htmlFor="recipeIngredientsAddNew" className="mb-2 font-semibold">
-                <span className="mb-2 font-semibold">Select ingredient<span className="text-error px-0 ml-2">*</span></span>
+                <span className="mb-2 font-semibold">Select ingredient<RequiredStar /></span>
             </label>
             <select
                 id="recipeIngredientsAddNew"
                 name="recipeIngredientsAddNew"
                 className="select select-bordered mb-6"
-                //value={selectedIngredient?.id ?? ""}
-                required
+                value={selectedIngredient?.id ?? ""}
+                required={ingredientList.length === 0 ? true : false}
                 onChange={(event) => {
                     const ingredientId = parseInt(event.target.value);
                     const selected = ingredients.find(i => i.id === ingredientId);
@@ -84,22 +96,28 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
             </select>
             <div className="form-control">
                 <label className="mb-2 font-semibold">
-                    <span className="mb-2 font-semibold">Ingredient amount<span className="text-error px-0 ml-2">*</span></span>
+                    <span className="mb-2 font-semibold">Ingredient amount<RequiredStar /></span>
                 </label>
                 <input
                     type="number"
-                    min="0"
+                    step="0.01"
+        
                     className="input input-bordered"
                     placeholder="Add ingredient amount"
-                    //value={ingredientAmount}
-                    onChange={(event) => setIngredientAmount(Number(event.target.value))}
-                    required
+                    value={ingredientAmount}
+                    onChange={(event) => {
+                        const value = Number(event.target.value);
+                        if (value > 0) {
+                            setIngredientAmount(value);
+                        }
+                    }}
+                    required={ingredientList.length === 0 ? true : false}
                 />
             </div>
-            <div className="float-left">
+            <div className="flex justify-center">
                 <button
-                    title="Add ingredient to list"
-                    className="btn btn-square btn-success mr-2 mt-2"
+                    title="Add ingredient"
+                    className="btn btn-circle btn-sm btn-success mr-2 mt-2"
                     onClick={handleAddIngredient}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
