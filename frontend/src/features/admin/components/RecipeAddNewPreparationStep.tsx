@@ -10,7 +10,7 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
     handlePreparationStepsToPost
 }) => {
     const [preparationStepDescription, setPreparationStepDescription] = useState<string>("");
-    const [preparationStepCount, setPreparationStepCount] = useState<number>(0);
+    const [preparationStepCount, setPreparationStepCount] = useState<number>(1);
     const [preparationStepList, setPreparationStepList] = useState<PreparationStep[]>([]);
 
     const handleAddPreparationStep = () => {
@@ -23,7 +23,7 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
             const newPreparationStep = { description: preparationStepDescription, step: preparationStepCount };
             setPreparationStepList([...preparationStepList, newPreparationStep]);
             setPreparationStepDescription("");
-            setPreparationStepCount(0);
+            setPreparationStepCount(preparationStepCount+1);
             handlePreparationStepsToPost([...preparationStepList, newPreparationStep]);
         }
 
