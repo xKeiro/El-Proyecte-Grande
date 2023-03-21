@@ -127,7 +127,7 @@ export const RecipeAddNew = () => {
 
   const handleSubmitRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    
     const recipe = {
       name: recipeName,
       description: recipeDescription,

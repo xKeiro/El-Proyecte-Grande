@@ -72,7 +72,7 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
                         ))}
                     </ul>
                 </div>
-            ) : ("")}
+            ) : (<span className="text-warning rounded mb-2"><b>Please add ingredient(s)</b></span>)}
 
             <label htmlFor="recipeIngredientsAddNew" className="mb-2 font-semibold">
                 <span className="mb-2 font-semibold">Select ingredient<RequiredStar /></span>

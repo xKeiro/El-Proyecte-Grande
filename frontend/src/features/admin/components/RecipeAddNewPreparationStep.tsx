@@ -51,7 +51,7 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
                             </li>
                         ))}
                     </ul>
-                </div>) : ("")
+                </div>) : ((<span className="text-warning rounded mb-2"><b>Please add preparation step(s)</b></span>))
             }
 
             <label htmlFor="step">
