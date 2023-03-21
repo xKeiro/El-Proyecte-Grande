@@ -13,7 +13,7 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
 }) => {
     const [ingredients, setIngredients] = useState<Ingredient[]>([]);
     const [selectedIngredient, setSelectedIngredient] = useState<Ingredient | null>(null);
-    const [ingredientAmount, setIngredientAmount] = useState<number>(0);
+    const [ingredientAmount, setIngredientAmount] = useState<number>(0.01);
     const [ingredientList, setIngredientList] = useState<{ ingredient: Ingredient, amount: number }[]>([]);
     const [ingredientListToPost, setIngredientListToPost] = useState<RecipeIngredientToPost[]>([]);
 
@@ -33,7 +33,7 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
                     setIngredientList([...ingredientList, newIngredient]);
                     setIngredientListToPost([...ingredientListToPost, newIngredientToPost]);
                     setSelectedIngredient(null);
-                    setIngredientAmount(0);
+                    setIngredientAmount(0.01);
                     handleIngredientsToPost([...ingredientListToPost, newIngredientToPost]);
                 }
                 else {
