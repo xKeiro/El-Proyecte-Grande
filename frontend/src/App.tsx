@@ -18,8 +18,7 @@ export const App = () =>{
           <UsersRoutes isAdmin={isAdmin}/>
           <AdminRoutes isAdmin={isAdmin} />
           <AuthRoutes username={username} setUsername={setUsername} setIsAdmin={setIsAdmin} />
-      <div className="h-20">
-      </div>
+      <div className="h-32 w-10" />
       <Footer />
     </BrowserRouter>
   )
