@@ -2,11 +2,11 @@ import axios from 'axios';
 import { API_URL } from '@/config';
 import { recipesSchemaWithPagination, recipeSchema, TRecipesFilter } from '@/features/recipes';
 import { TRecipesWithPagination } from '@/features/recipes';
-import {TRecipe} from '@/features/recipes';
+import { TRecipe } from '@/features/recipes';
 
 export abstract class RecipesApi {
-  public static async getAll() : Promise<TRecipesWithPagination | null> {
-    const res = await axios.get(`${API_URL}/Recipes`, { withCredentials : true });
+  public static async getAll(): Promise<TRecipesWithPagination | null> {
+    const res = await axios.get(`${API_URL}/Recipes`, { withCredentials: true });
     const result = recipesSchemaWithPagination.safeParse(res.data);
 
     if (result.success) {
@@ -17,7 +17,7 @@ export abstract class RecipesApi {
     }
   }
 
-  public static async getLastRecipe(){
+  public static async getLastRecipe() {
     const res = await axios.get(`${API_URL}/Recipes/Last`, { withCredentials: true });
     const result = recipeSchema.safeParse(res.data);
     console.log(result)
@@ -29,7 +29,7 @@ export abstract class RecipesApi {
   }
 
   public static async get(id: number) {
-    const res = await axios.get(`${API_URL}/Recipes/${id}`, { withCredentials : true });
+    const res = await axios.get(`${API_URL}/Recipes/${id}`, { withCredentials: true });
     const result = recipeSchema.safeParse(res.data);
     if (result.success) {
       return res.data;
@@ -39,7 +39,7 @@ export abstract class RecipesApi {
   }
 
   public static async deleteById(id: number) {
-    await axios.delete(`${API_URL}/Recipes/${id}`, { withCredentials : true });
+    await axios.delete(`${API_URL}/Recipes/${id}`, { withCredentials: true });
   }
 
   public static constructRecipesFilterUrl(filter: TRecipesFilter): string {
@@ -55,9 +55,9 @@ export abstract class RecipesApi {
     return `${API_URL}/Recipes/Page/${filter.page}?${nameParam}${ingredientParams}${cuisineParams}${mealTimeParams}${dietParams}${dishTypeParams}${preparationMaxDifficultyParam}${maxNumberOfNotOwnedIngredientsParam}${recipesPerPageParam}`;
   }
 
-  public static async filterRecipes(filter:TRecipesFilter): Promise<TRecipesWithPagination | null> {
+  public static async filterRecipes(filter: TRecipesFilter): Promise<TRecipesWithPagination | null> {
     const apiUrl = RecipesApi.constructRecipesFilterUrl(filter);
-    const response = await axios.get(apiUrl, { withCredentials : true });
+    const response = await axios.get(apiUrl, { withCredentials: true });
     const result = recipesSchemaWithPagination.safeParse(response.data);
     if (result.success) {
       return response.data;
@@ -67,8 +67,8 @@ export abstract class RecipesApi {
     }
   }
 
-  public static async filterRecipesByUrl(apiUrl:string): Promise<TRecipesWithPagination | null> {
-    const response = await axios.get(apiUrl, { withCredentials : true });
+  public static async filterRecipesByUrl(apiUrl: string): Promise<TRecipesWithPagination | null> {
+    const response = await axios.get(apiUrl, { withCredentials: true });
     const result = recipesSchemaWithPagination.safeParse(response.data);
     if (result.success) {
       return response.data;
@@ -76,6 +76,11 @@ export abstract class RecipesApi {
       console.log(result.error.issues);
       return null
     }
+  }
+
+  public static async getRecipeImage(id: number) : Promise<Blob | undefined> {
+    const res = await axios.get(`${API_URL}/ImageUpload/${id}`, { responseType: 'blob' })
+    return await res.data;
   }
 
 }
