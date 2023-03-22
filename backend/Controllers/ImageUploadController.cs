@@ -50,6 +50,20 @@ namespace backend.Controllers
             byte[] imageData = await System.IO.File.ReadAllBytesAsync(imagePath);
             return File(imageData, "image/jpeg");
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteFile(int id)
+        {
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadedImages", $"{id}.jpg");
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+                return Ok("File deleted successfully");
+            }
+
+            return NotFound();
+        }
     }
 }
 
