@@ -21,11 +21,11 @@ export const Recipe = ({ username } : { username : string | null }) => {
 
   if (!recipe) return (<div>Loading...</div>);
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 gap-4 place-items-center shadow-xl">
-      <div className="bg-base-100">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center shadow-xl">
+      <div className="bg-base-100 md:pl-6 xl:w-96 2xl:w-96">
         <RecipeImage id={recipe.id} name={recipe.name} />
       </div>
-      <div className="recipe-info md:max-lg:w-96 p-4">
+      <div className="recipe-info md:place-items-start p-4 ">
         <RecipeHeader recipe={recipe} username={username} />
         <RecipeDescription description={recipe.description} />
         <h3 className="recipe-sub-title font-bold text-xl">Ingredients</h3>
