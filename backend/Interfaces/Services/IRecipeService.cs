@@ -10,4 +10,5 @@ public interface IRecipeService
     Task<RecipePublic?> Update(int id, RecipeRequest recipeRequest);
     Task<bool> IsUnique(RecipeRequest recipeRequest);
     Task<bool> Delete(int id);
+    Task<RecipePublic?> GetLastRecipe();
 }

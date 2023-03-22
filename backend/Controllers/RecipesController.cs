@@ -142,4 +142,25 @@ public class RecipesController : ControllerBase
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
     }
+
+    [HttpGet("Last")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<RecipePublic>> GetLastRecipe()
+    {
+        try
+        {
+            var recipePublic = await _service.GetLastRecipe();
+            return recipePublic switch
+            {
+                null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NoneFound()),
+                _ => StatusCode(StatusCodes.Status200OK, recipePublic)
+            };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
 }

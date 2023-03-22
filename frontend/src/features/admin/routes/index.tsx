@@ -5,6 +5,7 @@ import { Unauthorized } from "@/features/auth/routes/Unauthorized";
 import { EditRecipe } from "@/features/admin/routes/EditRecipe";
 import { AdminRecipe } from "@/features/admin/routes/AdminRecipe";
 import { RecipeProperties } from "@/features/admin/routes/RecipeProperties";
+import { AddRecipe } from './AddRecipe';
 
 export const AdminRoutes = ({ isAdmin } : { isAdmin : boolean }) => {
     return (
@@ -15,6 +16,7 @@ export const AdminRoutes = ({ isAdmin } : { isAdmin : boolean }) => {
                 <Route path="/admin/recipes/:id" element={<AdminRecipe isAdmin={isAdmin} />}></Route>
                 <Route path="/admin/recipes/:id/edit" element={<EditRecipe isAdmin={isAdmin} />}></Route>
                 <Route path="/admin/recipe-properties" element={<RecipeProperties isAdmin={isAdmin} />}></Route>
+                <Route path="/admin/recipes/add" element={<AddRecipe isAdmin={isAdmin}/>}></Route>
                 <Route path="/unauthorized" element={<Unauthorized />}></Route>
             </Routes>
         </div>

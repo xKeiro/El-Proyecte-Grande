@@ -3,6 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe, TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
 import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
+import { RecipeAddNew } from '../components/RecipeAddNew';
 
 export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
   const [recipesWithPagination, setRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
@@ -44,7 +45,12 @@ export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
               {recipe.name}
             </Link>
           ))}
-        </div>
+            </div>
+
+            <div className='flex justify-center mt-4'>
+                <Link to="/admin/recipes/add" className="btn btn-primary">Add New Recipe</Link>
+            </div>
+
         <div className="btn-group w-full justify-center mt-8">
           <button className="btn btn-md">1</button>
           <button className="btn btn-md">2</button>

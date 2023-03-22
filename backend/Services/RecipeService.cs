@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.Recipe;
 using backend.Interfaces.Services;
 using backend.Models;
@@ -180,6 +181,16 @@ public class RecipeService : IRecipeService
         return true;
     }
 
+    public async Task<RecipePublic?> GetLastRecipe()
+    {
+        var recipe = await _context.Recipes.OrderByDescending(recipe => recipe.Id).FirstOrDefaultAsync();
+        return recipe switch
+        {
+            null => null,
+            _ => _mapper.Map<Recipe, RecipePublic>(recipe)
+        };
+    }
+
     public async Task<bool> IsUnique(RecipeRequest recipeRequest)
     {
         return await IsNameUnique(recipeRequest.Name);
@@ -250,18 +261,7 @@ public class RecipeService : IRecipeService
                 });
         }
 
-        List<PreparationStep> preparationSteps = new();
-        foreach (var preparationStepId in recipeRequest.PreparationStepsId)
-        {
-            var preparationStep = _context.PreparationSteps.Find(preparationStepId);
-            switch (preparationStep)
-            {
-                case null:
-                    return null;
-            }
-
-            preparationSteps.Add(preparationStep);
-        }
+        var preparationSteps = _mapper.Map<ICollection<PreparationStepWithoutId>, ICollection<PreparationStep>>(recipeRequest.PreparationStepsWithoutIds);
 
         switch (recipeToUpdate)
         {
@@ -287,6 +287,7 @@ public class RecipeService : IRecipeService
                 recipeToUpdate.MealTimes = mealTimes;
                 recipeToUpdate.Diets = diets;
                 recipeToUpdate.DishType = dishType;
+                recipeToUpdate.PreparationSteps = preparationSteps;
                 return recipeToUpdate;
         }
     }
