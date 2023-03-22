@@ -39,11 +39,11 @@ export const RecipeAddNewPreparationStep: React.FC<props> = ({
     return (
         <div className="form-control">
             {preparationStepList.length > 0 ? (
-                <div className="p-4 bg-base-200 rounded"><span><b>Added steps:</b></span>
+                <div className="p-4 rounded"><span><b>Added steps:</b></span>
                     <ul className="break-words">
                         {preparationStepList.map((preparationStep, index) => (
                             <li key={index}
-                                className="pl-2 cursor-pointer"
+                                className="pl-2 cursor-pointer bg-base-300 hover:bg-error hover:bg-opacity-60 my-1 py-1 rounded"
                                 title="Delete this step"
                                 onClick={() => handleDeletePreparationStep(index)}
                             >

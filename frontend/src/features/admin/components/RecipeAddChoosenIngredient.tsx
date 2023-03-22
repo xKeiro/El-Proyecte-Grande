@@ -60,11 +60,11 @@ export const AddRecipeChooseIngredient: React.FC<props> = ({
     return (
         <div className="form-control">
             {ingredientList.length > 0 ? (
-                <div className="p-4 bg-base-200 rounded">
+                <div className="p-4 rounded">
                     <span><b>Added ingredients:</b></span>
                     <ul>
                         {ingredientList.map((ingredient, index) => (
-                            <li key={index} className="pl-2 cursor-pointer"
+                            <li key={index} className="pl-2 cursor-pointer bg-base-300 hover:bg-error hover:bg-opacity-60 my-1 py-1 rounded"
                                 title="Delete this ingredient"
                                 onClick={() => handleDeleteRecipeIngredient(index)}>
                                 {ingredient.amount}{ingredient.ingredient.unitOfMeasure} {ingredient.ingredient.name}
