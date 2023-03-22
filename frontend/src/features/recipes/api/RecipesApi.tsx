@@ -83,4 +83,8 @@ export abstract class RecipesApi {
     return await res.data;
   }
 
+  public static async deleteRecipeImage(id: number){
+    await axios.delete(`${API_URL}/ImageUpload/${id}`, { withCredentials: true });
+  }
+
 }
