@@ -31,6 +31,9 @@ export const RecipeAddNew = () => {
   const [recipeImage, setRecipeImage] = useState<File | null>(null);
   const [imageId, setImageId] = useState<number>(0);
 
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [recipeSavedWithoutImage, setRecipeSavedWithoutImage] = useState(false);
+
   useEffect(() => {
     CategoryApi.getAll(CategoriesEnum.Cuisines).then((Cuisines: Category[]) => {
       setCuisines(Cuisines);
@@ -95,39 +98,9 @@ export const RecipeAddNew = () => {
     });
   }
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files != null) {
-      const originalFile = event.target.files[0];
-      const newFileName = `${imageId.toString()}.${originalFile.name.split('.').pop()}`;
-      const newFile = new File([originalFile], newFileName, { type: originalFile.type });
-      setRecipeImage(newFile);
-    }
-  };
-
-  useEffect(() => {
-    const fetchLastRecipe = async () => {
-      const lastRecipe = await RecipesApi.getLastRecipe();
-      console.log(lastRecipe);
-      if (lastRecipe != null) {
-        setImageId(lastRecipe.id + 1);
-      }
-    };
-    fetchLastRecipe();
-  }, [imageId]);
-
-  useEffect(() => {
-    if (recipeImage != null) {
-      console.log(recipeImage);
-      const formData = new FormData();
-      formData.append("image", recipeImage);
-      axios.post(`${API_URL}/ImageUpload`, formData);
-    }
-  }, [recipeImage]);
-
-
-  const handleSubmitRecipe = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitRecipeWithoutImage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
+    setShowImageUpload(true);
     const recipe = {
       name: recipeName,
       description: recipeDescription,
@@ -142,7 +115,42 @@ export const RecipeAddNew = () => {
 
     const response = await axios.post(`${API_URL}/recipes`, recipe, { withCredentials: true });
     console.log(response.data);
+    setRecipeSavedWithoutImage(true);
+  };
+
+  useEffect(() => {
+    const fetchLastRecipe = async () => {
+      if (recipeSavedWithoutImage) {
+        const lastRecipe = await RecipesApi.getLastRecipe();
+        console.log(lastRecipe);
+        if (lastRecipe != null) {
+          setImageId(lastRecipe.id);
+        }
+      }
+    };
+    fetchLastRecipe();
+  }, [recipeSavedWithoutImage]);
+
+  useEffect(() => {
+    if (recipeImage != null) {
+      const formData = new FormData();
+      formData.append("image", recipeImage);
+      axios.post(`${API_URL}/ImageUpload`, formData);
+    }
+  }, [recipeImage]);
+
+  const handleSaveWholeRecipe = () => {
+    console.log("Ok")
     window.location.href = '/admin/recipes';
+  }
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files != null) {
+      const originalFile = event.target.files[0];
+      const newFileName = `${imageId.toString()}.${originalFile.name.split('.').pop()}`;
+      const newFile = new File([originalFile], newFileName, { type: originalFile.type });
+      setRecipeImage(newFile);
+    }
   };
 
   return (
@@ -151,7 +159,7 @@ export const RecipeAddNew = () => {
         <div className="card flex-shrink-0 w-full max-w-xl">
 
           <h1 className="text-4xl font-bold mb-2">Add New Recipe</h1>
-          <form onSubmit={handleSubmitRecipe}>
+          <form onSubmit={handleSubmitRecipeWithoutImage}>
             <div className="form-control">
               <label className="mb-2 font-semibold">
                 <h3 className="text-2xl font-bold mb-2">Recipe title<RequiredStar /></h3>
@@ -291,14 +299,22 @@ export const RecipeAddNew = () => {
               </select>
             </div>
 
-            <div className="form-control">
-              <h3 className="text-2xl font-bold mb-2">Upload Image</h3>
-              <input type="file" className="mb-2 file-input file-input-bordered w-full mb-2" title="Add image" onChange={handleImageUpload} />
-            </div>
             <div className="flex justify-center">
-              <button type="submit" className="btn btn-active btn-primary mt-2">Add Recipe</button>
+              <button type="submit" className="btn btn-active btn-success mt-2 w-1/3">Add Recipe</button>
             </div>
           </form>
+          {showImageUpload && (
+            <div className="form-control">
+              <hr className="border border-bg-300 my-4" />
+              <h3 className="text-2xl font-bold mb-2">Upload Image</h3>
+              <input type="file" className="mb-2 file-input file-input-bordered w-full mb-2" title="Add image" onChange={handleImageUpload} />
+              <div className="flex justify-between">
+                <button className="btn btn-active btn-warning mt-2 w-1/3" onClick={handleSaveWholeRecipe}>Save Without Image</button>
+                <button className="btn btn-active btn-success mt-2 w-1/3" onClick={handleSaveWholeRecipe}>Save</button>
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
     </div>
