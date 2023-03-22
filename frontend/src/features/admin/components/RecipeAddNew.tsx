@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from "@/config";
 import { CategoriesEnum } from "@/features/categories";
 import { CategoryApi } from "@/features/categories/api/CategoryApi";
@@ -11,6 +12,7 @@ import { RecipesApi } from "@/features/recipes/api/RecipesApi";
 import { RequiredStar } from "@/components/Form/RequiredStar";
 
 export const RecipeAddNew = () => {
+  const navigate = useNavigate();
   const [cuisines, setCuisines] = useState<Category[]>([]);
   const [mealTimes, setMealTimes] = useState<Category[]>([]);
   const [diets, setDiets] = useState<Category[]>([]);
@@ -141,7 +143,7 @@ export const RecipeAddNew = () => {
 
   const handleSaveWholeRecipe = () => {
     console.log("Ok")
-    window.location.href = '/admin/recipes';
+    navigate('/admin/recipes');
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
