@@ -21,17 +21,19 @@ export const Recipe = ({ username } : { username : string | null }) => {
 
   if (!recipe) return (<div>Loading...</div>);
   return (
-    <div className="card shadow-xl">
-      <div className="card card-side bg-base-100">
+    <div className="grid grid-cols-1 md:grid-cols-1 gap-4 place-items-center shadow-xl">
+      <div className="bg-base-100">
         <RecipeImage id={recipe.id} name={recipe.name} />
-        <div className="card-body recipe-info">
-          <RecipeHeader recipe={recipe} username={username} />
-          <RecipeDescription description={recipe.description} />
-          <h3 className="recipe-sub-title font-bold text-xl">Ingredients</h3>
-          <RecipeIngredients ingredients={recipe.recipeIngredients} />
-        </div>
       </div>
-      <RecipePreparation preparationSteps={recipe.preparationSteps} />
+      <div className="recipe-info md:max-lg:w-96 p-4">
+        <RecipeHeader recipe={recipe} username={username} />
+        <RecipeDescription description={recipe.description} />
+        <h3 className="recipe-sub-title font-bold text-xl">Ingredients</h3>
+        <RecipeIngredients ingredients={recipe.recipeIngredients} />
+      </div>
+      <div className="md:col-span-2">
+        <RecipePreparation preparationSteps={recipe.preparationSteps} />
+      </div>
     </div>
   );
 };

@@ -100,7 +100,7 @@ export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } : {
             <div className="md:max-2xl:ml-4">{username == null ? "Not logged in" : "Hello " + username}</div>
           }
         </div>
-        <div className="navbar-center justify-center w-1/3">
+        <div className="navbar-center md:justify-center w-1/3">
           <Link to="/">
             <img src={logo} alt="What can I cook logo" style={styles.logo} />
           </Link>
