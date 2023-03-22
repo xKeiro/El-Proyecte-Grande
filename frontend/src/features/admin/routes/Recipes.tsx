@@ -24,7 +24,7 @@ export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
       dishTypeIds: [],
       searchString: searchString,
       preparationMaxDifficulty: null,
-      maxNotOwnedIngredients: 0,
+      maxNotOwnedIngredients: null,
       page: 1,
       recipesPerPage: 50
     }

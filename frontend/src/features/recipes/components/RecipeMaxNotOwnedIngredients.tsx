@@ -1,6 +1,6 @@
 type props = {
-  maxNotOwnedIngredients: number;
-  handleMaxNotOwnedIngredientsChange: (maxNotOwnedIngredients: number) => void;
+  maxNotOwnedIngredients: number | null;
+  handleMaxNotOwnedIngredientsChange: (maxNotOwnedIngredients: number | null) => void;
 };
 
 export const RecipeMaxNotOwnedIngredients: React.FC<props> = ({
@@ -8,10 +8,18 @@ export const RecipeMaxNotOwnedIngredients: React.FC<props> = ({
   handleMaxNotOwnedIngredientsChange,
 }) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, value: number) => {
-    if ((maxNotOwnedIngredients + value) < 0) {
+    if ((maxNotOwnedIngredients != null && maxNotOwnedIngredients + value) < 0) {
+      maxNotOwnedIngredients = null;
+    }
+    else if (maxNotOwnedIngredients == null && value > 0) {
+      maxNotOwnedIngredients = 0;
+    }
+    else if (maxNotOwnedIngredients != null){
+      maxNotOwnedIngredients = maxNotOwnedIngredients + value;
+    }
+    else{
       return;
     }
-    maxNotOwnedIngredients = maxNotOwnedIngredients + value;
     handleMaxNotOwnedIngredientsChange(maxNotOwnedIngredients);
   };
 
@@ -27,7 +35,7 @@ export const RecipeMaxNotOwnedIngredients: React.FC<props> = ({
           <div className="grid grid-cols-3 gap-1 content-start items-start align-center items-center text-center">
             <button className='btn btn-ghost text-xl hover:btn-error' onClick={(event) => { handleClick(event, -1) }}>-</button>
             <div className="tooltip" data-tip="The number of maximum not owned ingredients">
-              <span>{maxNotOwnedIngredients}</span>
+              <span>{maxNotOwnedIngredients != null ? maxNotOwnedIngredients : "Any"}</span>
             </div>
             <button className='btn btn-ghost text-xl hover:btn-success' onClick={(event) => { handleClick(event, 1) }}>+</button>
           </div>

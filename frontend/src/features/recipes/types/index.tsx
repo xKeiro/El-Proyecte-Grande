@@ -52,7 +52,7 @@ export type TRecipesFilter = {
     ingredientIds: number[], 
     searchString: string, 
     preparationMaxDifficulty: PreparationDifficulty | null, 
-    maxNotOwnedIngredients: number,
+    maxNotOwnedIngredients: number | null,
     page: number
     recipesPerPage: number
 }

@@ -16,7 +16,7 @@ export abstract class RecipesApi {
     }
   }
 
-  public static async get(id: number) {
+  public static async get(id: number): TRecipe {
     const res = await axios.get(`${API_URL}/Recipes/${id}`, { withCredentials : true });
     const result = recipeSchema.safeParse(res.data);
     if (result.success) {
@@ -38,7 +38,7 @@ export abstract class RecipesApi {
     const dishTypeParams = filter.dishTypeIds.length > 0 ? "&" + filter.dishTypeIds.map(id => `DishTypeIds=${id}`).join('&') : '';
     const nameParam = filter.searchString.length > 0 ? `&Name=${filter.searchString}` : '';
     const preparationMaxDifficultyParam = filter.preparationMaxDifficulty ? `&MaxDifficulty=${filter.preparationMaxDifficulty}` : '';
-    const maxNumberOfNotOwnedIngredientsParam = filter.maxNotOwnedIngredients > 0 ? `&MaxNumberOfNotOwnedIngredients=${filter.maxNotOwnedIngredients}` : '';
+    const maxNumberOfNotOwnedIngredientsParam = filter.maxNotOwnedIngredients != null ? `&MaxNumberOfNotOwnedIngredients=${filter.maxNotOwnedIngredients}` : '';
     const recipesPerPageParam = `&RecipesPerPage=${filter.recipesPerPage}`
     return `${API_URL}/Recipes/Page/${filter.page}?${nameParam}${ingredientParams}${cuisineParams}${mealTimeParams}${dietParams}${dishTypeParams}${preparationMaxDifficultyParam}${maxNumberOfNotOwnedIngredientsParam}${recipesPerPageParam}`;
   }
