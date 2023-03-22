@@ -46,7 +46,7 @@ namespace backend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> ShowImage(string id)
         {
-            string imagePath = $"/DRIVERS/CODECOOL/ADVANCE/0_TW/El-Proyecte-Grande/backend/UploadedImages/{id}.jpg";
+            string imagePath = $"{Directory.GetCurrentDirectory()}/UploadedImages/{id}.jpg";
             byte[] imageData = await System.IO.File.ReadAllBytesAsync(imagePath);
             return File(imageData, "image/jpeg");
         }
