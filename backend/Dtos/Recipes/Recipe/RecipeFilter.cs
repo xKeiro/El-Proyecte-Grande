@@ -18,6 +18,6 @@ public class RecipeFilter
     [MinLength(1)]
     public IEnumerable<int>? DishTypeIds { get; set; } = null;
     public PreparationDifficulty? MaxDifficulty { get; set; } = null;
-    public int MaxNumberOfNotOwnedIngredients { get; set; } = 0;
+    public int? MaxNumberOfNotOwnedIngredients { get; set; } = null;
     public int RecipesPerPage { get; set; } = 5;
 }

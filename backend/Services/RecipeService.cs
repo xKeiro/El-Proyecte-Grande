@@ -55,7 +55,7 @@ public class RecipeService : IRecipeService
         List<Recipe> recipes = new();
         if (filter.IngredientIds == null)
         {
-            recipes = filter.MaxNumberOfNotOwnedIngredients == 0
+            recipes = filter.MaxNumberOfNotOwnedIngredients == null
                 ? await recipesQuery
                     .AsNoTracking()
                     .ToListAsync()
@@ -66,23 +66,53 @@ public class RecipeService : IRecipeService
         }
         else
         {
-            foreach (var recipe in recipesQuery)
+            if (filter.MaxNumberOfNotOwnedIngredients != null)
             {
-                var matchingIngredientCount = 0;
-                foreach (var recipeIngredient in recipe.RecipeIngredients)
+                foreach (var recipe in recipesQuery)
                 {
-                    var ingredientId = recipeIngredient.Ingredient.Id;
-                    if (filter.IngredientIds.Contains(ingredientId))
+                    var matchingIngredientCount = 0;
+                    foreach (var recipeIngredient in recipe.RecipeIngredients)
                     {
-                        matchingIngredientCount++;
+                        var ingredientId = recipeIngredient.Ingredient.Id;
+                        if (filter.IngredientIds.Contains(ingredientId))
+                        {
+                            matchingIngredientCount++;
+                        }
+                    }
+
+                    if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
+                    {
+                        recipes.Add(recipe);
                     }
                 }
-
-                if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
-                {
-                    recipes.Add(recipe);
-                }
             }
+            else
+            {
+                //recipes = await recipesQuery
+                //    .Where(recipe => recipe.RecipeIngredients
+                //        .Count(recipeIngredient => filter.IngredientIds
+                //        .Contains(recipeIngredient.Ingredient.Id))
+                //         >= recipe.RecipeIngredients.Count)
+                //    .AsNoTracking()
+                //    .ToListAsync();
+                foreach (var recipe in recipesQuery)
+                {
+                    var matchingIngredientCount = 0;
+                    foreach (var recipeIngredient in recipe.RecipeIngredients)
+                    {
+                        var ingredientId = recipeIngredient.Ingredient.Id;
+                        if (filter.IngredientIds.Contains(ingredientId))
+                        {
+                            matchingIngredientCount++;
+                        }
+                    }
+
+                    if (filter.IngredientIds.Count() == matchingIngredientCount)
+                    {
+                        recipes.Add(recipe);
+                    }
+                }
+            } 
         }
 
         return recipes;
