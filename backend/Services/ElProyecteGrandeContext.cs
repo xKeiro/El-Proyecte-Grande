@@ -46,5 +46,11 @@ public class ElProyecteGrandeContext : DbContext
         _ = modelBuilder.Entity<RecipeIngredient>().Navigation(recipeIngredient => recipeIngredient.Ingredient).AutoInclude();
         _ = modelBuilder.Entity<User>().Property(u => u.Username).UseCollation("SQL_Latin1_General_CP1_CS_AS"); // case-sensitive
         _ = modelBuilder.Entity<User>().Property(u => u.EmailAddress).UseCollation("SQL_Latin1_General_CP1_CS_AS"); // case-sensitive
+
+        _ = modelBuilder.Entity<Recipe>().HasMany(e => e.PreparationSteps).WithOne()
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        _ = modelBuilder.Entity<Recipe>().HasMany(e => e.RecipeIngredients).WithOne()
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

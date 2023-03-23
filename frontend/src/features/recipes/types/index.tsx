@@ -19,7 +19,10 @@ export const preparationSchema = z.object({
     description: z.string().min(2).max(750),
 })
 
-export type TPreparation = z.infer<typeof preparationSchema>
+export const recipeIngredientToPost = z.object({
+    ingredientId: z.number().int().positive(),
+    amount: z.number().positive()
+});
 
 export const recipeSchema = z.object({
     id: z.number().int().positive(),
@@ -36,7 +39,7 @@ export const recipeSchema = z.object({
 
 export const recipesSchema = z.array(recipeSchema)
 
-export type TRecipeIngredient = z.infer<typeof recipeIngredientSchema>;
+export type TPreparation = z.infer<typeof preparationSchema>
 
 
 export const recipesSchemaWithPagination = z.object({
@@ -52,7 +55,7 @@ export type TRecipesFilter = {
     ingredientIds: number[], 
     searchString: string, 
     preparationMaxDifficulty: PreparationDifficulty | null, 
-    maxNotOwnedIngredients: number,
+    maxNotOwnedIngredients: number | null,
     page: number
     recipesPerPage: number
 }
@@ -60,3 +63,12 @@ export type TRecipesFilter = {
 export type TRecipesWithPagination = z.infer<typeof recipesSchemaWithPagination>;
 
 export type TRecipe = z.infer<typeof recipeSchema>;
+
+export type TRecipeIngredient = z.infer<typeof recipeIngredientSchema>;
+
+export type RecipeIngredientToPost = z.infer<typeof recipeIngredientToPost>;
+
+export type PreparationStep = z.infer<typeof preparationSchema>;
+
+
+

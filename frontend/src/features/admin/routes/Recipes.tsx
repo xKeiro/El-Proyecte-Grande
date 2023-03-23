@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { RecipesApi } from '@/features/recipes/api/RecipesApi';
-import { TRecipe, TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
+import { TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
 import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
+import InfiniteScroll from 'react-infinite-scroller';
+import ReactDOM from 'react-dom';
 
 export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
-  const [recipesWithPagination, setRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
+  const [filteredRecipesWithPagination, setFilteredRecipesWithPagination] = useState<TRecipesWithPagination | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [currentFilter, setCurrentFilter] = useState<TRecipesFilter | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,12 +27,38 @@ export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
       dishTypeIds: [],
       searchString: searchString,
       preparationMaxDifficulty: null,
-      maxNotOwnedIngredients: 0,
+      maxNotOwnedIngredients: null,
       page: 1,
-      recipesPerPage: 50
+      recipesPerPage: 5
     }
+    setCurrentFilter(filter);
     const recipesList = await RecipesApi.filterRecipes(filter);
-    setRecipesWithPagination(recipesList);
+    setFilteredRecipesWithPagination(recipesList);
+  }
+
+  async function loadMoreRecipes() {
+    if (currentFilter === null) return;
+    const nextFilter = currentFilter;
+    nextFilter.page = currentFilter.page + 1;
+    const recipesWithPagination = (await RecipesApi.filterRecipes(nextFilter));
+    if (recipesWithPagination) {
+      recipesWithPagination.recipes = filteredRecipesWithPagination!.recipes.concat(recipesWithPagination.recipes);
+      setFilteredRecipesWithPagination(recipesWithPagination);
+      setCurrentFilter(nextFilter);
+    }
+    else {
+      const errorElement = (
+        <div className="toast toast-center">
+          <div className="alert alert-error">
+            <div>
+              <span>There was a problem!.</span>
+            </div>
+          </div>
+        </div>
+      )
+      ReactDOM.render(errorElement, document.body);
+    }
+
   }
 
   if (isAdmin)
@@ -38,18 +67,25 @@ export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
         <div className='text-center'>
           <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} handleRecipeSearch={handleSearch} />
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 text-center py-5">
-          {recipesWithPagination?.recipes.map((recipe) => (
-            <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} className="hover:underline">
-              {recipe.name}
-            </Link>
-          ))}
-        </div>
-        <div className="btn-group w-full justify-center mt-8">
-          <button className="btn btn-md">1</button>
-          <button className="btn btn-md">2</button>
-          <button className="btn btn-md">3</button>
-          <button className="btn btn-md">4</button>
+
+        <InfiniteScroll
+          pageStart={0}
+          loadMore={loadMoreRecipes}
+          hasMore={filteredRecipesWithPagination?.nextPage != null}
+          loader={<div className="loader" key={0}>Loading ...</div>}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 text-center py-5">
+            {filteredRecipesWithPagination?.recipes.map((recipe) => (
+              <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} className="hover:underline">
+                {recipe.name}
+              </Link>
+            ))}
+          </div>
+        </InfiniteScroll>
+
+
+        <div className='flex justify-center my-4'>
+          <Link to="/admin/recipes/add" className="btn btn-primary">Add New Recipe</Link>
         </div>
       </div>
     );

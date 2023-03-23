@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.Recipe;
 using backend.Interfaces.Services;
 using backend.Models;
@@ -55,7 +56,7 @@ public class RecipeService : IRecipeService
         List<Recipe> recipes = new();
         if (filter.IngredientIds == null)
         {
-            recipes = filter.MaxNumberOfNotOwnedIngredients == 0
+            recipes = filter.MaxNumberOfNotOwnedIngredients == null
                 ? await recipesQuery
                     .AsNoTracking()
                     .ToListAsync()
@@ -66,23 +67,53 @@ public class RecipeService : IRecipeService
         }
         else
         {
-            foreach (var recipe in recipesQuery)
+            if (filter.MaxNumberOfNotOwnedIngredients != null)
             {
-                var matchingIngredientCount = 0;
-                foreach (var recipeIngredient in recipe.RecipeIngredients)
+                foreach (var recipe in recipesQuery)
                 {
-                    var ingredientId = recipeIngredient.Ingredient.Id;
-                    if (filter.IngredientIds.Contains(ingredientId))
+                    var matchingIngredientCount = 0;
+                    foreach (var recipeIngredient in recipe.RecipeIngredients)
                     {
-                        matchingIngredientCount++;
+                        var ingredientId = recipeIngredient.Ingredient.Id;
+                        if (filter.IngredientIds.Contains(ingredientId))
+                        {
+                            matchingIngredientCount++;
+                        }
+                    }
+
+                    if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
+                    {
+                        recipes.Add(recipe);
                     }
                 }
-
-                if (recipe.RecipeIngredients.Count <= matchingIngredientCount + filter.MaxNumberOfNotOwnedIngredients)
-                {
-                    recipes.Add(recipe);
-                }
             }
+            else
+            {
+                //recipes = await recipesQuery
+                //    .Where(recipe => recipe.RecipeIngredients
+                //        .Count(recipeIngredient => filter.IngredientIds
+                //        .Contains(recipeIngredient.Ingredient.Id))
+                //         >= recipe.RecipeIngredients.Count)
+                //    .AsNoTracking()
+                //    .ToListAsync();
+                foreach (var recipe in recipesQuery)
+                {
+                    var matchingIngredientCount = 0;
+                    foreach (var recipeIngredient in recipe.RecipeIngredients)
+                    {
+                        var ingredientId = recipeIngredient.Ingredient.Id;
+                        if (filter.IngredientIds.Contains(ingredientId))
+                        {
+                            matchingIngredientCount++;
+                        }
+                    }
+
+                    if (filter.IngredientIds.Count() == matchingIngredientCount)
+                    {
+                        recipes.Add(recipe);
+                    }
+                }
+            } 
         }
 
         return recipes;
@@ -148,6 +179,16 @@ public class RecipeService : IRecipeService
         _ = _context.Recipes.Remove(recipe);
         _ = await _context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<RecipePublic?> GetLastRecipe()
+    {
+        var recipe = await _context.Recipes.OrderByDescending(recipe => recipe.Id).FirstOrDefaultAsync();
+        return recipe switch
+        {
+            null => null,
+            _ => _mapper.Map<Recipe, RecipePublic>(recipe)
+        };
     }
 
     public async Task<bool> IsUnique(RecipeRequest recipeRequest)
@@ -220,18 +261,7 @@ public class RecipeService : IRecipeService
                 });
         }
 
-        List<PreparationStep> preparationSteps = new();
-        foreach (var preparationStepId in recipeRequest.PreparationStepsId)
-        {
-            var preparationStep = _context.PreparationSteps.Find(preparationStepId);
-            switch (preparationStep)
-            {
-                case null:
-                    return null;
-            }
-
-            preparationSteps.Add(preparationStep);
-        }
+        var preparationSteps = _mapper.Map<ICollection<PreparationStepWithoutId>, ICollection<PreparationStep>>(recipeRequest.PreparationStepsWithoutIds);
 
         switch (recipeToUpdate)
         {
@@ -257,6 +287,7 @@ public class RecipeService : IRecipeService
                 recipeToUpdate.MealTimes = mealTimes;
                 recipeToUpdate.Diets = diets;
                 recipeToUpdate.DishType = dishType;
+                recipeToUpdate.PreparationSteps = preparationSteps;
                 return recipeToUpdate;
         }
     }

@@ -21,6 +21,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using backend.Dtos.Recipes.PreparationStep;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,6 +79,15 @@ builder.Services.AddAuthentication(opt =>
             return Task.CompletedTask;
         }
     };
+})
+.AddGoogle(options =>
+{
+    IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+    
+    options.ClientId = googleAuthNSection["ClientId"];
+    options.ClientSecret = googleAuthNSection["ClientSecret"];
+
+    if (options.ClientId is null || options.ClientSecret is null) throw new ConfigurationErrorsException("Missing Google secrets!");
 });
 
 // Add Services
@@ -96,6 +106,11 @@ builder.Services.AddScoped<IStatusMessageService<Ingredient>, StatusMessageServi
 builder.Services.AddScoped<ICategoryService<DietPublic, DietWithoutId>, DietService>();
 builder.Services.AddScoped<IStatusMessageService<Diet>, StatusMessageService<Diet>>();
 
+builder.Services.AddScoped<IBasicCrudService<PreparationStepPublic, PreparationStepWithoutId>, PreparationStepService>();
+builder.Services.AddScoped<IStatusMessageService<PreparationStep>, StatusMessageService<PreparationStep>>();
+
+// builder.Services.AddScoped<IBasicCrudService<UserRecipe>, UserRecipeService>();
+// builder.Services.AddScoped<IStatusMessageService<UserRecipe>, StatusMessageService<UserRecipe>>();
 builder.Services.AddScoped<IUserService<UserPublic, UserWithoutId>, UserService>();
 builder.Services.AddScoped<IStatusMessageService<User>, StatusMessageService<User>>();
 
@@ -114,19 +129,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-//app.UseStatusCodePages(async context =>
-//{
-//    var response = context.HttpContext.Response;
-//    string? location = app.Configuration.GetValue<string>("Location");
-//    if (string.IsNullOrEmpty(location))
-//        throw new ConfigurationErrorsException("Missing location!");
-
-//    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-//    {
-//        response.Redirect(location);
-//    }
-//});
 
 app.UseCors("corspolicy");
 

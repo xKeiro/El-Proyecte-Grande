@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Navigate, useParams} from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import { RecipesApi } from '@/features/recipes/api/RecipesApi';
 import { TRecipe } from '@/features/recipes';
 import { RecipeHeader } from '@/features/recipes/components/RecipeHeader';
@@ -9,7 +9,7 @@ import { RecipeIngredients } from '@/features/recipes/components/RecipeIngredien
 import { RecipePreparation } from '@/features/recipes/components/RecipePreparation';
 import { RecipeButtons } from '@/features/admin/components/RecipeButtons';
 
-export const AdminRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
+export const AdminRecipe = ({ isAdmin, username } : { isAdmin : boolean, username : string | null }) => {
     const [recipe, setRecipe] = useState<TRecipe | null>(null);
     const { id } = useParams<{ id: string }>();
     const idNumeric = parseInt(id!);
@@ -27,7 +27,7 @@ export const AdminRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
                 <RecipeImage id={recipe.id} name={recipe.name} />
             </div>
             <div className="recipe-info md:place-items-start p-4 ">
-                <RecipeHeader recipe={recipe} />
+                <RecipeHeader recipe={recipe} username={username} />
                 <RecipeDescription description={recipe.description} />
             <h3 className="recipe-sub-title font-bold text-xl">Ingredients</h3>
                 <RecipeIngredients ingredients={recipe.recipeIngredients} />
