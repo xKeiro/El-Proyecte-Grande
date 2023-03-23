@@ -53,7 +53,7 @@ export const Login = ({ loggedInUsername, setLoggedInUsername, setIsAdmin } : {
   const googleLogin = async (e : SyntheticEvent) => {
     e.preventDefault();
 
-    const response = await fetch(API_URL + "/Auth/GoogleLogin");
+    console.log("TODO");
   }
 
   if (loggedInUsername == null) return (
