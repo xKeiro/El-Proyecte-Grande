@@ -3,6 +3,8 @@ using backend.Dtos.Users.User;
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Users;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -87,7 +89,14 @@ namespace backend.Controllers
                 Secure = true
             });
 
-            return Ok("success");
+            return StatusCode(StatusCodes.Status200OK, "You successfully logged out!");
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task GoogleLogin()
+        {
+            await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme);
         }
     }
 }
