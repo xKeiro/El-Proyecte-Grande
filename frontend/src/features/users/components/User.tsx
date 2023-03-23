@@ -32,7 +32,7 @@ export const User = ({ isAdmin } : { isAdmin : boolean }) => {
 
     if (isAdmin) return (
         <div className="min-h-screen flex  justify-center">
-            <div className="w-2/5 mx-auto p-4 flex flex-col">
+            <div className="md:w-2/5 mx-auto p-4 flex flex-col">
                 <div className="flex items-center justify-center bg-base-300 rounded p-4">
                     <div className="text-center">
                         <h1 className="text-2xl font-medium"><u>{user?.username}</u></h1>
