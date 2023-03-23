@@ -38,7 +38,7 @@ export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
         <div className='text-center'>
           <RecipeSearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} handleRecipeSearch={handleSearch} />
         </div>
-        <div className="grid grid-cols-4 gap-5 text-center py-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 text-center py-5">
           {recipesWithPagination?.recipes.map((recipe) => (
             <Link key={recipe.id} to={`/admin/recipes/${recipe.id}`} className="hover:underline">
               {recipe.name}
