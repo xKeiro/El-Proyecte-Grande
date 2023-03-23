@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import logo from '@/assets/logo.png';
 import { themeChange } from 'theme-change';
 import { OptionLink } from "@/features/auth/components/OptionLink";
+import { MainPage } from '../../features/recipes/routes/MainPage';
 
 const themes = [
   'light',
@@ -100,7 +101,7 @@ export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } : {
             <div className="md:max-2xl:ml-4">{username == null ? "Not logged in" : "Hello " + username}</div>
           }
         </div>
-        <div className="navbar-center md:justify-center w-1/3">
+        <div className="navbar-center min-[320px]:max-[425px]:invisible min-[425px]:justify-center w-1/3">
           <Link to="/">
             <img src={logo} alt="What can I cook logo" style={styles.logo} />
           </Link>
@@ -129,6 +130,12 @@ export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } : {
             <ul
               tabIndex={0}
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52">
+              {
+                username != null &&
+                <li className="sm:hidden">
+                  <OptionLink text={"Main Page"} to={"/"} isLogout={false} />
+                </li>
+              }
               {
                 username == null &&
                 <li>
