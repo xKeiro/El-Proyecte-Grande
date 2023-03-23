@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { RecipesApi } from '@/features/recipes/api/RecipesApi';
-import { TRecipe, TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
+import { TRecipesFilter, TRecipesWithPagination } from '@/features/recipes';
 import { RecipeSearchBox } from "@/features/recipes/components/RecipeSearchBox";
-import { RecipeAddNew } from '../components/RecipeAddNew';
 import InfiniteScroll from 'react-infinite-scroller';
 import ReactDOM from 'react-dom';
 
@@ -85,7 +84,7 @@ export const Recipes = ({ isAdmin }: { isAdmin: boolean }) => {
         </InfiniteScroll>
 
 
-        <div className='flex justify-center mt-4'>
+        <div className='flex justify-center my-4'>
           <Link to="/admin/recipes/add" className="btn btn-primary">Add New Recipe</Link>
         </div>
       </div>

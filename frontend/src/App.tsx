@@ -16,7 +16,7 @@ export const App = () =>{
       <NavBar username={username} isAdmin={isAdmin} setUsername={setUsername} setIsAdmin={setIsAdmin} />
           <RecipesRoutes username={username}/>
           <UsersRoutes isAdmin={isAdmin}/>
-          <AdminRoutes isAdmin={isAdmin} />
+          <AdminRoutes isAdmin={isAdmin} username={username} />
           <AuthRoutes username={username} setUsername={setUsername} setIsAdmin={setIsAdmin} />
       <div className="h-20">
       </div>
