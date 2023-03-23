@@ -17,17 +17,6 @@ export abstract class RecipesApi {
     }
   }
 
-  public static async getLastRecipe() {
-    const res = await axios.get(`${API_URL}/Recipes/Last`, { withCredentials: true });
-    const result = recipeSchema.safeParse(res.data);
-    console.log(result)
-    if (result.success) {
-      return res.data;
-    } else {
-      console.log(result.error.issues);
-    }
-  }
-
   public static async get(id: number) {
     const res = await axios.get(`${API_URL}/Recipes/${id}`, { withCredentials: true });
     const result = recipeSchema.safeParse(res.data);
