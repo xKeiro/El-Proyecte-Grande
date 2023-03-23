@@ -106,7 +106,7 @@ export const MainPage = () => {
             : <div className="text-center">Loading the recipes...</div>}
         </div>
       </div>
-      {showToTopButton && (<button className='btn btn-circle fixed right-11 bottom-20 w-16 h-16 text-2xl text-base-content outline-base-content glass' type='button' title='Jump back to the top of the page' onClick={scrollToTop}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg></button>)}
+      {showToTopButton && (<button className='btn btn-circle fixed right-8 bottom-36 md:bottom-20 w-16 h-16 text-2xl text-base-content outline-base-content glass' type='button' title='Jump back to the top of the page' onClick={scrollToTop}><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V6M5 12l7-7 7 7" /></svg></button>)}
     </div>
   );
 };
