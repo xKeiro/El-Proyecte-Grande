@@ -2,9 +2,15 @@
 using System.Security.Claims;
 using System.Text;
 using AutoMapper;
+using backend.Dtos;
 using backend.Dtos.Users.User;
 using backend.Interfaces.Services;
 using backend.Models.Users;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Gmail.v1.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using Microsoft.IdentityModel.Tokens;
 
 namespace backend.Services
@@ -61,6 +67,63 @@ namespace backend.Services
 
             if (resUser == null || !verified) return null;
             return _mapper.Map<User, UserPublic>(resUser);
+        }
+
+        public bool SendWelcomeEmail(string to, string username)
+        {
+            string[] scopes = { GmailService.Scope.GmailSend };
+            UserCredential credential;
+
+            using (var stream = new FileStream(
+                       "./GmailAPI/client_secret.json",
+                       FileMode.Open,
+                       FileAccess.Read
+                   ))
+            {
+                string credPath = "GmailAPI";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.FromStream(stream).Secrets,
+                    scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+            }
+
+            // Create Gmail API service.
+            var service = new GmailService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = "WhatCanICook",
+            });
+
+            //Parsing HTML 
+            string subject = "Welcome to What Can I Cook";
+            string body = $"Greetings {username}!" +
+                          "<br /><br />This is just a little welcome from us. We hope that you'll like our website and find the right recipe you're searching for." +
+                          "<br /><br />Best Regards," +
+                          "<br />The What Can I Cook Team :)";
+
+            string message = $"To: {to}\r\nSubject: {subject}\r\nContent-Type: text/html;charset=utf-8\r\n\r\n{body}";
+            Message newMsg = new ()
+            {
+                Raw = Base64UrlEncode(message)
+            };
+            Message response = service.Users.Messages.Send(newMsg, "me").Execute();
+
+            if (response != null)
+                return true;
+
+            return false;
+        }
+
+        private string Base64UrlEncode(string input)
+        {
+            var inputBytes = Encoding.UTF8.GetBytes(input);
+            // Special "url-safe" base64 encode.
+            return Convert.ToBase64String(inputBytes)
+                .Replace('+', '-')
+                .Replace('/', '_')
+                .Replace("=", "");
         }
     }
 }
