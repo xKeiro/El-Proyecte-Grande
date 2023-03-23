@@ -20,8 +20,8 @@ export const Users = ({ isAdmin } : { isAdmin : boolean }) => {
         <thead>
           <tr>
             <th>Username</th>
-            <th>Name</th>
-            <th>Email</th>
+            <th className="min-[320px]:max-sm:hidden">Name</th>
+            <th className="min-[320px]:max-sm:hidden">Email</th>
             <th></th>
           </tr>
         </thead>
@@ -29,12 +29,12 @@ export const Users = ({ isAdmin } : { isAdmin : boolean }) => {
           {users.map((user) => (
             <tr key={user.id}>
               <td>{user.username}</td>
-              <td>
+              <td className="min-[320px]:max-sm:hidden">
                 {(user.firstName == null ? '' : user.firstName) +
                   (user.firstName != null && user.lastName != null ? ' ' : '-') +
                   (user.lastName == null ? '' : user.lastName)}
               </td>
-              <td>{user.emailAddress}</td>
+              <td className="min-[320px]:max-sm:hidden">{user.emailAddress}</td>
               <td>
                 <Link to={`/users/${user.id}`} className="btn btn-square btn-ghost">
                   <svg
