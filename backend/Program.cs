@@ -130,19 +130,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseStatusCodePages(async context =>
-//{
-//    var response = context.HttpContext.Response;
-//    string? location = app.Configuration.GetValue<string>("Location");
-//    if (string.IsNullOrEmpty(location))
-//        throw new ConfigurationErrorsException("Missing location!");
-
-//    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-//    {
-//        response.Redirect(location);
-//    }
-//});
-
 app.UseCors("corspolicy");
 
 app.UseAuthentication();
