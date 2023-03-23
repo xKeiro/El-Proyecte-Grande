@@ -82,12 +82,12 @@ builder.Services.AddAuthentication(opt =>
 })
 .AddGoogle(options =>
 {
-    IConfigurationSection? googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+    IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
     
-    if (googleAuthNSection is null) throw new ConfigurationErrorsException("Missing Google secrets!");
-
     options.ClientId = googleAuthNSection["ClientId"];
     options.ClientSecret = googleAuthNSection["ClientSecret"];
+
+    if (options.ClientId is null || options.ClientSecret is null) throw new ConfigurationErrorsException("Missing Google secrets!");
 });
 
 // Add Services
