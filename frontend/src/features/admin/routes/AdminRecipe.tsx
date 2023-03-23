@@ -22,18 +22,22 @@ export const AdminRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
     if (!isAdmin) return (<Navigate to="/unauthorized" />);
     if (!recipe) return (<div>Loading...</div>);
     return (
-        <div className="card shadow-xl">
-            <div className="card card-side bg-base-100">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center shadow-xl">
+            <div className="bg-base-100 md:pl-6 xl:w-96 2xl:w-96">
                 <RecipeImage id={recipe.id} name={recipe.name} />
-                <div className="card-body recipe-info">
-                    <RecipeHeader recipe={recipe} />
-                    <RecipeDescription description={recipe.description} />
-                    <h3 className="recipe-sub-title font-bold text-xl">Ingredients</h3>
-                    <RecipeIngredients ingredients={recipe.recipeIngredients} />
-                </div>
             </div>
-            <RecipePreparation preparationSteps={recipe.preparationSteps} />
-            <RecipeButtons recipeId={recipe.id} />
+            <div className="recipe-info md:place-items-start p-4 ">
+                <RecipeHeader recipe={recipe} />
+                <RecipeDescription description={recipe.description} />
+            <h3 className="recipe-sub-title font-bold text-xl">Ingredients</h3>
+                <RecipeIngredients ingredients={recipe.recipeIngredients} />
+            </div>
+            <div className="md:col-span-2">
+                <RecipePreparation preparationSteps={recipe.preparationSteps} />
+            </div>
+            <div className="md:col-span-2 pb-6 justify-self-end px-6">
+                <RecipeButtons recipeId={recipe.id} />
+            </div>
         </div>
     );
 };
