@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Users.User;
+using backend.Dtos.Users.UserRecipe;
 using backend.Enums;
 using backend.Interfaces.Services;
 using backend.Models.Recipes;
 using backend.Models.Users;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services.Users;
@@ -138,5 +140,33 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
                             where u.Id == userId && rs.Status.Name == RecipeStatus.Disliked
                             select _mapper.Map<Recipe, RecipePublic>(r)).ToListAsync();
         return result;
+    }
+
+    public async Task<UserRecipePublic?> AddUserRecipe(string username, UserRecipeAddNew userRecipeAddNew)
+    {
+        var userRecipeStatus = new UserRecipeStatus()
+        {
+            Name = userRecipeAddNew.RecipeStatus
+        };
+        var recipe = await _context.Recipes.FindAsync(userRecipeAddNew.RecipeId);
+        if (recipe == null)
+        {
+            return null;
+        }
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Username == username);
+        if (user == null)
+        {
+            return null;
+        }
+        var userRecipe = new UserRecipe()
+        {
+            Recipe = recipe,
+            User = user,
+            Status = userRecipeStatus
+        };
+        _ = await _context.UserRecipes.AddAsync(userRecipe);
+        _ = await _context.SaveChangesAsync();
+        return _mapper.Map<UserRecipe, UserRecipePublic>(userRecipe);
     }
 }

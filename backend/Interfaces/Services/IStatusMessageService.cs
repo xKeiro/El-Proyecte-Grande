@@ -12,4 +12,5 @@ public interface IStatusMessageService<T>
     StatusMessage NotUnique();
     StatusMessage GenericError();
     StatusMessage ANotExistingIdProvided();
+    StatusMessage LoginNeeded();
 }
