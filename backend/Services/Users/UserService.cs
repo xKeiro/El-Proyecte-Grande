@@ -2,6 +2,7 @@
 using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Users.User;
 using backend.Dtos.Users.UserRecipe;
+using backend.Dtos.Users.UserRecipeStatus;
 using backend.Enums;
 using backend.Interfaces.Services;
 using backend.Models.Recipes;
@@ -168,5 +169,10 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         _ = await _context.UserRecipes.AddAsync(userRecipe);
         _ = await _context.SaveChangesAsync();
         return _mapper.Map<UserRecipe, UserRecipePublic>(userRecipe);
+    }
+
+    public Task<List<UserRecipeStatusPublic?>> GetUserRecipeStatusByRecipeId(int recipeId)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Users.User;
 using backend.Dtos.Users.UserRecipe;
+using backend.Dtos.Users.UserRecipeStatus;
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Users;
@@ -89,8 +90,42 @@ public class UsersController : ControllerBase
         }
     }
 
-    [HttpPost("Recipes")]
+    [HttpGet("Recipes")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<List<UserRecipeStatusPublic?>>> GetLoggedInUserRecipeStatus(int recipeId)
+    {
+        try
+        {
+            var username = HttpContext.User.Identity?.Name;
+            if (username == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var user = await _service.FindByUsername(username);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var userRecipe = await _service.GetUserRecipeStatusByRecipeId(recipeId);
+            if (userRecipe == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK, userRecipe);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpPost("Recipes")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]

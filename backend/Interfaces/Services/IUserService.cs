@@ -1,6 +1,7 @@
 ﻿using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Users.User;
 using backend.Dtos.Users.UserRecipe;
+using backend.Dtos.Users.UserRecipeStatus;
 using backend.Enums;
 using backend.Models.Recipes;
 using backend.Models.Users;
@@ -19,5 +20,6 @@ public interface IUserService<TResponseDto, TRequestDto> :
     Task<List<RecipePublic>> LikedRecipes(int userId);
     Task<List<RecipePublic>> SavedRecipes(int userId);
     Task<List<RecipePublic>> DislikedRecipes(int userId);
+    Task<List<UserRecipeStatusPublic?>> GetUserRecipeStatusByRecipeId(int recipeId);
     Task<UserRecipePublic?> AddUserRecipe(string username, UserRecipeAddNew userRecipeAddNew);
 }
