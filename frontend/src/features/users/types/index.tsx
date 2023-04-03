@@ -1,5 +1,11 @@
 import * as z from 'zod'; 
 
+export enum UserRecipeStatus {
+    Liked = "Liked",
+    Disliked = "Disliked",
+    Saved = "Saved"
+}
+
 export const userSchema = z.object({
     id: z.number().int().positive(),
     username: z.string().min(2).max(50),
