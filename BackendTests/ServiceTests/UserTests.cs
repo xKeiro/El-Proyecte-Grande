@@ -1,8 +1,10 @@
 using AutoMapper;
 using backend.Dtos.Users.User;
+using backend.Maps;
 using backend.Models.Users;
 using backend.Services;
 using backend.Services.Users;
+using BackendTests.Utils;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
@@ -10,13 +12,13 @@ using Moq.EntityFrameworkCore;
 namespace BackendTests.ServiceTests
 {
     [TestFixture]
-    public class Tests
+    public class UserTests
     {
         private Mock<ElProyecteGrandeContext> _mockContext;
+        private IMapper _mapper;
         private UserService _service;
         private List<User> _users;
         private List<UserPublic> _usersPublic;
-        private Mock<IMapper> _mapper;
 
         [SetUp]
         public void Setup()
@@ -88,16 +90,16 @@ namespace BackendTests.ServiceTests
             _mockContext = new(new DbContextOptions<ElProyecteGrandeContext>());
             _mockContext.Setup(x => x.Users).ReturnsDbSet(_users);
 
-            _mapper = new Mock<IMapper>();
-            _mapper.Setup(m => m.Map<List<User>, List<UserPublic>>(It.IsAny<List<User>>())).Returns(_usersPublic);
+            var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(typeof(MappingProfile)));
+            _mapper = mappingConfig.CreateMapper();
 
-            _service = new UserService(_mockContext.Object, _mapper.Object);
+            _service = new UserService(_mockContext.Object, _mapper);
         }
 
         [Test]
         public async Task GetAll_WhenCalled_ReturnsUserList()
         {
-            CollectionAssert.AreEqual(_usersPublic, await _service.GetAll());
+            Util.AreEqualByJson(_usersPublic, await _service.GetAll());
         }
     }
 }
