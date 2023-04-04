@@ -1,21 +1,12 @@
 ﻿using AutoMapper;
-using backend.Dtos.Users.User;
-using backend.Models.Users;
-using backend.Services.Users;
 using backend.Services;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using backend.Dtos.Recipes.Recipe;
 using backend.Enums;
 using backend.Models;
 using backend.Models.Categories;
 using backend.Models.Recipes;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 using backend.Dtos.Categories.Cuisine;
 using backend.Dtos.Categories.Diet;
 using backend.Dtos.Categories.DishType;
@@ -23,11 +14,7 @@ using backend.Dtos.Categories.MealTime;
 using backend.Dtos.Ingredient;
 using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.RecipeIngredient;
-using backend.Interfaces.Services;
-using Microsoft.AspNetCore.SignalR;
 using Moq.EntityFrameworkCore;
-using backend.Services.Categories;
-using BackendTests.Utils;
 using Newtonsoft.Json;
 
 namespace BackendTests.ServiceTests
@@ -259,14 +246,13 @@ namespace BackendTests.ServiceTests
         public async Task Find_ReturnsRecipePublic_WhenRecipeFound()
         {
             int id = 1;
-            var expected = _recipesPublic.First();
+            var expected = _recipesPublic.First(r => r.Id == id);
 
-            // Act
-            var result = await _service.Find(1);
+            var result = await _service.Find(id);
 
-            // Assert
-            Assert.AreEqual(expected, result);
-
+            Util.AreEqualByJson(result, expected);
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result, Is.TypeOf<RecipePublic>());
         }*/
 
         [Test]
