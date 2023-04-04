@@ -101,5 +101,91 @@ namespace BackendTests.ServiceTests
         {
             Util.AreEqualByJson(_usersPublic, await _service.GetAll());
         }
+
+        [Test]
+        public async Task Find_CalledWithExistingId_ReturnsUser()
+        {
+            UserPublic expectedUser = new()
+            {
+                Id = 1,
+                Username = "longdon",
+                EmailAddress = "ding@dong.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+            };
+
+            Util.AreEqualByJson(expectedUser, await _service.Find(1));
+        }
+
+        [Test]
+        public async Task Find_CalledWithNotExistingId_ReturnsNull()
+        {
+            Assert.Null(await _service.Find(4));
+        }
+
+        [Test]
+        public async Task IsUnique_CalledWithExistingUsernameAndEmail_ReturnsFalse()
+        {
+            UserWithoutId existingUserWithoutId = new()
+            {
+                Username = "omegalol",
+                EmailAddress = "super@nice.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            Assert.False(await _service.IsUnique(existingUserWithoutId));
+        }
+
+        [Test]
+        public async Task IsUnique_CalledWithExistingUsername_ReturnsFalse()
+        {
+            UserWithoutId existingUserWithSameUsername = new()
+            {
+                Username = "omegalol",
+                EmailAddress = "supernicity@nice888.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            Assert.False(await _service.IsUnique(existingUserWithSameUsername));
+        }
+
+        [Test]
+        public async Task IsUnique_CalledWithExistingEmail_ReturnsFalse()
+        {
+            UserWithoutId existingUserWithSameEmail = new()
+            {
+                Username = "omegaloller523",
+                EmailAddress = "super@nice.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            Assert.False(await _service.IsUnique(existingUserWithSameEmail));
+        }
+
+        [Test]
+        public async Task IsUnique_CalledWithNotExistingUsernameAndEmail_ReturnsTrue()
+        {
+            UserWithoutId newUserWithoutId = new()
+            {
+                Username = "sigmauser",
+                EmailAddress = "cool@this.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            Assert.True(await _service.IsUnique(newUserWithoutId));
+        }
     }
 }
