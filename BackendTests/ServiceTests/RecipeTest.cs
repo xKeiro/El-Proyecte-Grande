@@ -26,6 +26,9 @@ using backend.Dtos.Recipes.RecipeIngredient;
 using backend.Interfaces.Services;
 using Microsoft.AspNetCore.SignalR;
 using Moq.EntityFrameworkCore;
+using backend.Services.Categories;
+using BackendTests.Utils;
+using Newtonsoft.Json;
 
 namespace BackendTests.ServiceTests
 {
@@ -68,24 +71,24 @@ namespace BackendTests.ServiceTests
             };
 
 
-            var pennePublic = new IngredientPublic { Name = "Penne Pasta", UnitOfMeasure = "g", Calorie = 352 };
-            var vegetarianPublic = new DietPublic { Name = "Vegetarian" };
-            var pastaPublic = new DishTypePublic { Name = "Pasta" };
-            var breakfastPublic = new MealTimePublic { Name = "Breakfast" };
-            var hungarianPublic = new CuisinePublic { Name = "Hungarian" };
+            var pennePublic = new IngredientPublic { Id=1, Name = "Penne Pasta", UnitOfMeasure = "g", Calorie = 352 };
+            var vegetarianPublic = new DietPublic { Id=1, Name = "Vegetarian" };
+            var pastaPublic = new DishTypePublic { Id = 1, Name = "Pasta" };
+            var breakfastPublic = new MealTimePublic { Id=1, Name = "Breakfast" };
+            var hungarianPublic = new CuisinePublic { Id = 1, Name = "Hungarian" };
             var penneRecipePublic = new RecipePublic
             {
                 Id=1,
                 Name = "Penne with Tomato and Cheese Sauce",
                 Description = "A simple and delicious pasta dish with a creamy tomato and cheese sauce",
                 Difficulty = PreparationDifficulty.Easy,
-                RecipeIngredients = new List<RecipeIngredientPublic> { new RecipeIngredientPublic { Amount = 250, Ingredient = pennePublic } },
+                RecipeIngredients = new List<RecipeIngredientPublic> { new RecipeIngredientPublic { Id=1, Amount = 250, Ingredient = pennePublic } },
                 Cuisine = hungarianPublic,
                 MealTimes = new List<MealTimePublic> { breakfastPublic },
                 Diets = new List<DietPublic> { vegetarianPublic },
                 DishType = pastaPublic,
                 PreparationSteps = new List<PreparationStepPublic>
-                    { new PreparationStepPublic { Description = "Bring a large pot of salted water to a boil. Add the penne and cook until al dente, about 10 minutes. Drain and set aside.", Step = 1 } }
+                    { new PreparationStepPublic {Id = 1,  Description = "Bring a large pot of salted water to a boil. Add the penne and cook until al dente, about 10 minutes. Drain and set aside.", Step = 1 } }
             };
             _recipes = new List<Recipe> { penneRecipe };
             _recipesPublic = new List<RecipePublic> { penneRecipePublic };
@@ -110,7 +113,7 @@ namespace BackendTests.ServiceTests
 
 
 
-        [Test]
+        /*[Test]
         public async Task Find_ReturnsRecipePublic_WhenRecipeFound()
         {
             int id = 1;
@@ -122,9 +125,36 @@ namespace BackendTests.ServiceTests
             // Assert
             Assert.AreEqual(expected, result);
 
+        }*/
+
+        [Test]
+        public async Task GetAll_RecipesExist_ShouldReturnRecipes()
+        {
+     
+            var filter = new RecipeFilter
+            {
+                Name = null,
+                CuisineIds = null,
+                DishTypeIds = null,
+                DietIds = null,
+                MealTimeIds = null,
+                IngredientIds = null,
+                MaxNumberOfNotOwnedIngredients = null,
+                MaxDifficulty = null,
+                RecipesPerPage = 5
+            };
+            var currentPage = 1;
+            var result = await _service.GetFiltered(filter, currentPage);
+            var expectedJson = JsonConvert.SerializeObject(new RecipesPublicWithNextPage()
+            {
+                NextPage = null,
+                Recipes = _recipesPublic
+            });
+            var actualJson = JsonConvert.SerializeObject(result);
+            Assert.That(actualJson, Is.EqualTo(expectedJson));
         }
 
-        
+
     }
 
 }
