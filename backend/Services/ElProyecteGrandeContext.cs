@@ -14,7 +14,7 @@ public class ElProyecteGrandeContext : DbContext
     {
     }
 
-    public DbSet<Recipe> Recipes { get; set; } = default!;
+    public virtual DbSet<Recipe> Recipes { get; set; } = default!;
     public DbSet<RecipeReview> RecipeReviews { get; set; } = default!;
     public DbSet<RecipeIngredient> RecipeIngredients { get; set; } = default!;
     public DbSet<Ingredient> Ingredients { get; set; } = default!;
