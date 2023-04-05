@@ -14,16 +14,16 @@ namespace BackendTests.ServiceTests
     [TestFixture]
     public class UserTests
     {
-        private Mock<ElProyecteGrandeContext> _mockContext;
-        private IMapper _mapper;
-        private UserService _service;
-        private List<User> _users;
-        private List<UserPublic> _usersPublic;
+        private Mock<ElProyecteGrandeContext> mockContext;
+        private IMapper mapper;
+        private UserService service;
+        private List<User> users;
+        private List<UserPublic> usersPublic;
 
         [SetUp]
         public void Setup()
         {
-            _users = new List<User>()
+            users = new List<User>()
             {
                 new ()
                 {
@@ -57,7 +57,7 @@ namespace BackendTests.ServiceTests
                 }
             };
 
-            _usersPublic = new List<UserPublic>()
+            usersPublic = new List<UserPublic>()
             {
                 new ()
                 {
@@ -87,23 +87,23 @@ namespace BackendTests.ServiceTests
                     IsAdmin = true,
                 }
             };
-            _mockContext = new(new DbContextOptions<ElProyecteGrandeContext>());
-            _mockContext.Setup(x => x.Users).ReturnsDbSet(_users);
+            mockContext = new(new DbContextOptions<ElProyecteGrandeContext>());
+            mockContext.Setup(x => x.Users).ReturnsDbSet(users);
 
             var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(typeof(MappingProfile)));
-            _mapper = mappingConfig.CreateMapper();
+            mapper = mappingConfig.CreateMapper();
 
-            _service = new UserService(_mockContext.Object, _mapper);
+            service = new UserService(mockContext.Object, mapper);
         }
 
         [Test]
         public async Task GetAll_WhenCalled_ReturnsUserList()
         {
-            Util.AreEqualByJson(_usersPublic, await _service.GetAll());
+            Util.AreEqualByJson(usersPublic, await service.GetAll());
         }
 
         [Test]
-        public async Task Find_CalledWithExistingId_ReturnsUser()
+        public async Task Find_ExistingId_ReturnsUser()
         {
             UserPublic expectedUser = new()
             {
@@ -115,19 +115,19 @@ namespace BackendTests.ServiceTests
                 IsAdmin = false,
             };
 
-            Util.AreEqualByJson(expectedUser, await _service.Find(1));
+            Util.AreEqualByJson(expectedUser, await service.Find(1));
         }
 
         [Test]
-        public async Task Find_CalledWithNotExistingId_ReturnsNull()
+        public async Task Find_NotExistingId_ReturnsNull()
         {
-            Assert.Null(await _service.Find(4));
+            Assert.Null(await service.Find(4));
         }
 
         [Test]
-        public async Task IsUnique_CalledWithExistingUsernameAndEmail_ReturnsFalse()
+        public async Task IsUnique_ExistingUsernameAndEmail_ReturnsFalse()
         {
-            UserWithoutId existingUserWithoutId = new()
+            UserWithoutId existingUser = new()
             {
                 Username = "omegalol",
                 EmailAddress = "super@nice.com",
@@ -137,11 +137,11 @@ namespace BackendTests.ServiceTests
                 Password = "12345"
             };
 
-            Assert.False(await _service.IsUnique(existingUserWithoutId));
+            Assert.False(await service.IsUnique(existingUser));
         }
 
         [Test]
-        public async Task IsUnique_CalledWithExistingUsername_ReturnsFalse()
+        public async Task IsUnique_ExistingUsername_ReturnsFalse()
         {
             UserWithoutId existingUserWithSameUsername = new()
             {
@@ -153,11 +153,11 @@ namespace BackendTests.ServiceTests
                 Password = "12345"
             };
 
-            Assert.False(await _service.IsUnique(existingUserWithSameUsername));
+            Assert.False(await service.IsUnique(existingUserWithSameUsername));
         }
 
         [Test]
-        public async Task IsUnique_CalledWithExistingEmail_ReturnsFalse()
+        public async Task IsUnique_ExistingEmail_ReturnsFalse()
         {
             UserWithoutId existingUserWithSameEmail = new()
             {
@@ -169,13 +169,13 @@ namespace BackendTests.ServiceTests
                 Password = "12345"
             };
 
-            Assert.False(await _service.IsUnique(existingUserWithSameEmail));
+            Assert.False(await service.IsUnique(existingUserWithSameEmail));
         }
 
         [Test]
-        public async Task IsUnique_CalledWithNotExistingUsernameAndEmail_ReturnsTrue()
+        public async Task IsUnique_NotExistingUsernameAndEmail_ReturnsTrue()
         {
-            UserWithoutId newUserWithoutId = new()
+            UserWithoutId newUser = new()
             {
                 Username = "sigmauser",
                 EmailAddress = "cool@this.com",
@@ -185,7 +185,94 @@ namespace BackendTests.ServiceTests
                 Password = "12345"
             };
 
-            Assert.True(await _service.IsUnique(newUserWithoutId));
+            Assert.True(await service.IsUnique(newUser));
+        }
+
+        [Test]
+        public async Task FindByUsername_ExistingUsername_ReturnsUser()
+        {
+            User expectedUser = new()
+            {
+                Id = 3,
+                Username = "omegalol",
+                EmailAddress = "super@nice.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = true,
+                Password = "98765"
+            };
+
+            Util.AreEqualByJson(expectedUser, await service.FindByUsername("omegalol"));
+        }
+
+        [Test]
+        public async Task FindByUsername_NotExistingUsername_ReturnsNull()
+        {
+            Assert.Null(await service.FindByUsername("notExistingUser"));
+        }
+
+        [Test]
+        public async Task IsUniqueUsername_NotExistingUsername_ReturnsTrue()
+        {
+            UserWithoutId newUser = new()
+            {
+                Username = "sigmauser",
+                EmailAddress = "cool@this.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            Assert.True(await service.IsUniqueUsername(newUser));
+        }
+
+        [Test]
+        public async Task IsUniqueUsername_ExistingUsername_ReturnsFalse()
+        {
+            UserWithoutId newUser = new()
+            {
+                Username = "omegalol",
+                EmailAddress = "super@nice.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = true,
+                Password = "98765"
+            };
+
+            Assert.False(await service.IsUniqueUsername(newUser));
+        }
+
+        [Test]
+        public async Task IsUniqueEmail_NotExistingEmail_ReturnsTrue()
+        {
+            UserWithoutId newUser = new()
+            {
+                Username = "sigmauser",
+                EmailAddress = "cool@this.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            Assert.True(await service.IsUniqueEmail(newUser));
+        }
+
+        [Test]
+        public async Task IsUniqueEmail_ExistingEmail_ReturnsFalse()
+        {
+            UserWithoutId newUser = new()
+            {
+                Username = "omegalol",
+                EmailAddress = "super@nice.com",
+                FirstName = null,
+                LastName = null,
+                IsAdmin = true,
+                Password = "98765"
+            };
+
+            Assert.False(await service.IsUniqueEmail(newUser));
         }
     }
 }
