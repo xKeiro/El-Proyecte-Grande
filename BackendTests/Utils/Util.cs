@@ -3,7 +3,7 @@
 namespace BackendTests.Utils;
 public static class Util
 {
-    public static void AreEqualByJson(object expected, object actual)
+    public static void AreEqualByJson(object? expected, object? actual)
     {
         var expectedJson = JsonSerializer.Serialize(expected);
         var actualJson = JsonSerializer.Serialize(actual);
