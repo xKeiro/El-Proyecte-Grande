@@ -18,7 +18,6 @@ using BackendTests.Utils;
 using Moq.EntityFrameworkCore;
 using Newtonsoft.Json;
 using backend.Maps;
-using backend.Services.Categories;
 
 namespace BackendTests.ServiceTests
 {
