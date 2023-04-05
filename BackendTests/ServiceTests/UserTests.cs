@@ -406,5 +406,73 @@ namespace BackendTests.ServiceTests
 
             Util.AreEqualByJson(expectedList, await service.DislikedRecipes(325));
         }
+
+        [Test]
+        public async Task Add_NewUser_AddAsyncAndSaveChangesAsyncMethodsCalledOnDb()
+        {
+            UserWithoutId newUserWithoutId = new()
+            {
+                Username = "Ayakababygirl",
+                EmailAddress = "ayaya@best.com",
+                FirstName = "Ayaka",
+                LastName = "Kamisato",
+                IsAdmin = false,
+                Password = "cryoqueen"
+            };
+
+            await service.Add(newUserWithoutId);
+
+            mockContext.Verify(x => x.Users.AddAsync(It.IsAny<User>(), It.IsAny<CancellationToken>()));
+            mockContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        }
+
+        [Test]
+        public async Task Add_NewUser_ReturnsCreatedUser()
+        {
+            UserPublic expectedUser = new()
+            {
+                Id = 0,
+                Username = "Ayakababygirl",
+                EmailAddress = "ayaya@best.com",
+                FirstName = "Ayaka",
+                LastName = "Kamisato",
+                IsAdmin = false,
+            };
+
+            UserWithoutId newUserWithoutId = new()
+            {
+                Username = "Ayakababygirl",
+                EmailAddress = "ayaya@best.com",
+                FirstName = "Ayaka",
+                LastName = "Kamisato",
+                IsAdmin = false,
+                Password = "cryoqueen"
+            };
+
+            UserPublic newUser = await service.Add(newUserWithoutId);
+
+            Util.AreEqualByJson(expectedUser, newUser);
+        }
+
+        [Test]
+        public async Task Add_NewUser_AddsNewUserToDb()
+        {
+            UserWithoutId newUserWithoutId = new()
+            {
+                Username = "Ayakababygirl",
+                EmailAddress = "ayaya@best.com",
+                FirstName = "Ayaka",
+                LastName = "Kamisato",
+                IsAdmin = false,
+                Password = "cryoqueen"
+            };
+
+            mockContext.Setup(x => x.Users.AddAsync(It.IsAny<User>(), default))
+                .Callback<User, CancellationToken>((u, _) => { users.Add(u); });
+
+            await service.Add(newUserWithoutId);
+
+            Assert.That(users.Count, Is.EqualTo(4));
+        }
     }
 }
