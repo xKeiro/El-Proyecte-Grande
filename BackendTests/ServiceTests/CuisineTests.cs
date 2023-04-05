@@ -6,6 +6,7 @@ using backend.Services;
 using backend.Services.Categories;
 using BackendTests.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
 using Moq.EntityFrameworkCore;
 
@@ -14,7 +15,7 @@ namespace BackendTests.ServiceTests;
 [TestFixture]
 public class CuisineTests
 {
-    private Mock<ElProyecteGrandeContext> context;
+    private ElProyecteGrandeContext context;
     private IMapper mapper;
     private CuisineService cuisineService;
     private List<Cuisine> cuisines;
@@ -23,24 +24,38 @@ public class CuisineTests
     [SetUp]
     public void Setup()
     {
-        context = new Mock<ElProyecteGrandeContext>(new DbContextOptions<ElProyecteGrandeContext>());
+        var options = new DbContextOptionsBuilder<ElProyecteGrandeContext>()
+            .UseInMemoryDatabase(databaseName: "CuisinesDb")
+            .Options;
+        //context = new Mock<ElProyecteGrandeContext>(new DbContextOptions<ElProyecteGrandeContext>());
         var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(typeof(MappingProfile)));
         mapper = mappingConfig.CreateMapper();
-        cuisineService = new CuisineService(context.Object, mapper);
         cuisines = new List<Cuisine>()
             {
-                new Cuisine { Id = 0, Name = "French" },
-                new Cuisine { Id = 1, Name = "American" },
-                new Cuisine { Id = 2, Name = "Italian" }
+                new Cuisine { Id = 1, Name = "French" },
+                new Cuisine { Id = 2, Name = "American" },
+                new Cuisine { Id = 3, Name = "Italian" }
             };
         cuisinePublics = new List<CuisinePublic>()
             {
-                new CuisinePublic { Id = 0, Name = "French" },
-                new CuisinePublic { Id = 1, Name = "American" },
-                new CuisinePublic { Id = 2, Name = "Italian" }
+                new CuisinePublic { Id = 1, Name = "French" },
+                new CuisinePublic { Id = 2, Name = "American" },
+                new CuisinePublic { Id = 3, Name = "Italian" }
             };
+        context = new ElProyecteGrandeContext(options);
+        context.ChangeTracker.Clear();
+        context.Cuisines.AddRange(cuisines);
+        context.SaveChanges();
+        context.ChangeTracker.Clear();
+        cuisineService = new CuisineService(context, mapper);
         //add cuisines to context
-        _ = context.Setup(c => c.Cuisines).ReturnsDbSet(cuisines);
+        //_ = context.Setup(c => c.Cuisines).ReturnsDbSet(cuisines);
+    }
+    [TearDown]
+    public void TearDown()
+    {
+        context.Database.EnsureDeleted();
+        context.Dispose();
     }
     [Test]
     public async Task GetAll_CuisinesExist_ShouldReturnCuisines()
@@ -57,7 +72,7 @@ public class CuisineTests
     {
         // Arrange
         // Act
-        var result = await cuisineService.Find(0);
+        var result = await cuisineService.Find(1);
         // Assert
         Util.AreEqualByJson(result, cuisinePublics[0]);
         Assert.That(result, Is.TypeOf<CuisinePublic>());
@@ -67,7 +82,7 @@ public class CuisineTests
     {
         // Arrange
         // Act
-        var result = await cuisineService.Find(3);
+        var result = await cuisineService.Find(4);
         // Assert
         Assert.That(result, Is.Null);
     }
@@ -87,9 +102,9 @@ public class CuisineTests
     {
         // Arrange
         var cuisineWithoutId = new CuisineWithoutId { Name = "Chinese" };
-        var cuisinePublic = new CuisinePublic { Id = 1, Name = "Chinese" };
+        var cuisinePublic = new CuisinePublic { Id = 2, Name = "Chinese" };
         // Act
-        var result = await cuisineService.Update(1, cuisineWithoutId);
+        var result = await cuisineService.Update(2, cuisineWithoutId);
         // Assert
         Util.AreEqualByJson(result, cuisinePublic);
         Assert.That(result, Is.TypeOf<CuisinePublic>());
