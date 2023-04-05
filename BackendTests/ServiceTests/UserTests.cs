@@ -557,5 +557,46 @@ namespace BackendTests.ServiceTests
 
             Util.AreEqualByJson(expectedUser, users.First(u => u.Id == 1));
         }
+
+        [Test]
+        public async Task Delete_NotExistingUserId_ReturnsFalse()
+        {
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Assert.False(await service.Delete(325));
+        }
+
+        [Test]
+        public async Task Delete_ExistingUserId_ReturnsTrue()
+        {
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Assert.True(await service.Delete(2));
+        }
+
+        [Test]
+        public async Task Delete_ExistingUserId_RemoveAndSaveChangesAsyncMethodsCalledOnDb()
+        {
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            await service.Delete(2);
+
+            mockContext.Verify(x => x.Users.Remove(It.IsAny<User>()));
+            mockContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        }
+
+        [Test]
+        public async Task Delete_ExistingUserId_RemovesUserFromDb()
+        {
+            int userIdToRemove = 2;
+
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+            mockContext.Setup(x => x.Users.Remove(It.IsAny<User>()))
+                .Callback<User>(_ =>  users.Remove(users.First(ur => ur.Id == userIdToRemove)));
+
+            await service.Delete(userIdToRemove);
+
+            Assert.That(users.Count, Is.EqualTo(2));
+        }
     }
 }
