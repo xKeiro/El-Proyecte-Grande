@@ -14,8 +14,11 @@ using backend.Dtos.Categories.MealTime;
 using backend.Dtos.Ingredient;
 using backend.Dtos.Recipes.PreparationStep;
 using backend.Dtos.Recipes.RecipeIngredient;
+using BackendTests.Utils;
 using Moq.EntityFrameworkCore;
 using Newtonsoft.Json;
+using backend.Maps;
+using backend.Services.Categories;
 
 namespace BackendTests.ServiceTests
 {
@@ -23,15 +26,19 @@ namespace BackendTests.ServiceTests
     public class RecipeTest
     {
         private Mock<ElProyecteGrandeContext> _mockContext;
-        private RecipeService _service;
+        private RecipeService _recipeService;
         private List<Recipe> _recipes;
         private List<RecipePublic> _recipesPublic;
-        private Mock<IMapper> _mapper;
+        private IMapper _mapper;
 
 
         [SetUp]
         public void SetUp()
         {
+            _mockContext = new Mock<ElProyecteGrandeContext>(new DbContextOptions<ElProyecteGrandeContext>());
+            var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(typeof(MappingProfile)));
+            _mapper = mappingConfig.CreateMapper();
+            _recipeService = new RecipeService(_mockContext.Object, _mapper);
             _recipes = new List<Recipe>();
             _recipesPublic = new List<RecipePublic>();
 
@@ -218,17 +225,10 @@ namespace BackendTests.ServiceTests
                 }
             };
 
-
             _recipes = new List<Recipe> { penneRecipe, chickenAlfredo, chocolateCakeRecipe };
             _recipesPublic = new List<RecipePublic> { penneRecipePublic, chickenAlfredoPublic, chocolateCakeRecipePublic };
 
-            _mockContext = new(new DbContextOptions<ElProyecteGrandeContext>());
-            _mockContext.Setup(x => x.Recipes).ReturnsDbSet(_recipes);
-
-            _mapper = new Mock<IMapper>();
-            _mapper.Setup(m => m.Map<List<Recipe>, List<RecipePublic>>(It.IsAny<List<Recipe>>())).Returns(_recipesPublic);
-
-            _service = new RecipeService(_mockContext.Object, _mapper.Object);
+            _ = _mockContext.Setup(c => c.Recipes).ReturnsDbSet(_recipes);
 
         }
 
@@ -236,24 +236,23 @@ namespace BackendTests.ServiceTests
         public async Task Find_ReturnsNull_WhenRecipeNotFound()
         {
             int id = 123;
-            var result = await _service.Find(id);
+            var result = await _recipeService.Find(id);
             Assert.IsNull(result);
         }
 
 
 
-        /*[Test]
+        [Test]
         public async Task Find_ReturnsRecipePublic_WhenRecipeFound()
         {
             int id = 1;
             var expected = _recipesPublic.First(r => r.Id == id);
-
-            var result = await _service.Find(id);
+            var result = await _recipeService.Find(id);
 
             Util.AreEqualByJson(result, expected);
             Assert.That(result, Is.Not.Null);
             Assert.That(result, Is.TypeOf<RecipePublic>());
-        }*/
+        }
 
         [Test]
         public async Task GetAll_RecipesExist_ShouldReturnRecipes()
@@ -272,7 +271,7 @@ namespace BackendTests.ServiceTests
                 RecipesPerPage = 5
             };
             var currentPage = 1;
-            var result = await _service.GetFiltered(filter, currentPage);
+            var result = await _recipeService.GetFiltered(filter, currentPage);
             var expectedJson = JsonConvert.SerializeObject(new RecipesPublicWithNextPage()
             {
                 NextPage = null,
