@@ -474,5 +474,88 @@ namespace BackendTests.ServiceTests
 
             Assert.That(users.Count, Is.EqualTo(4));
         }
+
+        [Test]
+        public async Task Update_ExistingUser_UpdateAndSaveChangesAsyncMethodsCalledOnDb()
+        {
+            UserWithoutId updateUserWithoutId = new()
+            {
+                Username = "longjohnson",
+                EmailAddress = "ding@dong.com",
+                FirstName = "Long",
+                LastName = "Johnson",
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            await service.Update(1, updateUserWithoutId);
+
+            mockContext.Verify(x => x.Update(It.IsAny<User>()));
+            mockContext.Verify(x => x.SaveChangesAsync(It.IsAny<CancellationToken>()));
+        }
+
+        [Test]
+        public async Task Update_ExistingUser_ReturnsUpdatedUser()
+        {
+            UserPublic expectedUser = new()
+            {
+                Id = 1,
+                Username = "longjohnson",
+                EmailAddress = "ding@dong.com",
+                FirstName = "Long",
+                LastName = "Johnson",
+                IsAdmin = false,
+            };
+
+            UserWithoutId updateUserWithoutId = new()
+            {
+                Username = "longjohnson",
+                EmailAddress = "ding@dong.com",
+                FirstName = "Long",
+                LastName = "Johnson",
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            UserPublic updatedUser = await service.Update(1, updateUserWithoutId);
+
+            Util.AreEqualByJson(expectedUser, updatedUser);
+        }
+
+        [Test]
+        public async Task Update_ExistingUser_UpdatesUserInDb()
+        {
+            User expectedUser = new()
+            {
+                Id = 1,
+                Username = "longjohnson",
+                EmailAddress = "ding@dong.com",
+                FirstName = "Long",
+                LastName = "Johnson",
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            UserWithoutId updateUserWithoutId = new()
+            {
+                Username = "longjohnson",
+                EmailAddress = "ding@dong.com",
+                FirstName = "Long",
+                LastName = "Johnson",
+                IsAdmin = false,
+                Password = "12345"
+            };
+
+            mockContext.Setup(x => x.Update(It.IsAny<User>()))
+                .Callback<User>(u =>
+                {
+                    users.Remove(users.First(ur => ur.Id == 1));
+                    users.Add(u);
+                });
+
+            await service.Update(1, updateUserWithoutId);
+
+            Util.AreEqualByJson(expectedUser, users.First(u => u.Id == 1));
+        }
     }
 }
