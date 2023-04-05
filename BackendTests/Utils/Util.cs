@@ -118,7 +118,7 @@ public static class Util
 
     public static List<Recipe> Recipes = new() { ChickenCurryRecipe, PeanutMandelSaladRecipe, SpinachOmeletteRecipeVariation };
 
-    public static void AreEqualByJson(object expected, object actual)
+    public static void AreEqualByJson(object? expected, object? actual)
     {
         var expectedJson = JsonSerializer.Serialize(expected);
         var actualJson = JsonSerializer.Serialize(actual);
