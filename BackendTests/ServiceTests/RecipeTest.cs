@@ -111,7 +111,7 @@ namespace BackendTests.ServiceTests
                 },
                 Cuisine = american,
                 MealTimes = new List<MealTime> { snack },
-                Diets = new List<Diet>{eggFree},
+                Diets = new List<Diet> { eggFree },
                 DishType = dessert,
                 PreparationSteps = new List<PreparationStep>
                 {
@@ -281,6 +281,51 @@ namespace BackendTests.ServiceTests
         }
 
 
+        [Test]
+        public async Task IsUnique_ReturnsTrue_WhenNameIsUnique()
+        {
+            // Arrange
+            var recipeUniqueRequest = new RecipeRequest
+            {
+                Name = "Unique name",
+                Description = "Test...",
+                Difficulty = PreparationDifficulty.Easy,
+                RecipeIngredientsAddNew = new List<RecipeIngredientAddNew> { new RecipeIngredientAddNew { IngredientId = 1, Amount = 250 } },
+                CuisineId = 1,
+                MealTimeIds = new List<int> { 1 },
+                DietIds = new List<int> { 1 },
+                DishTypeId = 1,
+                PreparationStepsWithoutIds = new List<PreparationStepWithoutId>
+                    { new PreparationStepWithoutId { Description = "Bring a large pot of salted water to a boil. Add the penne and cook until al dente, about 10 minutes. Drain and set aside.", Step = 1 }}
+            };
+
+            var result = await _recipeService.IsUnique(recipeUniqueRequest);
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public async Task IsUnique_ReturnsFalse_WhenNameIsUnique()
+        {
+            // Arrange
+            var recipeNotUniqueRequest = new RecipeRequest
+            {
+                Name = "Chicken Alfredo",
+                Description = "Test...",
+                Difficulty = PreparationDifficulty.Easy,
+                RecipeIngredientsAddNew = new List<RecipeIngredientAddNew> { new RecipeIngredientAddNew { IngredientId = 1, Amount = 250 } },
+                CuisineId = 1,
+                MealTimeIds = new List<int> { 1 },
+                DietIds = new List<int> { 1 },
+                DishTypeId = 1,
+                PreparationStepsWithoutIds = new List<PreparationStepWithoutId>
+                    { new PreparationStepWithoutId { Description = "Bring a large pot of salted water to a boil. Add the penne and cook until al dente, about 10 minutes. Drain and set aside.", Step = 1 }}
+            };
+
+            var result = await _recipeService.IsUnique(recipeNotUniqueRequest);
+
+            Assert.IsFalse(result);
+        }
     }
 
 }
