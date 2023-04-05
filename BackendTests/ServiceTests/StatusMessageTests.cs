@@ -39,5 +39,29 @@ namespace BackendTests.ServiceTests
             var expected = new { Message = "User with id:'3' was deleted and everything related to it!" };
             Util.AreEqualByJson(expected, actual);
         }
+
+        [Test]
+        public void NoneFoundTest()
+        {
+            var actual = _statusMessageService.NoneFound();
+            var expected = new { Message = "No Users found!" };
+            Util.AreEqualByJson(expected, actual);
+        }
+
+        [Test]
+        public void AlreadyExistsTest()
+        {
+            var actual = _statusMessageService.AlreadyExists();
+            var expected = new { Message = "User already exists!" };
+            Util.AreEqualByJson(expected, actual);
+        }
+
+        [Test]
+        public void NotUniqueTest()
+        {
+            var actual = _statusMessageService.NotUnique();
+            var expected = new { Message = "User has a property that is not unique, but should be!" };
+            Util.AreEqualByJson(expected, actual);
+        }
     }
 }
