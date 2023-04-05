@@ -1,5 +1,13 @@
 using AutoMapper;
+using backend.Dtos.Categories.Cuisine;
+using backend.Dtos.Categories.Diet;
+using backend.Dtos.Categories.DishType;
+using backend.Dtos.Categories.MealTime;
+using backend.Dtos.Recipes.PreparationStep;
+using backend.Dtos.Recipes.Recipe;
+using backend.Dtos.Recipes.RecipeIngredient;
 using backend.Dtos.Users.User;
+using backend.Enums;
 using backend.Maps;
 using backend.Models.Users;
 using backend.Services;
@@ -273,6 +281,130 @@ namespace BackendTests.ServiceTests
             };
 
             Assert.False(await service.IsUniqueEmail(newUser));
+        }
+
+        [Test]
+        public async Task LikedRecipes_ExistingUserId_ReturnsListOfLikedRecipes()
+        {
+            List<RecipePublic> expectedList = new List<RecipePublic>()
+            {
+                new()
+                {
+                    Id = 2,
+                    Name = "Peanut Mandel Salad",
+                    Description = "A crunchy and refreshing salad with cabbage, carrot, scallion, cilantro, peanuts and mandel, tossed in a tangy and sweet dressing",
+                    Difficulty = PreparationDifficulty.Easy,
+                    RecipeIngredients = new List<RecipeIngredientPublic>(),
+                    Cuisine = new CuisinePublic() { Name = "Thai" },
+                    MealTimes = new List<MealTimePublic>(),
+                    Diets = new List<DietPublic>(),
+                    DishType = new DishTypePublic() { Name = "Salad" },
+                    PreparationSteps = new List<PreparationStepPublic>()
+                }
+            };
+
+            mockContext.Setup(x => x.Recipes).ReturnsDbSet(Util.Recipes);
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Util.AreEqualByJson(expectedList, await service.LikedRecipes(1));
+        }
+
+        [Test]
+        public async Task LikedRecipes_NotExistingUserId_ReturnsEmptyList()
+        {
+            List<RecipePublic> expectedList = new List<RecipePublic>();
+            
+            mockContext.Setup(x => x.Recipes).ReturnsDbSet(Util.Recipes);
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Util.AreEqualByJson(expectedList, await service.LikedRecipes(3));
+        }
+
+        [Test]
+        public async Task SavedRecipes_ExistingUserId_ReturnsListOfSavedRecipes()
+        {
+            List<RecipePublic> expectedList = new List<RecipePublic>()
+            {
+                new()
+                {
+                    Id = 3,
+                    Name = "Spinach Omelette Variation",
+                    Description = "A simple and nutritious breakfast with eggs, cheese, spinach, tomato and basil",
+                    Difficulty = PreparationDifficulty.Easy,
+                    RecipeIngredients = new List<RecipeIngredientPublic>(),
+                    Cuisine = new CuisinePublic() { Name = "Italian" },
+                    MealTimes = new List<MealTimePublic>(),
+                    Diets = new List<DietPublic>(),
+                    DishType = new DishTypePublic() { Name = "Omelette" },
+                    PreparationSteps = new List<PreparationStepPublic>()
+                },
+                new()
+                {
+                    Id = 1,
+                    Name = "Chicken Curry",
+                    Description = "A flavorful and low-fat Indian dish with chicken, yogurt, and spices",
+                    Difficulty = PreparationDifficulty.Medium,
+                    RecipeIngredients = new List<RecipeIngredientPublic>(),
+                    Cuisine = new CuisinePublic() { Name = "Indian"},
+                    MealTimes = new List<MealTimePublic>(),
+                    Diets = new List<DietPublic>(),
+                    DishType = new DishTypePublic() { Name = "Curry"},
+                    PreparationSteps = new List<PreparationStepPublic>()
+                }
+            };
+
+            mockContext.Setup(x => x.Recipes).ReturnsDbSet(Util.Recipes);
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Util.AreEqualByJson(expectedList, await service.SavedRecipes(1));
+        }
+
+        [Test]
+        public async Task SavedRecipes_NotExistingUserId_ReturnsEmptyList()
+        {
+            List<RecipePublic> expectedList = new List<RecipePublic>();
+
+            mockContext.Setup(x => x.Recipes).ReturnsDbSet(Util.Recipes);
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Util.AreEqualByJson(expectedList, await service.SavedRecipes(25));
+        }
+
+        [Test]
+        public async Task DislikedRecipes_ExistingUserId_ReturnsListOfDislikedRecipes()
+        {
+            List<RecipePublic> expectedList = new List<RecipePublic>()
+            {
+                new()
+                {
+                    Id = 3,
+                    Name = "Spinach Omelette Variation",
+                    Description = "A simple and nutritious breakfast with eggs, cheese, spinach, tomato and basil",
+                    Difficulty = PreparationDifficulty.Easy,
+                    RecipeIngredients = new List<RecipeIngredientPublic>(),
+                    Cuisine = new CuisinePublic() { Name = "Italian" },
+                    MealTimes = new List<MealTimePublic>(),
+                    Diets = new List<DietPublic>(),
+                    DishType = new DishTypePublic() { Name = "Omelette" },
+                    PreparationSteps = new List<PreparationStepPublic>()
+                }
+            };
+
+            mockContext.Setup(x => x.Recipes).ReturnsDbSet(Util.Recipes);
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Util.AreEqualByJson(expectedList, await service.DislikedRecipes(2));
+        }
+
+        [Test]
+        public async Task DislikedRecipes_NotExistingUserId_ReturnsEmptyList()
+        {
+            List<RecipePublic> expectedList = new List<RecipePublic>();
+
+            mockContext.Setup(x => x.Recipes).ReturnsDbSet(Util.Recipes);
+            mockContext.Setup(x => x.UserRecipes).ReturnsDbSet(Util.UserRecipes);
+
+            Util.AreEqualByJson(expectedList, await service.DislikedRecipes(325));
         }
     }
 }
