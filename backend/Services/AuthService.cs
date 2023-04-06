@@ -24,7 +24,7 @@ namespace backend.Services
         public AuthService(IUserService<UserPublic, UserWithoutId> userService, IConfiguration configuration, IMapper mapper)
         {
             _userService = userService;
-            _tokenKey = configuration.GetValue<string>("JwtTokenKey");
+            _tokenKey = configuration.GetValue<string>("JWT_TOKEN_KEY");
             _mapper = mapper;
         }
 
