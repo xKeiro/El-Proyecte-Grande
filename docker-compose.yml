@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    user: root
+    env_file:
+      - backend/.env
+    ports:
+      - "1433:1433"
+    volumes:
+      - db-data:/var/opt/mssql/data
+
+  backend:
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+    env_file:
+      - backend/.env
+    volumes:
+      - backend:/app
+
+  frontend:
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - frontend:/app
+      - frontend/node_modules
+
+volumes:
+  db-data:
+  frontend:
+  backend:
