@@ -164,7 +164,7 @@ export const RecipeFilter: React.FC<props> = ({
   const handlePreparationDifficultySelection = (preparationDifficulty: PreparationDifficulty) => {
     setPreparationDifficulty(preparationDifficulty);
   };
-  const handleMaxNotOwnedIngredientsChange = (maxNotOwnedIngredients: number) => {
+  const handleMaxNotOwnedIngredientsChange = (maxNotOwnedIngredients: number | null) => {
     setMaxNotOwnedIngredients(maxNotOwnedIngredients);
   };
 
