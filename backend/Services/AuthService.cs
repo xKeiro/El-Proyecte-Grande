@@ -12,6 +12,7 @@ using Google.Apis.Gmail.v1.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Microsoft.IdentityModel.Tokens;
+using backend.Utils;
 
 namespace backend.Services
 {
@@ -24,7 +25,7 @@ namespace backend.Services
         public AuthService(IUserService<UserPublic, UserWithoutId> userService, IConfiguration configuration, IMapper mapper)
         {
             _userService = userService;
-            _tokenKey = configuration.GetValue<string>("JWT_TOKEN_KEY");
+            _tokenKey = EnvironmentVariableHelper.JwtTokenKey;
             _mapper = mapper;
         }
 

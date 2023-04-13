@@ -4,35 +4,64 @@ services:
   db:
     image: mcr.microsoft.com/mssql/server:2017-latest
     user: root
-    env_file:
-      - backend/.env
+    # env_file:
+    #   - backend/.
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ${SA_PASSWORD}
     ports:
-      - "1433:1433"
+      - "${DB_PORT}:${DB_PORT}"
+    restart: always
+    healthcheck:
+        test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "SELECT 1"]
+        interval: 10s
+        retries: 60
     volumes:
       - db-data:/var/opt/mssql/data
 
   backend:
+    image: xkeiro/el-proyecte-grande:backend
     build:
       context: backend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    links:
+        - frontend
     depends_on:
-      - db
-    env_file:
-      - backend/.env
+      db:
+        condition: service_healthy
+    # env_file:
+    #   - backend/.env
+    environment:
+      JWT_TOKEN_KEY: ${JWT_TOKEN_KEY}
+      FRONTEND_URL: ${FRONTEND_URL}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      DB_SERVER: ${DB_SERVER}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_ID: ${DB_ID}
+      DB_PASSWORD: ${DB_PASSWORD}
     volumes:
       - backend:/app
+      - ./backend/UploadedImages:/app/UploadedImages
 
   frontend:
+    image: xkeiro/el-proyecte-grande:frontend
     build:
       context: frontend
       dockerfile: Dockerfile
+      args:
+        - API_URL=${VITE_API_URL}
+        - FRONTEND_PORT=${VITE_FRONTEND_PORT}
+    # env_file:
+    #   - frontend/.env
     ports:
-      - "5173:5173"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
+    depends_on:
+        backend:
+            condition: service_healthy
     volumes:
       - frontend:/app
-      - frontend/node_modules
 
 volumes:
   db-data:
