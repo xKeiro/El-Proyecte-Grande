@@ -8,7 +8,6 @@ export const EditRecipe = ({ isAdmin } : { isAdmin : boolean }) => {
     const [recipe, setRecipe] = useState<TRecipe | null>(null);
     const { id } = useParams<{ id: string }>();
     const idNumeric = parseInt(id!);
-    console.log(recipe);
     
 
     useEffect(() => {

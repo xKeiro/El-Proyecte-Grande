@@ -116,7 +116,6 @@ export const RecipeAddNew = () => {
     };
 
     const response = await axios.post(`${API_URL}/recipes`, recipe, { withCredentials: true });
-    console.log(response.data.id);
     setImageId(response.data.id);
     setRecipeSavedWithoutImage(true);
   };
@@ -130,7 +129,6 @@ export const RecipeAddNew = () => {
   }, [recipeImage]);
 
   const handleSaveWholeRecipe = () => {
-    console.log("Ok")
     navigate('/admin/recipes');
   }
 

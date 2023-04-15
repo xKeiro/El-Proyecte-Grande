@@ -52,7 +52,6 @@ export const Register = ({ loggedInUsername } : { loggedInUsername : string | nu
             const result = await response.json();
 
             if (!response.ok) {
-                console.log(result);
                 setHideErrorMsg(false);
                 if (result.usernameMsg != "ok") setErrorMsg(result.usernameMsg);
                 else setErrorMsg(result.emailMsg);
