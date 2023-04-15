@@ -1,6 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /app
 
+# ARG ASPNETCORE_URLS
+
+# ENV ASPNETCORE_URLS=ASPNETCORE_URLS
+
 COPY *.csproj ./
 RUN dotnet restore
 
