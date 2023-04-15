@@ -8,7 +8,7 @@ A website that helps you find recipes based on various criteria, such as the ing
 2. Clone the project repository or download it as a zip (and extract it)
 3. Inside the projects folder, rename `.env.template` to `.env` *<sup>1</sup>
 4. Open a terminal in the projects folder
-5. Tpye `docker compose up -d`
+5. Tpye "docker compose up -d"
 6. Wait until everything finishes
 7. [Visit the site](http://localhost:80)
 
