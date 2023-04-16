@@ -11,8 +11,8 @@ ENV VITE_FRONTEND_PORT=$FRONTEND_PORT
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and pnpm-lock.yaml
-COPY package.json pnpm-lock.yaml ./
+# Copy package.json
+COPY package.json ./
 
 # Install dependencies
 
