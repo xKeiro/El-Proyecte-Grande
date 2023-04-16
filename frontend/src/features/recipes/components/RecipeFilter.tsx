@@ -52,7 +52,7 @@ export const RecipeFilter: React.FC<props> = ({
       preparationMaxDifficulty: preparationMaxDifficulty,
       maxNotOwnedIngredients: maxNotOwnedIngredients,
       page: 1,
-      recipesPerPage: 5,
+      recipesPerPage: 6,
     }
     handleFilteringResult(filter)
   };
