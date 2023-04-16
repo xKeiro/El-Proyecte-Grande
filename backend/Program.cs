@@ -30,7 +30,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add environment variables
 
-builder.Services.AddCors(p => p.AddPolicy("corspolicy", build => build.WithOrigins(EnvironmentVariableHelper.FrontendUrl)
+builder.Services.AddCors(p => p.AddPolicy("corspolicy",
+    builder => builder 
+        .AllowAnyOrigin()
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()

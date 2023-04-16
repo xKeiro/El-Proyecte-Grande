@@ -67,7 +67,6 @@ services:
       - backend
     environment:
       NGINX_PORT: ${NGINX_PORT}
-      NGINX_SERVER_NAME: ${NGINX_SERVER_NAME}
       FRONTEND_PORT: ${FRONTEND_PORT}
       BACKEND_PORT: ${BACKEND_PORT}
     ports:
