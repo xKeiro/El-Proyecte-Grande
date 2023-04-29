@@ -9,7 +9,7 @@ services:
     environment:
       ACCEPT_EULA: Y
       SA_PASSWORD: ${SA_PASSWORD}
-    ports:
+    expose:
       - "${DB_PORT}"
     restart: always
     healthcheck:
@@ -24,7 +24,7 @@ services:
     build:
       context: backend
       dockerfile: Dockerfile
-    ports:
+    expose:
       - "${BACKEND_PORT}"
     links:
         - frontend
@@ -43,7 +43,6 @@ services:
       DB_ID: ${DB_ID}
       DB_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - backend:/app
       - ./backend/UploadedImages:/app/UploadedImages
 
   frontend:
@@ -56,10 +55,8 @@ services:
         - FRONTEND_PORT=${VITE_FRONTEND_PORT}
     # env_file:
     #   - frontend/.env
-    ports:
+    expose:
       - "${FRONTEND_PORT}"
-    volumes:
-      - frontend:/app
   nginx:
     image: nginx
     depends_on:
@@ -77,5 +74,3 @@ services:
 
 volumes:
   db-data:
-  frontend:
-  backend:
