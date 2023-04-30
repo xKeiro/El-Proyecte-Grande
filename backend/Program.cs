@@ -136,6 +136,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("corspolicy");
+app.Use(async (context, next) =>
+{
+   await next();
+   Console.WriteLine(context.Request.Path.Value);
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
