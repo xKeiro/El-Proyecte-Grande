@@ -3,7 +3,9 @@ using backend.Dtos.Ingredient;
 using backend.Dtos.Recipes.PreparationStep;
 using backend.Interfaces.Services;
 using backend.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace backend.Controllers;
 
@@ -21,6 +23,8 @@ public class PreparationStepController : ControllerBase
         _service = preparationStepService;
         _statusMessage = statusMessage;
     }
+
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -81,6 +85,7 @@ public class PreparationStepController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]

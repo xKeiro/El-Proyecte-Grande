@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace backend.Controllers;
 
-[Authorize(Roles = "Admin")]
 [Route("api/[controller]")]
 [ApiController]
 public class RecipesController : ControllerBase
@@ -23,7 +22,6 @@ public class RecipesController : ControllerBase
         _statusMessage = statusMessage;
     }
 
-    [AllowAnonymous]
     [HttpGet]
     [HttpGet("Page/{page}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,6 +39,7 @@ public class RecipesController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -67,7 +66,6 @@ public class RecipesController : ControllerBase
         }
     }
 
-    [AllowAnonymous]
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -89,6 +87,7 @@ public class RecipesController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
@@ -124,6 +123,7 @@ public class RecipesController : ControllerBase
         }
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
