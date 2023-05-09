@@ -116,22 +116,9 @@ export const RecipeAddNew = () => {
     };
 
     const response = await axios.post(`${API_URL}/recipes`, recipe, { withCredentials: true });
-    console.log(response.data);
+    setImageId(response.data.id);
     setRecipeSavedWithoutImage(true);
   };
-
-  useEffect(() => {
-    const fetchLastRecipe = async () => {
-      if (recipeSavedWithoutImage) {
-        const lastRecipe = await RecipesApi.getLastRecipe();
-        console.log(lastRecipe);
-        if (lastRecipe != null) {
-          setImageId(lastRecipe.id);
-        }
-      }
-    };
-    fetchLastRecipe();
-  }, [recipeSavedWithoutImage]);
 
   useEffect(() => {
     if (recipeImage != null) {
@@ -142,7 +129,6 @@ export const RecipeAddNew = () => {
   }, [recipeImage]);
 
   const handleSaveWholeRecipe = () => {
-    console.log("Ok")
     navigate('/admin/recipes');
   }
 

@@ -7,13 +7,10 @@ export const RecipeHeader = ({ recipe, username } : {recipe : TRecipe | null, us
     }
     return (
         <div className="recipe-header mb-5">
-            <div className="recipe-name font-bold text-2xl mb-2 mb-5 italic flex flex-row gap-2">
-                <span>{recipe.name}</span>
-                -
-                <span className="text-primary">{recipe.difficulty}</span>
-                {
-                    username != null && <RecipeUserButtons />
-                }
+            <div className="recipe-name font-bold text-2xl italic py-4 gap-2 place-self-center">
+                <div>{recipe.name}</div>
+                <div className="text-primary">{recipe.difficulty}</div>
+                <div className="pt-4">{username != null && <RecipeUserButtons />}</div>
             </div>
             <div className="badges">
                 <div className="badge badge-accent font-bold italic">{recipe.cuisine.name}</div>

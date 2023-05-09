@@ -22,10 +22,16 @@ using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using backend.Dtos.Recipes.PreparationStep;
+using backend.Utils;
 
+
+DotNetEnv.Env.Load();
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(p => p.AddPolicy("corspolicy", build => build.WithOrigins("http://localhost:5173")
+// Add environment variables
+
+builder.Services.AddCors(p => p.AddPolicy("corspolicy",
+    builder => builder.WithOrigins(EnvironmentVariableHelper.FrontendUrl)
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
@@ -44,17 +50,15 @@ builder.Services.AddControllers()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+
+
 builder.Services.AddDbContext<ElProyecteGrandeContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ElProyecteGrandeContext")));
+    options.UseSqlServer(EnvironmentVariableHelper.ConnectionString));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Add Authentication
-string? tokenKey = builder.Configuration.GetValue<string>("JwtTokenKey");
-
-if (string.IsNullOrEmpty(tokenKey)) throw new ConfigurationErrorsException("Missing JWT token key!");
-
-var key = Encoding.ASCII.GetBytes(tokenKey);
+var key = Encoding.ASCII.GetBytes(EnvironmentVariableHelper.JwtTokenKey);
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -80,6 +84,15 @@ builder.Services.AddAuthentication(opt =>
         }
     };
 });
+//.AddGoogle(options =>
+//{
+//    IConfigurationSection googleAuthNSection = builder.Configuration.GetSection("Authentication:Google");
+
+//    options.ClientId = googleAuthNSection["ClientId"];
+//    options.ClientSecret = googleAuthNSection["ClientSecret"];
+
+//    if (options.ClientId is null || options.ClientSecret is null) throw new ConfigurationErrorsException("Missing Google secrets!");
+//});
 
 // Add Services
 builder.Services.AddScoped<ICategoryService<MealTimePublic, MealTimeWithoutId>, MealTimeService>();
@@ -110,6 +123,7 @@ builder.Services.AddScoped<IStatusMessageService<Recipe>, StatusMessageService<R
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -120,19 +134,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-//app.UseStatusCodePages(async context =>
-//{
-//    var response = context.HttpContext.Response;
-//    string? location = app.Configuration.GetValue<string>("Location");
-//    if (string.IsNullOrEmpty(location))
-//        throw new ConfigurationErrorsException("Missing location!");
-
-//    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
-//    {
-//        response.Redirect(location);
-//    }
-//});
 
 app.UseCors("corspolicy");
 
@@ -145,3 +146,4 @@ app.MapControllers();
 AppDbInitializer.Seed(app);
 
 app.Run();
+

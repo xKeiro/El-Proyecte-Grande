@@ -7,5 +7,6 @@ namespace backend.Interfaces.Services
         string GenerateJwt(UserPublic user);
         UserWithoutId HashPw(UserWithoutId user);
         Task<UserPublic> Authenticate(UserLogin user);
+        bool SendWelcomeEmail(string to, string username);
     }
 }

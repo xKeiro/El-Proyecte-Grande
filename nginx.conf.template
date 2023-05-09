@@ -1,0 +1,12 @@
+server {
+    listen        ${NGINX_PORT};
+
+    location / {
+        proxy_pass         http://frontend:${FRONTEND_PORT};
+    }
+
+    location /api {
+        proxy_pass         http://backend:${BACKEND_PORT};
+        rewrite ^(.*)$ $1 break;
+    }
+}

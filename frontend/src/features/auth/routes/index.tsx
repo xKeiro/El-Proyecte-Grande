@@ -11,7 +11,7 @@ export const AuthRoutes = ({ username, setUsername, setIsAdmin } : {
     return (
       <Routes>
         <Route index path="/login" element={<Login loggedInUsername={username} setLoggedInUsername={setUsername} setIsAdmin={setIsAdmin} />} />
-        <Route path="/register" element={<Register username={username} />}></Route>
+        <Route path="/register" element={<Register loggedInUsername={username} />}></Route>
       </Routes>
     );
   };
