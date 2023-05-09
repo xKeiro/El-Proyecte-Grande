@@ -143,13 +143,13 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         return result;
     }
 
-    public async Task<UserRecipePublic?> AddUserRecipe(string username, UserRecipeAddNew userRecipeAddNew)
+    public async Task<UserRecipePublic?> AddUserRecipe(string username, int recipeId, UserRecipeAddNew userRecipeAddNew)
     {
         var userRecipeStatus = new UserRecipeStatus()
         {
             Name = userRecipeAddNew.RecipeStatus
         };
-        var recipe = await _context.Recipes.FindAsync(userRecipeAddNew.RecipeId);
+        var recipe = await _context.Recipes.FindAsync(recipeId);
         if (recipe == null)
         {
             return null;
@@ -159,6 +159,12 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         if (user == null)
         {
             return null;
+        }
+        var existingUserRecipe = await _context.UserRecipes
+            .FirstOrDefaultAsync(ur => ur.User == user && ur.Recipe == recipe);
+        if (existingUserRecipe != null)
+        {
+            _context.UserRecipes.Remove(existingUserRecipe);
         }
         var userRecipe = new UserRecipe()
         {
@@ -170,6 +176,36 @@ public class UserService : IUserService<UserPublic, UserWithoutId>
         _ = await _context.SaveChangesAsync();
         return _mapper.Map<UserRecipe, UserRecipePublic>(userRecipe);
     }
+
+    public async Task<bool> RemoveUserRecipe(string username, int recipeId)
+    { 
+        var recipe = await _context.Recipes.FindAsync(recipeId);
+        if (recipe == null)
+        {
+            return false;
+        }
+        var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Username == username);
+        if (user == null)
+        {
+            return false;
+        }
+        var existingUserRecipe = await _context.UserRecipes
+            .FirstOrDefaultAsync(ur => ur.User == user && ur.Recipe == recipe);
+        if (existingUserRecipe == null)
+        {
+            return false;
+        }
+        _ = _context.UserRecipes.Remove(existingUserRecipe);
+        _ = await _context.SaveChangesAsync();
+        return true;
+    }
+    public Task<UserRecipeStatusPublic?> GetUserRecipeStatusByRecipeIdAndUsername(int recipeId, string username) =>
+        _context.UserRecipes
+            .AsNoTracking()
+            .Where(ur => ur.Recipe.Id == recipeId && ur.User.Username == username)
+            .Select(ur => _mapper.Map<UserRecipeStatus, UserRecipeStatusPublic>(ur.Status))
+            .FirstOrDefaultAsync();
 
     public Task<List<UserRecipeStatusPublic?>> GetUserRecipeStatusByRecipeId(int recipeId)
     {

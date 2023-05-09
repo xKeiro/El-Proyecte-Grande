@@ -21,5 +21,7 @@ public interface IUserService<TResponseDto, TRequestDto> :
     Task<List<RecipePublic>> SavedRecipes(int userId);
     Task<List<RecipePublic>> DislikedRecipes(int userId);
     Task<List<UserRecipeStatusPublic?>> GetUserRecipeStatusByRecipeId(int recipeId);
-    Task<UserRecipePublic?> AddUserRecipe(string username, UserRecipeAddNew userRecipeAddNew);
+    Task<UserRecipeStatusPublic?> GetUserRecipeStatusByRecipeIdAndUsername(int recipeId, string username);
+    Task<UserRecipePublic?> AddUserRecipe(string username, int recipeId, UserRecipeAddNew userRecipeAddNew);
+    Task<bool> RemoveUserRecipe(string username, int recipeId);
 }
