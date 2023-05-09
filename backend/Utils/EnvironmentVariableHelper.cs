@@ -16,6 +16,12 @@ public static class EnvironmentVariableHelper
         var envKeyDbDatabase = "DB_DATABASE";
         var dbDatabase = Environment.GetEnvironmentVariable(envKeyDbDatabase);
         ThrowErrorIfEnvironmentVariableNotExists(envKeyDbDatabase, dbDatabase);
+
+        var envKeyIntegratedSecurity = "INTEGRATED_SECURITY";
+        var integratedSecurity = Environment.GetEnvironmentVariable(envKeyIntegratedSecurity);
+        if (integratedSecurity is not null && integratedSecurity.ToUpper() == "SSPI")
+            return $"Server={dbServer};Database={dbDatabase};MultipleActiveResultSets=true;TrustServerCertificate=True";
+
         var envKeyDbId = "DB_ID";
         var dbId = Environment.GetEnvironmentVariable(envKeyDbId);
         ThrowErrorIfEnvironmentVariableNotExists(envKeyDbId, dbId);

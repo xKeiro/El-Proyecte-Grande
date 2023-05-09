@@ -49,9 +49,9 @@ namespace backend.Controllers
             }
 
             _authService.HashPw(user);
-            await _userService.Add(user);
+            UserPublic userReturn = await _userService.Add(user);
             _authService.SendWelcomeEmail(user.EmailAddress, user.Username);
-            return StatusCode(StatusCodes.Status201Created, user);
+            return StatusCode(StatusCodes.Status201Created, userReturn);
         }
 
         [AllowAnonymous]
