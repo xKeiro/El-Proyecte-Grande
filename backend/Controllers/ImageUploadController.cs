@@ -40,10 +40,11 @@ namespace backend.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Some Error Occcured while uploading File {ex.Message}");
+                return StatusCode(500, $"Some Error Occurred while uploading File {ex.Message}");
             }
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> ShowImage(string id)
         {
