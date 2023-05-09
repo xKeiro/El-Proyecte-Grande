@@ -51,7 +51,7 @@ export const Users = ({ isAdmin } : { isAdmin : boolean }) => {
                     <circle cx="12" cy="7" r="4"></circle>
                   </svg>
                 </Link>
-                <button className="btn btn-square btn-ghost">
+                {/* <button className="btn btn-square btn-ghost">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -82,7 +82,7 @@ export const Users = ({ isAdmin } : { isAdmin : boolean }) => {
                     <line x1="10" y1="11" x2="10" y2="17"></line>
                     <line x1="14" y1="11" x2="14" y2="17"></line>
                   </svg>
-                </button>
+                </button> */}
               </td>
             </tr>
           ))}
