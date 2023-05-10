@@ -1,4 +1,5 @@
-﻿using backend.Dtos.Recipes.Recipe;
+﻿using AutoMapper;
+using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Users.User;
 using backend.Interfaces.Services;
 using backend.Models;
@@ -14,13 +15,16 @@ public class UsersController : ControllerBase
 {
     private readonly IUserService<UserPublic, UserWithoutId> _service;
     private readonly IStatusMessageService<User> _statusMessage;
+    private readonly IMapper _mapper;
 
     public UsersController(
         IUserService<UserPublic, UserWithoutId> userService,
-        IStatusMessageService<User> statusMessage)
+        IStatusMessageService<User> statusMessage,
+        IMapper mapper)
     {
         _service = userService;
         _statusMessage = statusMessage;
+        _mapper = mapper;
     }
 
     [Authorize(Roles = "Admin")]
@@ -84,6 +88,23 @@ public class UsersController : ControllerBase
         {
             return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
         }
+    }
+
+    [Authorize]
+    [HttpGet("UserProfile")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<UserPublic>> GetUserProfile()
+    {
+        string username = HttpContext.User.Identity.Name;
+        User user = await _service.FindByUsername(username);
+        UserPublic userPublic = _mapper.Map<User, UserPublic>(user);
+
+        return userPublic switch
+        {
+            null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.GenericError()),
+            _ => StatusCode(StatusCodes.Status200OK, userPublic)
+        };
     }
 
     [Authorize]
