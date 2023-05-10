@@ -149,6 +149,12 @@ export const NavBar = ({ username, isAdmin, setUsername, setIsAdmin } : {
                 </li>
               }
               {
+                  username != null &&
+                  <li>
+                    <OptionLink text={"Profile"} to={"/profile"} isLogout={false} setUsername={setUsername} setIsAdmin={setIsAdmin} />
+                  </li>
+              }
+              {
                 username != null &&
                 <li>
                   <OptionLink text={"Logout"} to={"/"} isLogout={true} setUsername={setUsername} setIsAdmin={setIsAdmin} />

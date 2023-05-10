@@ -5,22 +5,20 @@ import { TRecipe } from '@/features/recipes';
 import { recipesSchema } from '@/features/recipes';
 import { UsersApi } from '../api/UsersApi';
 
-const DislikedRecipes = () => {
+const DislikedRecipes = ({ id } : { id : number | undefined }) => {
   const [dislikedRecipes, setDislikedRecipes] = useState<TRecipe[]>([]);
-  const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
-      if(id){
-        const data = await UsersApi.getDislikedRecipes(parseInt(id));
-        const result = recipesSchema.safeParse(data);
-        if (result.success) {
-          setDislikedRecipes(data);
-        } else {
-          console.log(result.error.issues);
+        if (id) {
+            const data = await UsersApi.getDislikedRecipes(id);
+            const result = recipesSchema.safeParse(data);
+            if (result.success) {
+                setDislikedRecipes(data);
+            } else {
+                console.log(result.error.issues);
+            }
         }
-      }
-    
     };
     fetchData();
   }, [id]);

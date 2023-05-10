@@ -8,7 +8,7 @@ export const AllUsers = () => {
 
     useEffect(() => {
         const fetchUsers = async () => {
-            const data = await UsersApi.getAllusers();
+            const data = await UsersApi.getAllUser();
             setUsers(data);
         };
         fetchUsers();

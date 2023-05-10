@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { UsersApi } from '../api/UsersApi';
 import SavedRecipes from './SavedRecipes';
 import LikedRecipes from './LikedRecipes';
@@ -7,30 +7,27 @@ import DislikedRecipes from './DislikedRecipes';
 import { TUser } from '../types';
 import { userSchema } from '../types';
 
-export const User = ({ isAdmin } : { isAdmin : boolean }) => {
-
+export const User = () => {
     const [user, setUser] = useState<TUser>();
     const { id } = useParams();
 
     //fetch the user
     useEffect(() => {
-        const fetchUsers = async () => {
-            if (id) {
-                const data = await UsersApi.getUserById(parseInt(id));
-                const result = userSchema.safeParse(data)
-                if(result.success){
-                    setUser(data);
-                }
-                else{
-                    console.log(result.error.issues)
-                }
+        const fetchUser = async () => {
+            const data = id ? await UsersApi.getUserById(parseInt(id)) : await UsersApi.getUserProfile();
+            const result = userSchema.safeParse(data);
+            if(result.success){
+                setUser(data);
+            }
+            else{
+                console.log(result.error.issues)
             }
         };
-        fetchUsers();
+        fetchUser();
 
     }, [id]);
 
-    if (isAdmin) return (
+    return (
         <div className="min-h-screen flex  justify-center">
             <div className="md:w-2/5 mx-auto p-4 flex flex-col">
                 <div className="flex items-center justify-center bg-base-300 rounded p-4">
@@ -41,12 +38,11 @@ export const User = ({ isAdmin } : { isAdmin : boolean }) => {
                     </div>
                 </div>
                 <div className="mt-4 grid grid-columns-1 gap-2">
-                    <SavedRecipes />
-                    <LikedRecipes />
-                    <DislikedRecipes />
+                    <SavedRecipes id={user?.id} />
+                    <LikedRecipes id={user?.id} />
+                    <DislikedRecipes id={user?.id} />
                 </div>
             </div>
         </div>
     )
-    return <Navigate to="/unauthorized" />
 }

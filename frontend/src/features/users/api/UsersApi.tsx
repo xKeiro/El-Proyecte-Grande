@@ -3,7 +3,7 @@ import { API_URL } from '@/config';
 
 export abstract class UsersApi{
 
-    public static async getAllusers() {
+    public static async getAllUser() {
         const res = await axios.get(`${API_URL}/users`, { withCredentials : true });
         return await res.data;    
     }
@@ -11,6 +11,11 @@ export abstract class UsersApi{
     public static async getUserById(id: number) {
         const res = await axios.get(`${API_URL}/users/${id}`, { withCredentials : true });
         return await res.data;    
+    }
+
+    public static async getUserProfile() {
+        const res = await axios.get(`${API_URL}/users/userprofile`, { withCredentials : true });
+        return await res.data;
     }
 
     public static async getDislikedRecipes(id: number){
