@@ -11,11 +11,11 @@ services:
       SA_PASSWORD: ${SA_PASSWORD}
     expose:
       - "${DB_PORT}"
-    restart: always
+    restart: "on-failure"
     healthcheck:
         test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "SELECT 1"]
         interval: 10s
-        retries: 60
+        retries: 12
     volumes:
       - db-data:/var/opt/mssql/data
 
@@ -26,8 +26,6 @@ services:
       dockerfile: Dockerfile
     expose:
       - "${BACKEND_PORT}"
-    links:
-        - frontend
     depends_on:
       db:
         condition: service_healthy
@@ -42,6 +40,12 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_ID: ${DB_ID}
       DB_PASSWORD: ${DB_PASSWORD}
+    restart: "on-failure"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT}/api/healthchecker"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
     volumes:
       - ./backend/UploadedImages:/app/UploadedImages
 
@@ -57,11 +61,16 @@ services:
     #   - frontend/.env
     expose:
       - "${FRONTEND_PORT}"
+    restart: "on-failure"
+    depends_on:
+      backend:
+        condition: service_healthy
   nginx:
     image: nginx
     depends_on:
       - frontend
       - backend
+    restart: "on-failure"
     environment:
       NGINX_PORT: ${NGINX_PORT}
       FRONTEND_PORT: ${FRONTEND_PORT}
