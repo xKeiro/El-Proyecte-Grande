@@ -46,7 +46,7 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
-
+builder.Services.AddHealthChecks();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
@@ -125,6 +125,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 var app = builder.Build();
+app.MapHealthChecks("/api/HealthChecker");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
