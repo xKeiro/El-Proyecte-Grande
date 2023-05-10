@@ -265,7 +265,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipePublic>>> GetLikedRecipes(int id)
     {
         var result = await _userService.LikedRecipes(id);
-        return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
+        return result == null ? NotFound() : Ok(result);
     }
 
     [Authorize]
@@ -276,7 +276,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<List<RecipePublic>>> GetSavedRecipes(int id)
     {
         var result = await _userService.SavedRecipes(id);
-        return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
+        return result == null ? NotFound() : Ok(result);
     }
 
     [Authorize]
