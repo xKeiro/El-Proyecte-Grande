@@ -3,7 +3,7 @@ import {Ingredient} from "@/features/ingredients";
 
 export const PropertiesTable = (props : {categories : Category[], ingredients : Ingredient[]}) => {
     return (
-        <table className="table table-zebra">
+        <table className="table table-zebra w-96 text-center">
             <thead>
             <tr>
                 <th>Name</th>

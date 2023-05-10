@@ -62,4 +62,12 @@ public class StatusMessageService<T> : IStatusMessageService<T>
             Message = "At least one Id was provided that does not exist in our system!"
         };
     }
+
+    public StatusMessage LoginNeeded()
+    {
+        return new()
+        {
+            Message = "Login needed!"
+        };
+    }
 }

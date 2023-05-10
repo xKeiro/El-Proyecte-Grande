@@ -15,7 +15,7 @@ export const RecipeButtons = (props: { recipeId: number }) => {
 
   return (
     <div className="card-actions bg-base-100 justify-end rounded-box">
-      <button title="Edit recipe" className="btn btn-square btn-ghost">
+      {/* <button title="Edit recipe" className="btn btn-square btn-ghost">
         <Link key={props.recipeId} to={`/admin/recipes/${props.recipeId}/edit`}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +31,7 @@ export const RecipeButtons = (props: { recipeId: number }) => {
             <polygon points="18 2 22 6 12 16 8 16 8 12 18 2"></polygon>
           </svg>
         </Link>
-      </button>
+      </button> */}
       <button
         title="Delete recipe"
         className="btn btn-square btn-ghost"

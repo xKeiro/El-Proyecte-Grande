@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using backend.Dtos.Recipes.Recipe;
 using backend.Dtos.Users.User;
+using backend.Dtos.Users.UserRecipe;
+using backend.Dtos.Users.UserRecipeStatus;
 using backend.Interfaces.Services;
 using backend.Models;
 using backend.Models.Users;
@@ -15,15 +17,20 @@ public class UsersController : ControllerBase
 {
     private readonly IUserService<UserPublic, UserWithoutId> _service;
     private readonly IStatusMessageService<User> _statusMessage;
+    private readonly IRecipeService _recipeService;
     private readonly IMapper _mapper;
 
     public UsersController(
         IUserService<UserPublic, UserWithoutId> userService,
+        IRecipeService recipeService,
+        IStatusMessageService<User> statusMessage
+        )
         IStatusMessageService<User> statusMessage,
         IMapper mapper)
     {
         _service = userService;
         _statusMessage = statusMessage;
+        _recipeService = recipeService;
         _mapper = mapper;
     }
 
@@ -83,6 +90,151 @@ public class UsersController : ControllerBase
                 null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
                 _ => StatusCode(StatusCodes.Status200OK, userPublic)
             };
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpGet("Recipes")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<List<UserRecipeStatusPublic?>>> GetLoggedInUserRecipeStatus(int recipeId)
+    {
+        try
+        {
+            var username = HttpContext.User.Identity?.Name;
+            if (username == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var user = await _service.FindByUsername(username);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var userRecipe = await _service.GetUserRecipeStatusByRecipeId(recipeId);
+            if (userRecipe == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK, userRecipe);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpPost("Me/Recipes/{recipeId}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<UserRecipePublic?>> PostNewUserRecipe(int recipeId, UserRecipeAddNew userRecipeAddNew)
+    {
+        try
+        {
+            var username = HttpContext.User.Identity?.Name;
+            if (username == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var user = await _service.FindByUsername(username);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var recipe = await _recipeService.Find(recipeId);
+            if (recipe == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.ANotExistingIdProvided());
+            }
+
+            var userRecipe = await _service.AddUserRecipe(username, recipeId, userRecipeAddNew);
+            if (userRecipe == null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+            }
+            return StatusCode(StatusCodes.Status201Created, userRecipe);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpDelete("Me/Recipes/{recipeId}")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
+    public async Task<ActionResult> DeleteUserRecipe(int recipeId)
+    {
+        try
+        {
+            var username = HttpContext.User.Identity?.Name;
+            if (username == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var user = await _service.FindByUsername(username);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var recipe = await _recipeService.Find(recipeId);
+            if (recipe == null)
+            {
+                return StatusCode(StatusCodes.Status404NotFound, _statusMessage.ANotExistingIdProvided());
+            }
+
+            var deleted = await _service.RemoveUserRecipe(username, recipeId);
+            if (deleted is false)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+            }
+            return StatusCode(StatusCodes.Status200OK);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
+        }
+    }
+
+    [HttpGet("Me/Recipes/{recipeId}/Status")]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(StatusMessage))]
+    public async Task<ActionResult<UserRecipeStatusPublic?>> GetUserRecipeStatus(int recipeId)
+    {
+        try
+        {
+            var username = HttpContext.User.Identity?.Name;
+            if (username == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+
+            var user = await _service.FindByUsername(username);
+            if (user == null)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
+            }
+            var userRecipeStatus = await _service.GetUserRecipeStatusByRecipeIdAndUsername(recipeId, username);
+            return StatusCode(StatusCodes.Status200OK, userRecipeStatus);
         }
         catch
         {
