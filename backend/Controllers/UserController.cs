@@ -15,7 +15,7 @@ namespace backend.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly IUserService<UserPublic, UserWithoutId> _service;
+    private readonly IUserService<UserPublic, UserWithoutId> _userService;
     private readonly IStatusMessageService<User> _statusMessage;
     private readonly IRecipeService _recipeService;
     private readonly IMapper _mapper;
@@ -23,14 +23,12 @@ public class UsersController : ControllerBase
     public UsersController(
         IUserService<UserPublic, UserWithoutId> userService,
         IRecipeService recipeService,
-        IStatusMessageService<User> statusMessage
-        )
         IStatusMessageService<User> statusMessage,
         IMapper mapper)
-    {
-        _service = userService;
-        _statusMessage = statusMessage;
+        {
+        _userService = userService;
         _recipeService = recipeService;
+        _statusMessage = statusMessage;
         _mapper = mapper;
     }
 
@@ -42,7 +40,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var usersPublic = await _service.GetAll();
+            var usersPublic = await _userService.GetAll();
             return StatusCode(StatusCodes.Status200OK, usersPublic);
         }
         catch
@@ -60,12 +58,12 @@ public class UsersController : ControllerBase
     {
         try
         {
-            switch (await _service.IsUnique(userWithoutId))
+            switch (await _userService.IsUnique(userWithoutId))
             {
                 case false:
                     return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
                 default:
-                    var userPublic = await _service.Add(userWithoutId);
+                    var userPublic = await _userService.Add(userWithoutId);
                     return StatusCode(StatusCodes.Status201Created, userPublic);
             }
         }
@@ -84,7 +82,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var userPublic = await _service.Find(id);
+            var userPublic = await _userService.Find(id);
             return userPublic switch
             {
                 null => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
@@ -112,13 +110,13 @@ public class UsersController : ControllerBase
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
             }
 
-            var user = await _service.FindByUsername(username);
+            var user = await _userService.FindByUsername(username);
             if (user == null)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
             }
 
-            var userRecipe = await _service.GetUserRecipeStatusByRecipeId(recipeId);
+            var userRecipe = await _userService.GetUserRecipeStatusByRecipeId(recipeId);
             if (userRecipe == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
@@ -147,7 +145,7 @@ public class UsersController : ControllerBase
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
             }
 
-            var user = await _service.FindByUsername(username);
+            var user = await _userService.FindByUsername(username);
             if (user == null)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
@@ -159,7 +157,7 @@ public class UsersController : ControllerBase
                 return StatusCode(StatusCodes.Status404NotFound, _statusMessage.ANotExistingIdProvided());
             }
 
-            var userRecipe = await _service.AddUserRecipe(username, recipeId, userRecipeAddNew);
+            var userRecipe = await _userService.AddUserRecipe(username, recipeId, userRecipeAddNew);
             if (userRecipe == null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
@@ -188,7 +186,7 @@ public class UsersController : ControllerBase
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
             }
 
-            var user = await _service.FindByUsername(username);
+            var user = await _userService.FindByUsername(username);
             if (user == null)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
@@ -200,7 +198,7 @@ public class UsersController : ControllerBase
                 return StatusCode(StatusCodes.Status404NotFound, _statusMessage.ANotExistingIdProvided());
             }
 
-            var deleted = await _service.RemoveUserRecipe(username, recipeId);
+            var deleted = await _userService.RemoveUserRecipe(username, recipeId);
             if (deleted is false)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, _statusMessage.GenericError());
@@ -228,12 +226,12 @@ public class UsersController : ControllerBase
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
             }
 
-            var user = await _service.FindByUsername(username);
+            var user = await _userService.FindByUsername(username);
             if (user == null)
             {
                 return StatusCode(StatusCodes.Status401Unauthorized, _statusMessage.LoginNeeded());
             }
-            var userRecipeStatus = await _service.GetUserRecipeStatusByRecipeIdAndUsername(recipeId, username);
+            var userRecipeStatus = await _userService.GetUserRecipeStatusByRecipeIdAndUsername(recipeId, username);
             return StatusCode(StatusCodes.Status200OK, userRecipeStatus);
         }
         catch
@@ -249,7 +247,7 @@ public class UsersController : ControllerBase
     public async Task<ActionResult<UserPublic>> GetUserProfile()
     {
         string username = HttpContext.User.Identity.Name;
-        User user = await _service.FindByUsername(username);
+        User user = await _userService.FindByUsername(username);
         UserPublic userPublic = _mapper.Map<User, UserPublic>(user);
 
         return userPublic switch
@@ -266,7 +264,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<List<RecipePublic>>> GetLikedRecipes(int id)
     {
-        var result = await _service.LikedRecipes(id);
+        var result = await _userService.LikedRecipes(id);
         return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
@@ -277,7 +275,7 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<List<RecipePublic>>> GetSavedRecipes(int id)
     {
-        var result = await _service.SavedRecipes(id);
+        var result = await _userService.SavedRecipes(id);
         return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
     }
 
@@ -288,8 +286,8 @@ public class UsersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
     public async Task<ActionResult<List<RecipePublic>>> GetDislikedRecipes(int id)
     {
-        var result = await _service.DislikedRecipes(id);
-        return result == null ? (ActionResult<List<RecipePublic>>)NotFound() : (ActionResult<List<RecipePublic>>)Ok(result);
+        var result = await _userService.DislikedRecipes(id);
+        return result == null ? NotFound() : Ok(result);
     }
 
     [Authorize(Roles = "Admin")]
@@ -302,19 +300,19 @@ public class UsersController : ControllerBase
     {
         try
         {
-            var userPublicOriginal = await _service.Find(id);
+            var userPublicOriginal = await _userService.Find(id);
             switch (userPublicOriginal)
             {
                 case null:
                     return StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id));
             }
 
-            switch (await _service.IsUnique(userWithoutId))
+            switch (await _userService.IsUnique(userWithoutId))
             {
                 case false:
                     return StatusCode(StatusCodes.Status409Conflict, _statusMessage.NotUnique());
                 default:
-                    var userPublic = await _service.Update(id, userWithoutId);
+                    var userPublic = await _userService.Update(id, userWithoutId);
                     return StatusCode(StatusCodes.Status200OK, userPublic);
             }
         }
@@ -333,7 +331,7 @@ public class UsersController : ControllerBase
     {
         try
         {
-            return await _service.Delete(id) switch
+            return await _userService.Delete(id) switch
             {
                 false => StatusCode(StatusCodes.Status404NotFound, _statusMessage.NotFound(id)),
                 _ => StatusCode(StatusCodes.Status200OK, _statusMessage.Deleted(id)),
