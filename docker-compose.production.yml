@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:1.0.7
+    user: root
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: ${SA_PASSWORD}
+    expose:
+      - "${DB_PORT}"
+    restart: "on-failure"
+    healthcheck:
+        test: ["CMD", "/opt/mssql-tools/bin/sqlcmd", "-U", "sa", "-P", "${SA_PASSWORD}", "-Q", "SELECT 1"]
+        interval: 2m
+        retries: 2
+    volumes:
+      - db-data:/var/opt/mssql/
+    networks:
+      - net
+
+  backend:
+    image: xkeiro/el-proyecte-grande:backend
+    build:
+      context: backend
+      dockerfile: Dockerfile
+    expose:
+      - "${BACKEND_PORT}"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      JWT_TOKEN_KEY: ${JWT_TOKEN_KEY}
+      FRONTEND_URL: reverse-proxy
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      DB_SERVER: ${DB_SERVER}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_ID: ${DB_ID}
+      DB_PASSWORD: ${DB_PASSWORD}
+      VIRTUAL_HOST: recipes.kevins.works
+      VIRTUAL_PATH: /api
+      VIRTUAL_PORT: ${BACKEND_PORT}
+      LETSENCRYPT_HOST: recipes.kevins.works
+    restart: "on-failure"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${BACKEND_PORT}/api/healthchecker"]
+      interval: 2m
+      timeout: 10s
+      retries: 2
+    volumes:
+      - ./backend/UploadedImages:/app/UploadedImages
+    networks:
+      - net
+
+  frontend:
+    image: xkeiro/el-proyecte-grande:frontend
+    build:
+      context: frontend
+      dockerfile: Dockerfile
+      args:
+        - API_URL=${VITE_API_URL}
+        - FRONTEND_PORT=${VITE_FRONTEND_PORT}
+    expose:
+      - "${FRONTEND_PORT}"
+    environment:
+      VIRTUAL_HOST: recipes.kevins.works
+      VIRTUAL_PATH: /api
+      VIRTUAL_PORT: ${FRONTEND_PORT}
+      LETSENCRYPT_HOST: recipes.kevins.works
+    restart: "on-failure"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - net
+
+volumes:
+  db-data:
+networks:
+  net:
+    external: true
