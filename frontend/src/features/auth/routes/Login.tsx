@@ -83,7 +83,7 @@ export const Login = ({ loggedInUsername, setLoggedInUsername, setIsAdmin } : {
                 <div className="form-control mt-6">
                   <button className="btn btn-primary" onClick={submit}>Login</button>
                 </div>
-                <div className="mt-2">
+                {/* <div className="mt-2">
                   <button
                       className="btn w-full text-white bg-[#4285F4] border-[#4285F4] hover:border-[#4285F4]/90 hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-inherit text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55"
                       onClick={googleLogin}>
@@ -100,7 +100,7 @@ export const Login = ({ loggedInUsername, setLoggedInUsername, setIsAdmin } : {
                     </svg>
                     Sign in with Google
                   </button>
-                </div>
+                </div> */}
               <div id="cred-alert" className="mt-4 alert alert-error shadow-lg justify-center text-lg font-bold" hidden={hideErrorMsg}>
                   <span>{errorMsg}</span>
               </div>
