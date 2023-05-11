@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace backend.Controllers
 {
@@ -46,6 +47,7 @@ namespace backend.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
+        [OutputCache(Duration = 120)]
         public async Task<IActionResult> ShowImage(string id)
         {
             string imagePath = $"{Directory.GetCurrentDirectory()}/UploadedImages/{id}.jpg";

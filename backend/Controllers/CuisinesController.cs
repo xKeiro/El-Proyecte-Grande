@@ -5,6 +5,7 @@ using backend.Models;
 using backend.Models.Categories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace backend.Controllers;
 
@@ -24,6 +25,7 @@ public class CuisinesController : ControllerBase
     }
 
     [HttpGet]
+    [OutputCache(Duration = 120)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<CuisinePublic>>> GetAllCuisines()
@@ -64,6 +66,7 @@ public class CuisinesController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [OutputCache(Duration = 120)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
@@ -117,6 +120,7 @@ public class CuisinesController : ControllerBase
     }
 
     [HttpGet("{id}/recipes")]
+    [OutputCache(Duration = 120)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]

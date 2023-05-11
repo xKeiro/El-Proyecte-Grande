@@ -38,6 +38,7 @@ builder.Services.AddCors(p => p.AddPolicy("corspolicy",
         ));
 
 // Add services to the container.
+builder.Services.AddOutputCache();
 builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles
 );
@@ -138,6 +139,7 @@ app.UseCors("corspolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseOutputCache();
 
 app.MapControllers();
 

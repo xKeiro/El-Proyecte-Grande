@@ -3,6 +3,7 @@ using backend.Interfaces.Services;
 using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace backend.Controllers;
 
@@ -22,6 +23,7 @@ public class IngredientsController : ControllerBase
     }
 
     [HttpGet]
+    [OutputCache(Duration = 120)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     public async Task<ActionResult<IEnumerable<IngredientPublic>>> GetAllIngredients()
@@ -62,6 +64,7 @@ public class IngredientsController : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [OutputCache(Duration = 120)]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(StatusMessage))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(StatusMessage))]
