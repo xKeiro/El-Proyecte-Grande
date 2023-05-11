@@ -134,8 +134,6 @@ if (app.Environment.IsDevelopment())
     _ = app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
 app.UseCors("corspolicy");
 
 app.UseAuthentication();

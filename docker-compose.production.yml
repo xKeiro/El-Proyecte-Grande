@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  db:
+  el-proyecte-grande-db:
     image: mcr.microsoft.com/azure-sql-edge:1.0.7
     user: root
     environment:
@@ -15,26 +15,25 @@ services:
         interval: 2m
         retries: 2
     volumes:
-      - db-data:/var/opt/mssql/
+      - el-proyecte-grande-db-data:/var/opt/mssql/
     networks:
       - net
 
-  backend:
-    image: xkeiro/el-proyecte-grande:backend
+  el-proyecte-grande-backend:
     build:
       context: backend
       dockerfile: Dockerfile
     expose:
       - "${BACKEND_PORT}"
     depends_on:
-      db:
+      el-proyecte-grande-db:
         condition: service_healthy
     environment:
       JWT_TOKEN_KEY: ${JWT_TOKEN_KEY}
       FRONTEND_URL: reverse-proxy
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
       ASPNETCORE_URLS: ${ASPNETCORE_URLS}
-      DB_SERVER: ${DB_SERVER}
+      DB_SERVER: el-proyecte-grande-db
       DB_DATABASE: ${DB_DATABASE}
       DB_ID: ${DB_ID}
       DB_PASSWORD: ${DB_PASSWORD}
@@ -53,8 +52,7 @@ services:
     networks:
       - net
 
-  frontend:
-    image: xkeiro/el-proyecte-grande:frontend
+  el-proyecte-grande-frontend:
     build:
       context: frontend
       dockerfile: Dockerfile
@@ -65,18 +63,18 @@ services:
       - "${FRONTEND_PORT}"
     environment:
       VIRTUAL_HOST: recipes.kevins.works
-      VIRTUAL_PATH: /api
+      VIRTUAL_PATH: /
       VIRTUAL_PORT: ${FRONTEND_PORT}
       LETSENCRYPT_HOST: recipes.kevins.works
     restart: "on-failure"
     depends_on:
-      backend:
+      el-proyecte-grande-backend:
         condition: service_healthy
     networks:
       - net
 
 volumes:
-  db-data:
+  el-proyecte-grande-db-data:
 networks:
   net:
     external: true

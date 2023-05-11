@@ -28,7 +28,7 @@ public static class EnvironmentVariableHelper
         var envKeyDbPassword = "DB_PASSWORD";
         var dbPassword = Environment.GetEnvironmentVariable(envKeyDbPassword);
         ThrowErrorIfEnvironmentVariableNotExists(envKeyDbPassword, dbPassword);
-        return $"Server={dbServer};Database={dbDatabase};User Id={dbId};Password={dbPassword};MultipleActiveResultSets=true;TrustServerCertificate=True";
+        return $"Server={dbServer};Database={dbDatabase};User Id={dbId};Password={dbPassword};TrustServerCertificate=True;";
     }
 
     private static string Get(string envKey)
